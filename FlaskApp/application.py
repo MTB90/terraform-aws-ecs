@@ -21,7 +21,7 @@ import flask_login
 
 from requests.auth import HTTPBasicAuth
 from wtforms import TextAreaField
-from flask import Flask, render_template_string, session
+from flask import Flask, session
 from flask import redirect, request, url_for, render_template
 from flask_wtf import FlaskForm
 
@@ -85,17 +85,9 @@ def user_loader(session_token):
 
 
 @application.route("/")
-def home():
+def index():
     """Homepage route"""
-    return render_template_string("""
-        {% extends "main.html" %}
-        {% block content %}
-        {% if current_user.is_authenticated %}
-        Click <em>my photos</em> to access your photos.
-        {% else %}
-        Click <em>login in / sign up<em> to access this site.
-        {% endif %}
-        {% endblock %}""")
+    return render_template("index.html")
 
 
 @application.route("/myphotos", methods=('GET', 'POST'))
@@ -180,16 +172,10 @@ def info():
     availability_zone = requests.get(
         metadata + "/latest/meta-data/placement/availability-zone").text
 
-    return render_template_string("""
-            {% extends "main.html" %}
-            {% block content %}
-            <b>instance_id</b>: {{instance_id}} <br/>
-            <b>availability_zone</b>: {{availability_zone}} <br/>
-            <b>sys.version</b>: {{sys_version}} <br/>
-            {% endblock %}""",
-                                  instance_id=instance_id,
-                                  availability_zone=availability_zone,
-                                  sys_version=sys.version)
+    return render_template("info.html",
+                           instance_id=instance_id,
+                           availability_zone=availability_zone,
+                           sys_version=sys.version)
 
 
 @application.route("/login")
@@ -251,23 +237,15 @@ def callback():
         session['expires'] = id_token["exp"]
         session['refresh_token'] = response.json()["refresh_token"]
         flask_login.login_user(user, remember=True)
-        return redirect(url_for("home"))
+        return redirect(url_for("index"))
 
-    return render_template_string("""
-        {% extends "main.html" %}
-        {% block content %}
-            <p>Something went wrong</p>
-        {% endblock %}""")
+    return render_template("error.html")
 
 
 @application.errorhandler(401)
 def unauthorized(exception):
-    "Unauthorized access route"
-    return render_template_string("""
-        {% extends "main.html" %}
-        {% block content %}
-            <p>Please login to access this page</p>
-        {% endblock %}"""), 401
+    """Unauthorized access route"""
+    return render_template("unauthorized.html"), 401
 
 
 def verify(token, access_token=None):
