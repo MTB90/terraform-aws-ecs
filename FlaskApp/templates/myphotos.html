@@ -1,0 +1,50 @@
+{% extends "main.html" %}
+  {% block content %}
+  <h4>Upload Photo</h4>
+  <form method="POST" enctype="multipart/form-data" action="{{ url_for('myphotos') }}">
+        {{ form.csrf_token }}
+          <div class="control-group">
+           <label class="control-label">Photo</label>
+            {{ form.photo() }}
+          </div>
+          <div class="control-group">
+            <label class="control-label">Description</label>
+            <div class="controls">
+            {{ form.description(class="form-control") }}
+            </div>
+          </div>
+            &nbsp;
+           <div class="control-group">
+            <div class="controls">
+                <input class="btn btn-primary" type="submit" value="Upload">
+            </div>
+          </div>
+    </form>
+
+  {% if url %}
+    <hr/>
+    <h3>Uploaded!</h3>
+    <img src="{{url}}" /><br/>
+
+    {% for label in all_labels %}
+      <span class="label label-info">{{label}}</span>
+    {% endfor %}
+  {% endif %}
+
+  {% if photos %}
+    <hr/>
+    <h4>Photos</h4>
+    {% for photo in photos %}
+      <table class="table table-bordered">
+        <tr> <td rowspan="4" class="col-md-2 text-center"><img width="150" src="{{photo.signed_url}}" />
+        <a href="{{ url_for('myphotos_delete', object_key=photo.object_key) }}">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> delete
+        </a>
+      </td> </tr>
+        <tr> <th scope="row" class="col-md-2">Description</th> <td>{{photo.description}}</td> </tr>
+        <tr> <th scope="row" class="col-md-2">Labels</th> <td>{{photo.labels}}</td> </tr>
+        <tr> <th scope="row" class="col-md-2">Created</th> <td>{{photo.created_datetime}} UTC</td> </tr>
+    </table>
+    {% endfor %}
+    {% endif %}
+{% endblock %}
