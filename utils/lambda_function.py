@@ -40,9 +40,9 @@ def lambda_handler(event, context):
     csv_labels = ", ".join(all_labels)
     print("Detect_labels finished. Key: [%s], Labels: [%s]" % (key, csv_labels))
 
-    conn = mysql.connector.connect(user=config.DATABASE_USER, password=config.DATABASE_PASSWORD,
-                                   host=config.DATABASE_HOST,
-                                   database=config.DATABASE_DB_NAME)
+    conn = mysql.connector.connect(user=DATABASE_USER, password=DATABASE_PASSWORD,
+                                   host=DATABASE_HOST,
+                                   database=DATABASE_DB_NAME)
     cursor = conn.cursor(dictionary=True)
     cursor.execute("""SELECT object_key, description, labels, created_datetime
                       FROM photo WHERE object_key = %s""", (key,))
