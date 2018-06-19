@@ -10,11 +10,16 @@
 # specific language governing permissions and limitations under the License.
 "Lambda function for file upload events"
 from __future__ import print_function
+import os
 import json
 import boto3
 import mysql.connector
 
-import config
+DATABASE_HOST = os.environ['DATABASE_HOST']
+DATABASE_USER = os.environ['DATABASE_USER']
+DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
+DATABASE_DB_NAME = os.environ['DATABASE_DB_NAME']
+
 
 def lambda_handler(event, context):
     "Process upload event, get labels and update database"
