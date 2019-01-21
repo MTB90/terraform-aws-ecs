@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  web:
+    container_name: web
+    restart: always
+    build:
+      context: ./photorec
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    command: python app.py
