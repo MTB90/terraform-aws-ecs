@@ -6,8 +6,7 @@ variable "project_tags" {
   type = "map"
 
   default = {
-    Name        = "photorec"
-    Project     = "Social-PhotoRec"
+    Project     = "photorec"
     Envarioment = "dev"
   }
 }

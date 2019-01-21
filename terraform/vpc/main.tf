@@ -1,7 +1,7 @@
 # Local variables
 locals {
   module = "vpc"
-  name   = "${format("%s-%s-%s", var.tags["Project"] ,local.module, var.tags["Name"])}"
+  name   = "${format("%s-%s", var.tags["Project"] ,local.module)}"
 }
 
 locals {
