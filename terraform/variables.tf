@@ -6,8 +6,8 @@ variable "project_tags" {
   type = "map"
 
   default = {
-    Name        = "edx-aws"
-    Project     = "edx-aws"
+    Name        = "photorec"
+    Project     = "Social-PhotoRec"
     Envarioment = "dev"
   }
 }

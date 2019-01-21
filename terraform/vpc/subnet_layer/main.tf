@@ -1,6 +1,6 @@
 # Local variables
 locals {
-  module = "subnet_layer"
+  module = "subnet-layer"
   name   = "${format("%s-%s-%s", var.tags["Project"] ,local.module, var.tags["Name"])}"
 }
 
@@ -14,11 +14,17 @@ resource "aws_route_table" "route_table" {
   vpc_id = "${var.vpc_id}"
 }
 
+resource "aws_internet_gateway" "igw" {
+  count  = "${var.public ? 1 : 0}"
+  tags   = "${local.tags}"
+  vpc_id = "${var.vpc_id}"
+}
+
 resource "aws_route" "route" {
   count                  = "${var.public ? 1 : 0}"
   route_table_id         = "${aws_route_table.route_table.id}"
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${var.igw}"
+  gateway_id             = "${aws_internet_gateway.igw.id}"
 }
 
 resource "aws_subnet" "subnet" {

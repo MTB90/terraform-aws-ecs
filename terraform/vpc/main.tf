@@ -14,21 +14,15 @@ resource "aws_vpc" "vpc" {
   cidr_block = "${var.cidr}"
 }
 
-resource "aws_internet_gateway" "igw" {
-  tags   = "${local.tags}"
-  vpc_id = "${aws_vpc.vpc.id}"
-}
-
 module "subnet_public" {
   source = "./subnet_layer"
   tags   = "${merge(var.tags, map("Name", "public"))}"
 
+  public = true
   vpc_id = "${aws_vpc.vpc.id}"
+  azs    = "${var.azs}"
   cidr   = "${var.cidr}"
   shift  = 0
-  public = true
-  igw    = "${aws_internet_gateway.igw.id}"
-  azs    = "${var.azs}"
 }
 
 module "subnet_app" {
@@ -36,9 +30,9 @@ module "subnet_app" {
   tags   = "${merge(var.tags, map("Name", "app"))}"
 
   vpc_id = "${aws_vpc.vpc.id}"
+  azs    = "${var.azs}"
   cidr   = "${var.cidr}"
   shift  = "${length(var.azs)}"
-  azs    = "${var.azs}"
 }
 
 module "subnet_db" {
@@ -46,7 +40,7 @@ module "subnet_db" {
   tags   = "${merge(var.tags, map("Name", "db"))}"
 
   vpc_id = "${aws_vpc.vpc.id}"
+  azs    = "${var.azs}"
   cidr   = "${var.cidr}"
   shift  = "${2 * length(var.azs)}"
-  azs    = "${var.azs}"
 }

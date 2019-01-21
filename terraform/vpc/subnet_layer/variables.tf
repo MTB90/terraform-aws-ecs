@@ -20,12 +20,7 @@ variable "shift" {
   description = "Shift for subnet ip address"
 }
 
-variable "igw" {
-  description = "The internet gateway associate to the subnet layer"
-  default     = 0
-}
-
 variable "public" {
-  description = "If true then associate igw to the subnet layer"
+  description = "If true then igw should be created for subnet layer"
   default = false
 }
