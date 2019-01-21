@@ -5,8 +5,8 @@ services:
     container_name: web
     restart: always
     build:
-      context: ./photorec
-      dockerfile: Dockerfile
+      context: ../photorec
+      dockerfile: ../docker/photorec/Dockerfile
     ports:
       - "5000:5000"
     command: python app.py
