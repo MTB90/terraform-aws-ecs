@@ -4,9 +4,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "edx-developer"
+    bucket = "photorec"
     key    = "terraform-state/terraform.tfstate"
-    region = "eu-west-1"
+    region = "us-west-2"
   }
 
   required_version = "~>0.11.0"
