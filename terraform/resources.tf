@@ -16,4 +16,5 @@ module "ecs-cluster-ec2" {
 
   image_id      = "${var.ecs-cluster-ec2-image-id}"
   instance_type = "${var.ecs-cluster-ec2-instance-type}"
+  subnets       = "${module.vpc.subnets_app}"
 }

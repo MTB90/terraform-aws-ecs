@@ -10,3 +10,8 @@ variable "instance_type" {
 variable "image_id" {
   description = "AMI image for EC2 in launch configration"
 }
+
+variable "subnets" {
+  description = "List of subnet IDs to launch recources in"
+  default     = []
+}
