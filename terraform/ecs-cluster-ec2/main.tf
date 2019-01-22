@@ -10,7 +10,7 @@ locals {
 
 # ECS cluster
 resource "aws_ecs_cluster" "cluster" {
-  name = "${format("%s-cluster", local.name)}"
+  name = "${format("%s-cluster-ec2", local.name)}"
   tags = "${local.tags}"
 }
 
@@ -21,8 +21,9 @@ resource "aws_security_group" "launch_configuration_sg" {
 }
 
 resource "aws_launch_configuration" "launch_configuration" {
-  name            = "${format("%s-launch-config", local.name)}"
-  image_id        = "ami-0b2cc421c0d3015b4"
-  instance_type   = "t2.micro"
+  name = "${format("%s-launch-config", local.name)}"
+
+  image_id        = "${var.image_id}"
+  instance_type   = "${var.instance_type}"
   security_groups = ["${aws_security_group.launch_configuration_sg.id}"]
 }
