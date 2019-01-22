@@ -22,5 +22,5 @@ variable "shift" {
 
 variable "public" {
   description = "If true then igw should be created for subnet layer"
-  default = false
+  default     = false
 }
