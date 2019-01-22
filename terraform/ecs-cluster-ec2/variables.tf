@@ -11,6 +11,10 @@ variable "image_id" {
   description = "AMI image for EC2 in launch configration"
 }
 
+variable "vpc_id" {
+  description = "VPC id where ecs cluster will be deployed"
+}
+
 variable "subnets" {
   description = "List of subnet IDs to launch recources in"
   default     = []
