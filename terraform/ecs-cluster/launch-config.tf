@@ -7,17 +7,30 @@ resource "aws_launch_configuration" "ecs_launch_configuration" {
   security_groups      = ["${aws_security_group.launch_configuration_sg.id}"]
   iam_instance_profile = "${aws_iam_instance_profile.iam_instance_profile.id}"
 
-  user_data = <<EOF
-#!/bin/bash
-echo ECS_CLUSTER=photorec-ecs-cluster-ec2 >> /etc/ecs/ecs.config;
-echo ECS_BACKEND_HOST= >> /etc/ecs/ecs.config;
-EOF
+  user_data = "${data.template_file.user_data.rendered}"
 }
 
 # Security group for launch confuguration
 resource "aws_security_group" "launch_configuration_sg" {
-  name   = "${format("%s-launch-config-sg", local.name)}"
-  tags   = "${merge(var.tags, map("Name", format("%s-launch-config-sg", local.name)))}"
+  name = "${format("%s-launch-config-sg", local.name)}"
+  tags = "${merge(var.tags, map("Name", format("%s-launch-config-sg", local.name)))}"
+
+  # Inbound HTTP
+  ingress {
+    protocol    = "TCP"
+    from_port   = 80
+    to_port     = 80
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Outbound
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   vpc_id = "${var.vpc_id}"
 }
 
@@ -47,5 +60,14 @@ data "aws_iam_policy_document" "assume_policy_document" {
       type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
     }
+  }
+}
+
+# User data file
+data "template_file" "user_data" {
+  template = "${file("${path.module}/user-data.tpl")}"
+
+  vars = {
+    cluster = "${aws_ecs_cluster.ecs_cluster.name}"
   }
 }
