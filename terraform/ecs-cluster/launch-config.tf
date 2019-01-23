@@ -5,7 +5,7 @@ resource "aws_launch_configuration" "ecs_launch_configuration" {
   image_id             = "${var.image_id}"
   instance_type        = "${var.instance_type}"
   security_groups      = ["${aws_security_group.launch_configuration_sg.id}"]
-  iam_instance_profile = "${aws_iam_instance_profile.iam_instance_profile.id}"
+  iam_instance_profile = "${aws_iam_instance_profile.iam_instance_profile.arn}"
 
   user_data = "${data.template_file.user_data.rendered}"
 }
