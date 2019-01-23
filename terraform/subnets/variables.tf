@@ -20,7 +20,22 @@ variable "shift" {
   description = "Shift for subnet ip address"
 }
 
-variable "public" {
-  description = "If true then igw should be created for subnet layer"
+variable "igw_id" {
+  description = "(Optional) Internet gateway ID for subnets"
+  default     = -1
+}
+
+variable "igw_association" {
+  description = "(Optional) If true then igw should be added to subnet layer"
+  default     = false
+}
+
+variable "nat_id" {
+  description = "(Optional) NAT ID for subnets"
+  default     = -1
+}
+
+variable "nat_association" {
+  description = "(Optional) If true then nat should be added to subnet layer"
   default     = false
 }

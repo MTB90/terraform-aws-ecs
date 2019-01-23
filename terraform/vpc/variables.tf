@@ -3,11 +3,6 @@ variable "tags" {
   default     = {}
 }
 
-variable "azs" {
-  description = "A list of Availability zones in the region"
-  default     = []
-}
-
 variable "cidr" {
   description = "The CIDR block for the VPC"
 }
