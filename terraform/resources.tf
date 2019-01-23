@@ -10,8 +10,8 @@ module "vpc" {
 }
 
 # ECS resource with launch configuration, auto scaling, service
-module "ecs-cluster-ec2" {
-  source = "./ecs-cluster-ec2"
+module "ecs-cluster" {
+  source = "./ecs-cluster"
   tags   = "${var.project_tags}"
 
   image_id      = "${var.ecs-cluster-ec2-image-id}"

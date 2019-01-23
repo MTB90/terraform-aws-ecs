@@ -15,7 +15,7 @@ resource "aws_vpc" "vpc" {
 }
 
 module "subnet_public" {
-  source = "./subnet_layer"
+  source = "../subnet-layer"
   tags   = "${merge(var.tags, map("Name", "public"))}"
 
   public = true
@@ -26,7 +26,7 @@ module "subnet_public" {
 }
 
 module "subnet_app" {
-  source = "./subnet_layer"
+  source = "../subnet-layer"
   tags   = "${merge(var.tags, map("Name", "app"))}"
 
   vpc_id = "${aws_vpc.vpc.id}"
@@ -36,7 +36,7 @@ module "subnet_app" {
 }
 
 module "subnet_db" {
-  source = "./subnet_layer"
+  source = "../subnet-layer"
   tags   = "${merge(var.tags, map("Name", "db"))}"
 
   vpc_id = "${aws_vpc.vpc.id}"
