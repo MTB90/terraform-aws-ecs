@@ -1,16 +1,6 @@
-# Local variables
-locals {
-  module = "ecs-launch-config"
-  name   = "${format("%s-%s", var.tags["Project"] ,local.module)}"
-}
-
-locals {
-  tags = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
-}
-
 # Lanunch configuration
 resource "aws_launch_configuration" "ecs_launch_configuration" {
-  name = "${local.name}"
+  name = "${format("%s-launch-config", local.name)}"
 
   image_id             = "${var.image_id}"
   instance_type        = "${var.instance_type}"
@@ -55,7 +45,7 @@ resource "aws_iam_instance_profile" "ecs_iam_instance_profile" {
 }
 
 resource "aws_security_group" "ecs_launch_configuration_sg" {
-  name   = "${format("%s-sg", local.name)}"
+  name   = "${format("%s-launch-config-sg", local.name)}"
   tags   = "${merge(var.tags, map("Name", format("%s-launch-config-sg", local.name)))}"
   vpc_id = "${var.vpc_id}"
 }
