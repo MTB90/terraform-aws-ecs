@@ -28,6 +28,16 @@ variable "ecs_ec2_launch_config_image_id" {
   default     = "ami-0b2cc421c0d3015b4"
 }
 
+variable "ecs_ec2_autoscaling_group_capacity_limits" {
+  type = "map"
+
+  default = {
+    min     = 1
+    max     = 6
+    desired = 2
+  }
+}
+
 # NAT-instance variables
 variable "nat_image_id" {
   description = "AMI image for NAT instance"

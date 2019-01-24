@@ -9,5 +9,10 @@ variable "subnets" {
 }
 
 variable "launch_configuration_id" {
-  description = "Launch configration if for auto-scaling group"
+  description = "Launch configration if for autoscaling group"
+}
+
+variable "capacity_limits" {
+  description = "Capacity limits for autoscaling group"
+  default     = {}
 }

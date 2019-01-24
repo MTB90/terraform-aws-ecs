@@ -8,9 +8,10 @@ locals {
 resource "aws_autoscaling_group" "autoscaling_group" {
   name = "${local.name}"
 
-  max_size             = 6
-  min_size             = 1
-  desired_capacity     = 3
+  max_size         = "${var.capacity_limits["max"]}"
+  min_size         = "${var.capacity_limits["min"]}"
+  desired_capacity = "${var.capacity_limits["desired"]}"
+
   health_check_type    = "EC2"
   vpc_zone_identifier  = ["${var.subnets}"]
   launch_configuration = "${var.launch_configuration_id}"

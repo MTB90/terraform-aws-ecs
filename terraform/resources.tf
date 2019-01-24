@@ -76,6 +76,7 @@ module "ecs_ec2_autoscaling_group" {
 
   subnets                 = "${module.app_subnets.subnets}"
   launch_configuration_id = "${module.ecs_ec2_launch_configuration.id}"
+  capacity_limits         = "${var.ecs_ec2_autoscaling_group_capacity_limits}"
 }
 
 # NAT instance in public
