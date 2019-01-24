@@ -32,9 +32,9 @@ variable "ecs_ec2_autoscaling_group_capacity_limits" {
   type = "map"
 
   default = {
-    min     = 1
+    min     = 2
     max     = 6
-    desired = 2
+    desired = 3
   }
 }
 
