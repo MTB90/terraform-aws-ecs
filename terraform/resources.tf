@@ -15,7 +15,7 @@ resource "aws_vpc" "vpc" {
 
 # Create public subnets
 module "public_subnets" {
-  source = "./subnets"
+  source = "./modules/subnets"
   tags   = "${merge(var.tags, map("Name", "public"))}"
 
   vpc_id = "${aws_vpc.vpc.id}"
@@ -25,7 +25,7 @@ module "public_subnets" {
 }
 
 module "igw" {
-  source = "./igw"
+  source = "./modules/igw"
   tags   = "${var.tags}"
 
   vpc_id         = "${aws_vpc.vpc.id}"
@@ -34,7 +34,7 @@ module "igw" {
 
 # Create app subnets
 module "app_subnets" {
-  source = "./subnets"
+  source = "./modules/subnets"
   tags   = "${merge(var.tags, map("Name", "app"))}"
 
   vpc_id = "${aws_vpc.vpc.id}"
@@ -45,7 +45,7 @@ module "app_subnets" {
 
 # Create db subnets
 module "db_subnets" {
-  source = "./subnets"
+  source = "./modules/subnets"
   tags   = "${merge(var.tags, map("Name", "db"))}"
 
   vpc_id = "${aws_vpc.vpc.id}"
@@ -56,7 +56,7 @@ module "db_subnets" {
 
 # ECS resource with launch configuration, auto scaling, service
 module "ecs_cluster" {
-  source = "./ecs-cluster"
+  source = "./modules/ecs-cluster"
   tags   = "${var.tags}"
 
   vpc_id        = "${aws_vpc.vpc.id}"
@@ -68,7 +68,7 @@ module "ecs_cluster" {
 
 # NAT instance in public
 module "nat_instance" {
-  source = "./nat-instance"
+  source = "./modules/nat-instance"
   tags   = "${var.tags}"
 
   vpc_id            = "${aws_vpc.vpc.id}"
