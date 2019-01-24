@@ -18,12 +18,12 @@ variable "network_address_space" {
 }
 
 # ECS Cluster variables
-variable "ecs-cluster-ec2-instance-type" {
+variable "ecs_ec2_launch_config_instance_type" {
   description = "EC2 instance type for ECS cluster launch configuration"
   default     = "t2.micro"
 }
 
-variable "ecs-cluster-ec2-image-id" {
+variable "ecs_ec2_launch_config_image_id" {
   description = "AMI image for EC2"
   default     = "ami-0b2cc421c0d3015b4"
 }

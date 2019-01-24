@@ -17,7 +17,7 @@ resource "aws_instance" "ec2" {
   source_dest_check           = false
 }
 
-resource "aws_route" "route_igw" {
+resource "aws_route" "nat_route" {
   route_table_id         = "${var.route_table_id}"
   destination_cidr_block = "0.0.0.0/0"
   instance_id            = "${aws_instance.ec2.id}"

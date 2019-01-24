@@ -5,12 +5,6 @@ locals {
   tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 
-# Resources
-resource "aws_route_table" "route_table" {
-  tags   = "${local.tags}"
-  vpc_id = "${var.vpc_id}"
-}
-
 resource "aws_subnet" "subnet" {
   tags = "${local.tags}"
 
@@ -19,6 +13,11 @@ resource "aws_subnet" "subnet" {
   availability_zone       = "${element(var.azs, count.index)}"
   count                   = "${length(var.azs)}"
   map_public_ip_on_launch = "true"
+}
+
+resource "aws_route_table" "route_table" {
+  tags   = "${local.tags}"
+  vpc_id = "${var.vpc_id}"
 }
 
 resource "aws_route_table_association" "route_table_association" {

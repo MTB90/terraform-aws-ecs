@@ -10,13 +10,13 @@ resource "aws_launch_configuration" "config" {
 
   image_id             = "${var.image_id}"
   instance_type        = "${var.instance_type}"
-  security_groups      = ["${aws_security_group.sg.id}"]
-  iam_instance_profile = "${aws_iam_instance_profile.instance_profile.arn}"
+  security_groups      = ["${aws_security_group.config_sg.id}"]
+  iam_instance_profile = "${aws_iam_instance_profile.config_instance_profile.arn}"
   user_data            = "${var.user_data}"
 }
 
 # Security group
-resource "aws_security_group" "sg" {
+resource "aws_security_group" "config_sg" {
   name = "${format("%s-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
 
@@ -40,12 +40,12 @@ resource "aws_security_group" "sg" {
 }
 
 # IAM
-resource "aws_iam_instance_profile" "instance_profile" {
+resource "aws_iam_instance_profile" "config_instance_profile" {
   name = "${format("%s-iam-instance-profile", local.name)}"
   role = "${aws_iam_role.role.name}"
 }
 
-resource "aws_iam_role_policy_attachment" "role_attachment" {
+resource "aws_iam_role_policy_attachment" "config_role_attachment" {
   role       = "${aws_iam_role.role.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
@@ -54,10 +54,10 @@ resource "aws_iam_role" "role" {
   name = "${format("%s-iam-role", local.name)}"
   tags = "${local.tags}"
 
-  assume_role_policy = "${data.aws_iam_policy_document.assume_policy_document.json}"
+  assume_role_policy = "${data.aws_iam_policy_document.config_assume_policy_document.json}"
 }
 
-data "aws_iam_policy_document" "assume_policy_document" {
+data "aws_iam_policy_document" "config_assume_policy_document" {
   statement {
     actions = ["sts:AssumeRole"]
 

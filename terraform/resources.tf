@@ -65,8 +65,8 @@ module "ecs_ec2_launch_configuration" {
   tags   = "${var.tags}"
 
   vpc_id        = "${aws_vpc.vpc.id}"
-  image_id      = "${var.ecs-cluster-ec2-image-id}"
-  instance_type = "${var.ecs-cluster-ec2-instance-type}"
+  image_id      = "${var.ecs_ec2_launch_config_image_id}"
+  instance_type = "${var.ecs_ec2_launch_config_instance_type}"
   user_data     = "${module.ecs_cluster.user_data}"
 }
 
