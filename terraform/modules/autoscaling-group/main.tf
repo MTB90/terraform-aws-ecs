@@ -16,3 +16,18 @@ resource "aws_autoscaling_group" "autoscaling_group" {
   vpc_zone_identifier  = ["${var.subnets}"]
   launch_configuration = "${var.launch_configuration_id}"
 }
+
+resource "aws_autoscaling_policy" "autoscaling_policy" {
+  name = "${format("%s-policy",local.module)}"
+
+  autoscaling_group_name    = "${aws_autoscaling_group.autoscaling_group.name}"
+  policy_type               = "TargetTrackingScaling"
+  estimated_instance_warmup = 120
+
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value = 50.0
+  }
+}
