@@ -1,39 +1,54 @@
-# VPC
-module "vpc" {
-  source = "./vpc"
-  tags   = "${var.project_tags}"
-  cidr   = "${var.network_address_space}"
+data "aws_availability_zones" "available" {}
+
+locals {
+  subnets  = "${length(data.aws_availability_zones.available.names)}"
+  vpc_name = "${format("%s-vpc", var.tags["Project"])}"
 }
 
-# Subnets
+# VPC
+resource "aws_vpc" "vpc" {
+  tags                 = "${merge(var.tags, map("Module", "vpc", "Name", local.vpc_name))}"
+  cidr_block           = "${var.network_address_space}"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+}
+
+# Create public subnets
 module "public_subnets" {
   source = "./subnets"
-  tags   = "${merge(var.project_tags, map("Name", "public"))}"
+  tags   = "${merge(var.tags, map("Name", "public"))}"
 
-  vpc_id = "${module.vpc.vpc_id}"
+  vpc_id = "${aws_vpc.vpc.id}"
   azs    = "${data.aws_availability_zones.available.names}"
   cidr   = "${var.network_address_space}"
   shift  = 0
-
-  igw_id          = "${module.vpc.igw_id}"
-  igw_association = true
 }
 
+module "igw" {
+  source = "./igw"
+  tags   = "${var.tags}"
+
+  vpc_id         = "${aws_vpc.vpc.id}"
+  route_table_id = "${module.app_subnets.route_table_id}"
+}
+
+# Create app subnets
 module "app_subnets" {
   source = "./subnets"
-  tags   = "${merge(var.project_tags, map("Name", "app"))}"
+  tags   = "${merge(var.tags, map("Name", "app"))}"
 
-  vpc_id = "${module.vpc.vpc_id}"
+  vpc_id = "${aws_vpc.vpc.id}"
   azs    = "${data.aws_availability_zones.available.names}"
   cidr   = "${var.network_address_space}"
   shift  = "${local.subnets}"
 }
 
+# Create db subnets
 module "db_subnets" {
   source = "./subnets"
-  tags   = "${merge(var.project_tags, map("Name", "db"))}"
+  tags   = "${merge(var.tags, map("Name", "db"))}"
 
-  vpc_id = "${module.vpc.vpc_id}"
+  vpc_id = "${aws_vpc.vpc.id}"
   azs    = "${data.aws_availability_zones.available.names}"
   cidr   = "${var.network_address_space}"
   shift  = "${2 * local.subnets}"
@@ -42,10 +57,10 @@ module "db_subnets" {
 # ECS resource with launch configuration, auto scaling, service
 module "ecs-cluster" {
   source = "./ecs-cluster"
-  tags   = "${var.project_tags}"
+  tags   = "${var.tags}"
 
   image_id      = "${var.ecs-cluster-ec2-image-id}"
   instance_type = "${var.ecs-cluster-ec2-instance-type}"
-  vpc_id        = "${module.vpc.vpc_id}"
+  vpc_id        = "${aws_vpc.vpc.id}"
   subnets       = "${module.app_subnets.subnets}"
 }

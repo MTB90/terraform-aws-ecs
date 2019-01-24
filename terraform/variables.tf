@@ -2,7 +2,7 @@ variable "region" {
   default = "us-west-2"
 }
 
-variable "project_tags" {
+variable "tags" {
   type = "map"
 
   default = {

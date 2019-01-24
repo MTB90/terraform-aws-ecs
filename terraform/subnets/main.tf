@@ -14,13 +14,6 @@ resource "aws_route_table" "route_table" {
   vpc_id = "${var.vpc_id}"
 }
 
-resource "aws_route" "route_igw" {
-  count                  = "${var.igw_association ? 1 : 0}"
-  route_table_id         = "${aws_route_table.route_table.id}"
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${var.igw_id}"
-}
-
 resource "aws_subnet" "subnet" {
   tags = "${local.tags}"
 
