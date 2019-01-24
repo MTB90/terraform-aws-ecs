@@ -1,3 +1,3 @@
-output "ecs_launch_config_sg_id" {
-  value = "${aws_security_group.launch_configuration_sg.id}"
+output "user_data" {
+  value = "${data.template_file.user_data.rendered}"
 }

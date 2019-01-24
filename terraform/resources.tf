@@ -54,17 +54,29 @@ module "db_subnets" {
   shift  = "${2 * local.subnets}"
 }
 
-# ECS resource with launch configuration, auto scaling, service
+# ECS resource with launch configuration, auto scaling
 module "ecs_cluster" {
   source = "./modules/ecs-cluster"
+  tags   = "${var.tags}"
+}
+
+module "ecs_ec2_launch_configuration" {
+  source = "./modules/launch-configuration"
   tags   = "${var.tags}"
 
   vpc_id        = "${aws_vpc.vpc.id}"
   image_id      = "${var.ecs-cluster-ec2-image-id}"
   instance_type = "${var.ecs-cluster-ec2-instance-type}"
-  subnets       = "${module.app_subnets.subnets}"
+  user_data     = "${module.ecs_cluster.user_data}"
 }
 
+module "ecs_ec2_autoscaling_group" {
+  source = "./modules/autoscaling-group"
+  tags   = "${var.tags}"
+
+  subnets                 = "${module.app_subnets.subnets}"
+  launch_configuration_id = "${module.ecs_ec2_launch_configuration.id}"
+}
 
 # NAT instance in public
 module "nat_instance" {
@@ -75,6 +87,6 @@ module "nat_instance" {
   subnet_id         = "${module.public_subnets.subnets[0]}"
   nat_image_id      = "${var.nat_image_id}"
   nat_instance_type = "${var.nat_instance_type}"
-  sq_inbound_rule   = "${module.ecs_cluster.ecs_launch_config_sg_id}"
+  sq_inbound_rule   = "${module.ecs_ec2_launch_configuration.sg_id}"
   route_table_id    = "${module.app_subnets.route_table_id}"
 }
