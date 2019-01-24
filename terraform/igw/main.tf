@@ -2,10 +2,7 @@
 locals {
   module = "igw"
   name   = "${format("%s-%s", var.tags["Project"] ,local.module)}"
-}
-
-locals {
-  tags = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
+  tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 
 resource "aws_internet_gateway" "igw" {

@@ -2,10 +2,7 @@
 locals {
   module = "subnets"
   name   = "${format("%s-%s-%s", var.tags["Project"] ,local.module, var.tags["Name"])}"
-}
-
-locals {
-  tags = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
+  tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 
 # Resources

@@ -1,20 +1,26 @@
 # Local variables
 locals {
   module = "nat-instance"
-  name   = "${format("%s-%s-%s", var.tags["Project"] ,local.module, var.tags["Name"])}"
+  name   = "${format("%s-%s", var.tags["Project"] ,local.module)}"
+  tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 
-locals {
-  tags = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
-}
-
+# Create EC2 for NAT
 resource "aws_instance" "ec2" {
   tags = "${local.tags}"
 
-  ami                    = "ami-0a5e707736615003c"
-  instance_type          = "t2.micro"
-  subnet_id              = "${var.subnet_id}"
-  vpc_security_group_ids = ["${aws_security_group.nat_sg.id}"]
+  ami                         = "${var.nat_image_id}"
+  instance_type               = "${var.nat_instance_type}"
+  subnet_id                   = "${var.subnet_id}"
+  vpc_security_group_ids      = ["${aws_security_group.nat_sg.id}"]
+  associate_public_ip_address = true
+  source_dest_check           = false
+}
+
+resource "aws_route" "route_igw" {
+  route_table_id         = "${var.route_table_id}"
+  destination_cidr_block = "0.0.0.0/0"
+  instance_id            = "${aws_instance.ec2.id}"
 }
 
 # Security group for nat instance

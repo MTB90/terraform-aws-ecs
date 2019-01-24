@@ -29,7 +29,7 @@ module "igw" {
   tags   = "${var.tags}"
 
   vpc_id         = "${aws_vpc.vpc.id}"
-  route_table_id = "${module.app_subnets.route_table_id}"
+  route_table_id = "${module.public_subnets.route_table_id}"
 }
 
 # Create app subnets
@@ -55,12 +55,26 @@ module "db_subnets" {
 }
 
 # ECS resource with launch configuration, auto scaling, service
-module "ecs-cluster" {
+module "ecs_cluster" {
   source = "./ecs-cluster"
   tags   = "${var.tags}"
 
+  vpc_id        = "${aws_vpc.vpc.id}"
   image_id      = "${var.ecs-cluster-ec2-image-id}"
   instance_type = "${var.ecs-cluster-ec2-instance-type}"
-  vpc_id        = "${aws_vpc.vpc.id}"
   subnets       = "${module.app_subnets.subnets}"
+}
+
+
+# NAT instance in public
+module "nat_instance" {
+  source = "./nat-instance"
+  tags   = "${var.tags}"
+
+  vpc_id            = "${aws_vpc.vpc.id}"
+  subnet_id         = "${module.public_subnets.subnets[0]}"
+  nat_image_id      = "${var.nat_image_id}"
+  nat_instance_type = "${var.nat_instance_type}"
+  sq_inbound_rule   = "${module.ecs_cluster.ecs_launch_config_sg_id}"
+  route_table_id    = "${module.app_subnets.route_table_id}"
 }
