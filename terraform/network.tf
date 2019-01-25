@@ -54,15 +54,15 @@ module "db_subnets" {
   shift  = "${2 * local.subnets}"
 }
 
-# NAT instance in public
+# NAT instance
 module "nat_instance" {
   source = "./modules/nat-instance"
   tags   = "${var.tags}"
 
-  vpc_id            = "${aws_vpc.vpc.id}"
-  subnet_id         = "${module.public_subnets.subnets[0]}"
-  nat_image_id      = "${var.nat_image_id}"
-  nat_instance_type = "${var.nat_instance_type}"
-  sq_inbound_rule   = "${module.ecs_ec2_launch_configuration.sg_id}"
-  route_table_id    = "${module.app_subnets.route_table_id}"
+  vpc_id          = "${aws_vpc.vpc.id}"
+  subnet_id       = "${module.public_subnets.subnets[0]}"
+  image_id        = "${var.nat_image_id}"
+  instance_type   = "${var.nat_instance_type}"
+  sq_inbound_rule = "${module.ecs_ec2_launch_configuration.sg_id}"
+  route_table_id  = "${module.app_subnets.route_table_id}"
 }

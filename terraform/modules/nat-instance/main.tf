@@ -9,8 +9,8 @@ locals {
 resource "aws_instance" "ec2" {
   tags = "${local.tags}"
 
-  ami                         = "${var.nat_image_id}"
-  instance_type               = "${var.nat_instance_type}"
+  ami                         = "${var.image_id}"
+  instance_type               = "${var.instance_type}"
   subnet_id                   = "${var.subnet_id}"
   vpc_security_group_ids      = ["${aws_security_group.nat_sg.id}"]
   associate_public_ip_address = true
