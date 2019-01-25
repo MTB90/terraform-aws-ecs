@@ -8,6 +8,19 @@ locals {
 resource "aws_autoscaling_group" "autoscaling_group" {
   name = "${local.name}"
 
+  tags = [
+      {
+      key                 = "Name"
+      value               = "${local.name}"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "Module"
+      value               = "${local.tags["Module"]}"
+      propagate_at_launch = true
+    },
+  ]
+
   max_size         = "${var.capacity_limits["max"]}"
   min_size         = "${var.capacity_limits["min"]}"
   desired_capacity = "${var.capacity_limits["desired"]}"
@@ -15,6 +28,7 @@ resource "aws_autoscaling_group" "autoscaling_group" {
   health_check_type    = "EC2"
   vpc_zone_identifier  = ["${var.subnets}"]
   launch_configuration = "${var.launch_configuration_id}"
+
 }
 
 resource "aws_autoscaling_policy" "autoscaling_policy" {
