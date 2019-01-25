@@ -53,3 +53,22 @@ variable "nat_instance_type" {
   description = "NAT instance type"
   default     = "t2.micro"
 }
+
+# Bastion instance variables
+variable "bastion_image_id" {
+  description = "AMI image for NAT instance"
+  default     = "ami-032509850cf9ee54e"
+}
+
+variable "bastion_instance_type" {
+  description = "NAT instance type"
+  default     = "t2.micro"
+}
+
+variable "bastion_sq_inbound_rule" {
+  description = "Bastion sq inbound rule for ssh"
+}
+
+variable "bastion_key_name" {
+  description = "Key name for EC2 bastion key pair"
+}

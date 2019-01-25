@@ -66,3 +66,16 @@ module "nat_instance" {
   sq_inbound_rule = "${module.ecs_ec2_launch_configuration.sg_id}"
   route_table_id  = "${module.app_subnets.route_table_id}"
 }
+
+# Bastion instance
+module "bastion_instance" {
+  source = "./modules/bastion"
+  tags   = "${var.tags}"
+
+  vpc_id          = "${aws_vpc.vpc.id}"
+  subnet_id       = "${module.public_subnets.subnets[0]}"
+  image_id        = "${var.bastion_image_id}"
+  instance_type   = "${var.bastion_instance_type}"
+  sq_inbound_rule = "${var.bastion_sq_inbound_rule}"
+  key_name        = "${var.bastion_key_name}"
+}
