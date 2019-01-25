@@ -9,7 +9,7 @@ resource "aws_autoscaling_group" "autoscaling_group" {
   name = "${local.name}"
 
   tags = [
-      {
+    {
       key                 = "Name"
       value               = "${local.name}"
       propagate_at_launch = true
@@ -42,6 +42,7 @@ resource "aws_autoscaling_policy" "autoscaling_policy" {
     predefined_metric_specification {
       predefined_metric_type = "ASGAverageCPUUtilization"
     }
+
     target_value = 50.0
   }
 }

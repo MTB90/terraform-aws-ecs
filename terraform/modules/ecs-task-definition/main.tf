@@ -8,6 +8,7 @@ locals {
 resource "aws_ecs_task_definition" "task_definition" {
   family       = "${local.name}"
   network_mode = "awsvpc"
+
   container_definitions = <<DEF
 [
   {
