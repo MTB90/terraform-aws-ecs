@@ -8,7 +8,6 @@ locals {
 resource "aws_ecs_task_definition" "task_definition" {
   family       = "${local.name}"
   network_mode = "awsvpc"
-
   container_definitions = <<DEF
 [
   {
@@ -16,6 +15,7 @@ resource "aws_ecs_task_definition" "task_definition" {
     "image": "${var.docker_image_uri}",
     "cpu": ${var.cpu_unit},
     "memory": ${var.memory},
+    "memoryReservation": ${var.memory},
     "entryPoint": [
       "flask"
     ],
