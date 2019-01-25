@@ -38,6 +38,11 @@ variable "ecs_ec2_autoscaling_group_capacity_limits" {
   }
 }
 
+variable "ecs_docker_image_uri" {
+  description = "Docker image uri for task definition"
+  default     = "752734372808.dkr.ecr.us-west-2.amazonaws.com/photorec:dev"
+}
+
 # NAT-instance variables
 variable "nat_image_id" {
   description = "AMI image for NAT instance"

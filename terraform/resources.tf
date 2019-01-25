@@ -79,6 +79,16 @@ module "ecs_ec2_autoscaling_group" {
   capacity_limits         = "${var.ecs_ec2_autoscaling_group_capacity_limits}"
 }
 
+module "ecs_ec2_task_definition" {
+  source = "./modules/ecs-task-definition"
+  tags   = "${var.tags}"
+
+  cpu_unit         = 128
+  memory           = 128
+  workdir          = "/app"
+  docker_image_uri = "${var.ecs_docker_image_uri}"
+}
+
 # NAT instance in public
 module "nat_instance" {
   source = "./modules/nat-instance"
