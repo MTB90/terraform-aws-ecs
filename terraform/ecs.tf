@@ -13,6 +13,7 @@ module "ecs_ec2_launch_configuration" {
   instance_type   = "${var.ecs_ec2_launch_config_instance_type}"
   user_data       = "${module.ecs_cluster.user_data}"
   sq_inbound_rule = "${module.bastion_instance.sg_id}"
+  key_name        = "${var.bastion_key_name}"
 }
 
 module "ecs_ec2_autoscaling_group" {

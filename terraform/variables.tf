@@ -25,7 +25,7 @@ variable "ecs_ec2_launch_config_instance_type" {
 
 variable "ecs_ec2_launch_config_image_id" {
   description = "AMI image for EC2"
-  default     = "ami-0b2cc421c0d3015b4"
+  default     = "ami-08a73ef2db6c656e5"
 }
 
 variable "ecs_ec2_autoscaling_group_capacity_limits" {
@@ -34,7 +34,7 @@ variable "ecs_ec2_autoscaling_group_capacity_limits" {
   default = {
     min     = 2
     max     = 6
-    desired = 3
+    desired = 2
   }
 }
 
@@ -56,7 +56,7 @@ variable "nat_instance_type" {
 
 # Bastion instance variables
 variable "bastion_image_id" {
-  description = "AMI image for NAT instance"
+  description = "AMI image for bastion instance"
   default     = "ami-032509850cf9ee54e"
 }
 
@@ -71,4 +71,4 @@ variable "bastion_sq_inbound_rule" {
 
 variable "bastion_key_name" {
   description = "Key name for EC2 bastion key pair"
-}
+}g

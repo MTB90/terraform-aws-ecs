@@ -8,11 +8,13 @@ locals {
 resource "aws_launch_configuration" "config" {
   name = "${local.name}"
 
-  image_id             = "${var.image_id}"
-  instance_type        = "${var.instance_type}"
-  security_groups      = ["${aws_security_group.config_sg.id}"]
-  iam_instance_profile = "${aws_iam_instance_profile.config_instance_profile.arn}"
-  user_data            = "${var.user_data}"
+  image_id                    = "${var.image_id}"
+  instance_type               = "${var.instance_type}"
+  security_groups             = ["${aws_security_group.config_sg.id}"]
+  iam_instance_profile        = "${aws_iam_instance_profile.config_instance_profile.arn}"
+  user_data                   = "${var.user_data}"
+  key_name                    = "${var.key_name}"
+  associate_public_ip_address = false
 }
 
 # Security group
