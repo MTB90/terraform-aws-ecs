@@ -28,7 +28,6 @@ resource "aws_autoscaling_group" "autoscaling_group" {
   health_check_type    = "EC2"
   vpc_zone_identifier  = ["${var.subnets}"]
   launch_configuration = "${var.launch_configuration_id}"
-
 }
 
 resource "aws_autoscaling_policy" "autoscaling_policy" {

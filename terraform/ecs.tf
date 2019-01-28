@@ -32,3 +32,13 @@ module "ecs_ec2_task_definition" {
   workdir          = "/app"
   docker_image_uri = "${var.ecs_docker_image_uri}"
 }
+
+module "ecs_ec2_service" {
+  source = "./modules/ecs-service"
+  tags   = "${var.tags}"
+
+  vpc_id              = "${aws_vpc.vpc.id}"
+  subnets             = "${module.app_subnets.subnets}"
+  cluster_id          = "${module.ecs_cluster.id}"
+  task_definition_arn = "${module.ecs_ec2_task_definition.arn}"
+}
