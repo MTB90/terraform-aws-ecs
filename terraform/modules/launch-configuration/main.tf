@@ -22,10 +22,10 @@ resource "aws_security_group" "config_sg" {
 
   # Inbound HTTP
   ingress {
-    protocol    = "TCP"
-    from_port   = 80
-    to_port     = 80
-    cidr_blocks = ["0.0.0.0/0"]
+    protocol        = "TCP"
+    from_port       = 22
+    to_port         = 22
+    security_groups = ["${var.sq_inbound_rule}"]
   }
 
   # Outbound

@@ -8,10 +8,11 @@ module "ecs_ec2_launch_configuration" {
   source = "./modules/launch-configuration"
   tags   = "${var.tags}"
 
-  vpc_id        = "${aws_vpc.vpc.id}"
-  image_id      = "${var.ecs_ec2_launch_config_image_id}"
-  instance_type = "${var.ecs_ec2_launch_config_instance_type}"
-  user_data     = "${module.ecs_cluster.user_data}"
+  vpc_id          = "${aws_vpc.vpc.id}"
+  image_id        = "${var.ecs_ec2_launch_config_image_id}"
+  instance_type   = "${var.ecs_ec2_launch_config_instance_type}"
+  user_data       = "${module.ecs_cluster.user_data}"
+  sq_inbound_rule = "${module.bastion_instance.sg_id}"
 }
 
 module "ecs_ec2_autoscaling_group" {

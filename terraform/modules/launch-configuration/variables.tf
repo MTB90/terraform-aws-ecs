@@ -18,3 +18,7 @@ variable "image_id" {
 variable "user_data" {
   description = "User data for launch configration"
 }
+
+variable "sq_inbound_rule" {
+  description = "Source security group inbound rule"
+}
