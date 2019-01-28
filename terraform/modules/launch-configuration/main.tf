@@ -11,7 +11,7 @@ resource "aws_launch_configuration" "config" {
   image_id                    = "${var.image_id}"
   instance_type               = "${var.instance_type}"
   security_groups             = ["${aws_security_group.config_sg.id}"]
-  iam_instance_profile        = "${aws_iam_instance_profile.config_instance_profile.arn}"
+  iam_instance_profile        = "${aws_iam_instance_profile.instance_profile.arn}"
   user_data                   = "${var.user_data}"
   key_name                    = "${var.key_name}"
   associate_public_ip_address = false
@@ -42,30 +42,63 @@ resource "aws_security_group" "config_sg" {
 }
 
 # IAM
-resource "aws_iam_instance_profile" "config_instance_profile" {
+resource "aws_iam_instance_profile" "instance_profile" {
   name = "${format("%s-iam-instance-profile", local.name)}"
   role = "${aws_iam_role.role.name}"
-}
-
-resource "aws_iam_role_policy_attachment" "config_role_attachment" {
-  role       = "${aws_iam_role.role.name}"
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
 resource "aws_iam_role" "role" {
   name = "${format("%s-iam-role", local.name)}"
   tags = "${local.tags}"
 
-  assume_role_policy = "${data.aws_iam_policy_document.config_assume_policy_document.json}"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
 }
 
-data "aws_iam_policy_document" "config_assume_policy_document" {
-  statement {
-    actions = ["sts:AssumeRole"]
+resource "aws_iam_role_policy_attachment" "ec2_constiner_service_policy_attachment" {
+  role       = "${aws_iam_role.role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+}
 
-    principals {
-      type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
+resource "aws_iam_role_policy_attachment" "cloud_watch_logs_policy_attachment" {
+  role       = "${aws_iam_role.role.name}"
+  policy_arn = "${aws_iam_policy.cloud_watch_logs_policy.arn}"
+}
+
+resource "aws_iam_policy" "cloud_watch_logs_policy" {
+  name = "${format("%s-cloud-watch-logs", local.name)}"
+  path = "/"
+  description = "My test policy"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DescribeLogStreams"
+      ],
+      "Resource": [
+        "arn:aws:logs:*:*:*"
+      ]
     }
-  }
+  ]
+}
+EOF
 }

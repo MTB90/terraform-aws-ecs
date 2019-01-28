@@ -2,6 +2,7 @@
 module "ecs_cluster" {
   source = "./modules/ecs-cluster"
   tags   = "${var.tags}"
+  region = "${var.region}"
 }
 
 module "ecs_ec2_launch_configuration" {
