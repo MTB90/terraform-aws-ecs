@@ -5,6 +5,7 @@ locals {
   tags   = "${merge(var.tags, map("Module", local.module))}"
 }
 
+# Resources
 resource "aws_ecs_task_definition" "task_definition" {
   family       = "${local.name}"
   network_mode = "awsvpc"

@@ -5,6 +5,7 @@ locals {
   tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 
+# Resources
 resource "aws_subnet" "subnet" {
   tags = "${local.tags}"
 

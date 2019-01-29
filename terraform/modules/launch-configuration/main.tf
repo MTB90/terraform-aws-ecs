@@ -5,6 +5,7 @@ locals {
   tags   = "${merge(var.tags, map("Module", local.module))}"
 }
 
+# Resources
 resource "aws_launch_configuration" "config" {
   name = "${local.name}"
 
@@ -17,12 +18,11 @@ resource "aws_launch_configuration" "config" {
   associate_public_ip_address = false
 }
 
-# Security group
 resource "aws_security_group" "config_sg" {
   name = "${format("%s-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
 
-  # Inbound HTTP
+  # Inbound SSH
   ingress {
     protocol        = "TCP"
     from_port       = 22
@@ -41,7 +41,6 @@ resource "aws_security_group" "config_sg" {
   vpc_id = "${var.vpc_id}"
 }
 
-# IAM
 resource "aws_iam_instance_profile" "instance_profile" {
   name = "${format("%s-iam-instance-profile", local.name)}"
   role = "${aws_iam_role.role.name}"
@@ -79,9 +78,10 @@ resource "aws_iam_role_policy_attachment" "cloud_watch_logs_policy_attachment" {
 }
 
 resource "aws_iam_policy" "cloud_watch_logs_policy" {
-  name = "${format("%s-cloud-watch-logs", local.name)}"
-  path = "/"
+  name        = "${format("%s-cloud-watch-logs", local.name)}"
+  path        = "/"
   description = "My test policy"
+
   policy = <<EOF
 {
   "Version": "2012-10-17",

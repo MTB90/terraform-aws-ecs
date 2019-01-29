@@ -5,6 +5,7 @@ locals {
   tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 
+# Resources
 resource "aws_ecs_service" "ecs_service" {
   name = "${local.name}"
 
@@ -24,7 +25,6 @@ resource "aws_ecs_service" "ecs_service" {
   }
 }
 
-# Security group
 resource "aws_security_group" "ecs_service_sg" {
   name = "${format("%s-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"

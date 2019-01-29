@@ -5,8 +5,8 @@ locals {
   tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 
-# Create EC2 for bastion
-resource "aws_instance" "ec2" {
+# Resources
+resource "aws_instance" "bastion_ec2" {
   tags = "${local.tags}"
 
   ami                         = "${var.image_id}"
@@ -18,14 +18,13 @@ resource "aws_instance" "ec2" {
   key_name = "${var.key_name}"
 }
 
-# Security group for bastion instance
 resource "aws_security_group" "bastion_sg" {
   name = "${format("%s-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
 
   vpc_id = "${var.vpc_id}"
 
-  # DB access
+  # SSH access
   ingress {
     from_port   = 22
     to_port     = 22

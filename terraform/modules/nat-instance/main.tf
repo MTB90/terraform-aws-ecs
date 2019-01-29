@@ -5,8 +5,8 @@ locals {
   tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 
-# Create EC2 for NAT
-resource "aws_instance" "ec2" {
+# Resources
+resource "aws_instance" "nat_ec2" {
   tags = "${local.tags}"
 
   ami                         = "${var.image_id}"
@@ -20,10 +20,9 @@ resource "aws_instance" "ec2" {
 resource "aws_route" "nat_route" {
   route_table_id         = "${var.route_table_id}"
   destination_cidr_block = "0.0.0.0/0"
-  instance_id            = "${aws_instance.ec2.id}"
+  instance_id            = "${aws_instance.nat_ec2.id}"
 }
 
-# Security group for nat instance
 resource "aws_security_group" "nat_sg" {
   name = "${format("%s-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
@@ -38,7 +37,7 @@ resource "aws_security_group" "nat_sg" {
     security_groups = ["${var.sq_inbound_rule}"]
   }
 
-  # Inbound HTTP
+  # Inbound HTTPS
   ingress {
     protocol        = "TCP"
     from_port       = 443

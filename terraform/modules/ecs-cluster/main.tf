@@ -5,7 +5,7 @@ locals {
   tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 
-# ECS cluster
+# Resources
 resource "aws_ecs_cluster" "cluster" {
   name = "${format("%s-cluster", local.name)}"
   tags = "${local.tags}"
