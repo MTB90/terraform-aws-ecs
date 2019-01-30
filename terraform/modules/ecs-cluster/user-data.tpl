@@ -28,7 +28,7 @@ datetime_format = %Y-%m-%dT%H:%M:%SZ
 file = /var/log/ecs/ecs-agent.log.*
 log_group_name = /var/log/ecs/ecs-agent.log
 log_stream_name = ${cluster}/{instance_id}
-datetime_format = %Y-%m-%dT%H:%M:%SZ
+datetime_format = %Y-%m-%dT%H:%M:%SZ" > /etc/awslogs/awslogs.conf
 
 sudo echo "[plugins]
 cwlogs = cwlogs
