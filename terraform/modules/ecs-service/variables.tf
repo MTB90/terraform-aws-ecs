@@ -19,3 +19,15 @@ variable "subnets" {
   description = "List of subnet IDs to launch recources in"
   default     = []
 }
+
+variable "container_name" {
+  description = "Container name from container definition"
+}
+
+variable "alb_sg" {
+  description = "Security group for application load balancer"
+}
+
+variable "tg_arn" {
+  description = "ARN for target group assigned to ecs service"
+}

@@ -79,3 +79,12 @@ module "bastion_instance" {
   sq_inbound_rule = "${var.bastion_sq_inbound_rule}"
   key_name        = "${var.bastion_key_name}"
 }
+
+# ALB
+module "alb" {
+  source = "./modules/alb"
+  tags   = "${var.tags}"
+
+  vpc_id  = "${aws_vpc.vpc.id}"
+  subnets = "${module.public_subnets.subnets}"
+}
