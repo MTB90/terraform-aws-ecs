@@ -38,14 +38,6 @@ resource "aws_security_group" "ecs_service_sg" {
     security_groups = ["${var.alb_sg}"]
   }
 
-  # Inbound HTTP
-  ingress {
-    protocol    = "TCP"
-    from_port   = 80
-    to_port     = 80
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   # Outbound
   egress {
     from_port   = 0

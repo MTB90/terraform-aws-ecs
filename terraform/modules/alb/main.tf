@@ -10,9 +10,7 @@ resource "aws_alb" "alb" {
   name = "${local.name}"
   tags = "${local.tags}"
 
-  load_balancer_type = "application"
-  internal           = false
-
+  internal        = false
   security_groups = ["${aws_security_group.alb_sg.id}"]
   subnets         = ["${var.subnets}"]
 }
