@@ -9,15 +9,10 @@ locals {
 resource "aws_ecs_service" "ecs_service" {
   name = "${local.name}"
 
-  launch_type     = "EC2"
-  cluster         = "${var.cluster_id}"
-  task_definition = "${var.task_definition_arn}"
+  launch_type         = "EC2"
+  cluster             = "${var.cluster_id}"
+  task_definition     = "${var.task_definition_arn}"
   scheduling_strategy = "DAEMON"
-
-  ordered_placement_strategy {
-    type  = "binpack"
-    field = "cpu"
-  }
 
   network_configuration {
     subnets         = ["${var.subnets}"]
