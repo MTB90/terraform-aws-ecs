@@ -9,24 +9,24 @@ state_file = /var/lib/awslogs/agent-state
 
 [/var/log/dmesg]
 file = /var/log/dmesg
-log_group_name = /var/log/dmesg
+log_group_name = ${prefix}/dmesg
 log_stream_name = ${cluster}/{instance_id}
 
 [/var/log/messages]
 file = /var/log/messages
-log_group_name = /var/log/messages
+log_group_name = ${prefix}/messages
 log_stream_name = ${cluster}/{instance_id}
 datetime_format = %b %d %H:%M:%S
 
 [/var/log/ecs/ecs-init.log]
 file = /var/log/ecs/ecs-init.log
-log_group_name = /var/log/ecs/ecs-init.log
+log_group_name = ${prefix}/ecs-init.log
 log_stream_name = ${cluster}/{instance_id}
 datetime_format = %Y-%m-%dT%H:%M:%SZ
 
 [/var/log/ecs/ecs-agent.log]
 file = /var/log/ecs/ecs-agent.log.*
-log_group_name = /var/log/ecs/ecs-agent.log
+log_group_name = ${prefix}/ecs-agent.log
 log_stream_name = ${cluster}/{instance_id}
 datetime_format = %Y-%m-%dT%H:%M:%SZ" > /etc/awslogs/awslogs.conf
 

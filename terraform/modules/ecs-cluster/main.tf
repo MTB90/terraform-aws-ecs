@@ -17,5 +17,6 @@ data "template_file" "user_data" {
   vars = {
     cluster = "${aws_ecs_cluster.cluster.name}"
     region  = "${var.region}"
+    prefix  = "${format("%s/ec2", var.tags["Project"])}"
   }
 }

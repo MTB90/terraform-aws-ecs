@@ -1,8 +1,9 @@
 # Local variables
 locals {
-  module = "ecs-task-definition"
-  name   = "${format("%s-%s", var.tags["Project"] ,local.module)}"
-  tags   = "${merge(var.tags, map("Module", local.module))}"
+  module    = "ecs-task-definition"
+  name      = "${format("%s-%s", var.tags["Project"] ,local.module)}"
+  tags      = "${merge(var.tags, map("Module", local.module))}"
+  log_group = "${format("%s/container/awslog", var.tags["Project"])}"
 }
 
 # Resources
@@ -35,12 +36,19 @@ resource "aws_ecs_task_definition" "task_definition" {
       }
     ],
     "portMappings": [
-        {
+      {
         "hostPort": 80,
         "protocol": "tcp",
         "containerPort": 80
       }
     ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${local.log_group}",
+        "awslogs-region": "${var.region}"
+      }
+    },
     "workingDirectory": "${var.workdir}",
     "healthCheck": {
       "retries": ${var.retries},
@@ -55,4 +63,9 @@ resource "aws_ecs_task_definition" "task_definition" {
   }
 ]
 DEF
+}
+
+resource "aws_cloudwatch_log_group" "container_log_group" {
+  name = "${local.log_group}"
+  tags = "${var.tags}"
 }

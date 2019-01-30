@@ -30,6 +30,7 @@ module "ecs_ec2_task_definition" {
   source = "./modules/ecs-task-definition"
   tags   = "${var.tags}"
 
+  region           = "${var.region}"
   cpu_unit         = 128
   memory           = 128
   workdir          = "/app"
