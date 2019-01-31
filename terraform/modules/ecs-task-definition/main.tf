@@ -32,14 +32,14 @@ resource "aws_ecs_task_definition" "task_definition" {
       },
       {
         "name": "FLASK_RUN_PORT",
-        "value": "80"
+        "value": "8080"
       }
     ],
     "portMappings": [
       {
-        "hostPort": 80,
+        "hostPort": 8080,
         "protocol": "tcp",
-        "containerPort": 80
+        "containerPort": 8080
       }
     ],
     "logConfiguration": {
@@ -54,7 +54,7 @@ resource "aws_ecs_task_definition" "task_definition" {
       "retries": ${var.retries},
       "command": [
         "CMD-SHELL",
-        "curl -f http://localhost: || exit 1"
+        "curl -f http://localhost:8080 || exit 1"
       ],
       "timeout": ${var.timeout},
       "interval": ${var.interval},
