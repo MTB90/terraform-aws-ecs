@@ -1,6 +1,6 @@
 # Local variables
 locals {
-  module = "autoscaling-group"
+  module = "ec2-autoscaling-group"
   name   = "${format("%s-%s", var.tags["Project"] ,local.module)}"
   tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
