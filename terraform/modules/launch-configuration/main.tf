@@ -12,7 +12,7 @@ resource "aws_launch_configuration" "config" {
   image_id                    = "${var.image_id}"
   instance_type               = "${var.instance_type}"
   security_groups             = ["${aws_security_group.config_sg.id}"]
-  iam_instance_profile        = "${aws_iam_instance_profile.instance_profile.arn}"
+  iam_instance_profile        = "${aws_iam_instance_profile.instance_profile.name}"
   user_data                   = "${var.user_data}"
   key_name                    = "${var.key_name}"
   associate_public_ip_address = false
@@ -49,56 +49,18 @@ resource "aws_iam_instance_profile" "instance_profile" {
 resource "aws_iam_role" "role" {
   name = "${format("%s-iam-role", local.name)}"
   tags = "${local.tags}"
-
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
+  assume_role_policy = "${file("${path.module}/policies/ec2-assume-role.json")}"
 }
 
 resource "aws_iam_role_policy_attachment" "ec2_constiner_service_policy_attachment" {
   role       = "${aws_iam_role.role.name}"
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+  policy_arn = "${aws_iam_policy.ec2_container_service_policy.arn}"
 }
 
-resource "aws_iam_role_policy_attachment" "cloud_watch_logs_policy_attachment" {
-  role       = "${aws_iam_role.role.name}"
-  policy_arn = "${aws_iam_policy.cloud_watch_logs_policy.arn}"
-}
-
-resource "aws_iam_policy" "cloud_watch_logs_policy" {
-  name        = "${format("%s-cloud-watch-logs", local.name)}"
+resource "aws_iam_policy" "ec2_container_service_policy" {
+  name        = "${format("%s-ec2-container-service", local.name)}"
   path        = "/"
-  description = "My test policy"
+  description = "Policy for the Amazon EC2 Role for Amazon EC2 Container Service."
 
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogStreams"
-      ],
-      "Resource": [
-        "arn:aws:logs:*:*:*"
-      ]
-    }
-  ]
-}
-EOF
+  policy = "${file("${path.module}/policies/ec2-container-service.json")}"
 }
