@@ -49,18 +49,18 @@ resource "aws_iam_instance_profile" "instance_profile" {
 resource "aws_iam_role" "role" {
   name = "${format("%s-iam-role", local.name)}"
   tags = "${local.tags}"
-  assume_role_policy = "${file("${path.module}/policies/ec2-assume-role.json")}"
+  assume_role_policy = "${file("${path.module}/policies/assume-role.json")}"
 }
 
-resource "aws_iam_role_policy_attachment" "ec2_constiner_service_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "constiner_service_policy_attachment" {
   role       = "${aws_iam_role.role.name}"
-  policy_arn = "${aws_iam_policy.ec2_container_service_policy.arn}"
+  policy_arn = "${aws_iam_policy.container_service_policy.arn}"
 }
 
-resource "aws_iam_policy" "ec2_container_service_policy" {
+resource "aws_iam_policy" "container_service_policy" {
   name        = "${format("%s-ec2-container-service", local.name)}"
   path        = "/"
   description = "Policy for the Amazon EC2 Role for Amazon EC2 Container Service."
 
-  policy = "${file("${path.module}/policies/ec2-container-service.json")}"
+  policy = "${file("${path.module}/policies/container-service-role.json")}"
 }
