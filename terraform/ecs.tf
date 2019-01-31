@@ -44,6 +44,16 @@ module "ecs_ec2_service" {
   alb_arn             = "${module.alb.arn}"
   tg_arn              = "${module.alb.tg_arn}"
   cluster_id          = "${module.ecs_cluster.id}"
+  capacity_limits     = "${var.ecs_app_autoscaling_limits}"
   task_definition_arn = "${module.ecs_ec2_task_definition.arn}"
   container_name      = "${module.ecs_ec2_task_definition.container_name}"
+}
+
+module "ecs_app_autoscaling" {
+  source = "./modules/ecs-app-autoscaling"
+  tags   = "${var.tags}"
+
+  cluster_name    = "${module.ecs_cluster.name}"
+  service_name    = "${module.ecs_ec2_service.name}"
+  capacity_limits = "${var.ecs_app_autoscaling_limits}"
 }

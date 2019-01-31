@@ -44,6 +44,16 @@ variable "ecs_docker_image_uri" {
   default     = "752734372808.dkr.ecr.us-west-2.amazonaws.com/photorec:dev"
 }
 
+variable "ecs_app_autoscaling_limits" {
+  type = "map"
+
+  default = {
+    min     = 2
+    max     = 6
+    desired = 3
+  }
+}
+
 # NAT-instance variables
 variable "nat_image_id" {
   description = "AMI image for NAT instance"

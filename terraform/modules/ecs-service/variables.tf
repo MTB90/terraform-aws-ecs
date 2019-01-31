@@ -22,3 +22,8 @@ variable "alb_arn" {
 variable "tg_arn" {
   description = "ARN for target group assigned to ecs service"
 }
+
+variable "capacity_limits" {
+  description = "Capacity limits for app autoscaling"
+  default     = {}
+}

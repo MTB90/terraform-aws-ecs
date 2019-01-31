@@ -47,8 +47,8 @@ resource "aws_iam_instance_profile" "instance_profile" {
 }
 
 resource "aws_iam_role" "role" {
-  name = "${format("%s-iam-role", local.name)}"
-  tags = "${local.tags}"
+  name               = "${format("%s-iam-role", local.name)}"
+  tags               = "${local.tags}"
   assume_role_policy = "${file("${path.module}/policies/assume-role.json")}"
 }
 

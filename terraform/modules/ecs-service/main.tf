@@ -14,7 +14,7 @@ resource "aws_ecs_service" "ecs_service" {
   task_definition     = "${var.task_definition_arn}"
   scheduling_strategy = "REPLICA"
 
-  desired_count   = 3
+  desired_count = "${var.capacity_limits["desired"]}"
 
   ordered_placement_strategy {
     type  = "spread"
