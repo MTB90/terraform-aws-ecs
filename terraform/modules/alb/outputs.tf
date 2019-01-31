@@ -1,3 +1,7 @@
+output "arn" {
+  value = "${aws_alb.alb.arn}"
+}
+
 output "sg_id" {
   value = "${aws_security_group.alb_sg.id}"
 }

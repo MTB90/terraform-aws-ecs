@@ -22,8 +22,12 @@ resource "aws_ecs_service" "ecs_service" {
   load_balancer {
     target_group_arn = "${var.tg_arn}"
     container_name   = "${var.container_name}"
-    container_port   = 80
+    container_port   = 8080
   }
+
+  # By depending on the null_resource,
+  # this resource effectively depends on the ALB existing.
+  depends_on = ["null_resource.alb_exists"]
 }
 
 resource "aws_security_group" "ecs_service_sg" {
@@ -48,3 +52,10 @@ resource "aws_security_group" "ecs_service_sg" {
 
   vpc_id = "${var.vpc_id}"
 }
+
+resource "null_resource" "alb_exists" {
+  triggers {
+    alb_name = "${var.alb_arn}"
+  }
+}
+

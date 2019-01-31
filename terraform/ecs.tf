@@ -41,8 +41,9 @@ module "ecs_ec2_service" {
   source = "./modules/ecs-service"
   tags   = "${var.tags}"
 
-  tg_arn              = "${module.alb.tg_arn}"
+  alb_arn             = "${module.alb.arn}"
   alb_sg              = "${module.alb.sg_id}"
+  tg_arn              = "${module.alb.tg_arn}"
   vpc_id              = "${aws_vpc.vpc.id}"
   subnets             = "${module.app_subnets.subnets}"
   cluster_id          = "${module.ecs_cluster.id}"

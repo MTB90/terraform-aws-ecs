@@ -24,6 +24,10 @@ variable "container_name" {
   description = "Container name from container definition"
 }
 
+variable "alb_arn" {
+  description = "Arn for application load balancer"
+}
+
 variable "alb_sg" {
   description = "Security group for application load balancer"
 }
