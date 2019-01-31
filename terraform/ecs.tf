@@ -17,8 +17,8 @@ module "ecs_ec2_launch_configuration" {
   key_name        = "${var.bastion_key_name}"
 }
 
-module "ecs_ec2_autoscaling_group" {
-  source = "./modules/autoscaling-group"
+module "ecs_ec2_autoscaling" {
+  source = "./modules/autoscaling"
   tags   = "${var.tags}"
 
   subnets                 = "${module.app_subnets.subnets}"
