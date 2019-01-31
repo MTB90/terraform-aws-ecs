@@ -37,4 +37,3 @@ resource "null_resource" "alb_exists" {
     alb_name = "${var.alb_arn}"
   }
 }
-

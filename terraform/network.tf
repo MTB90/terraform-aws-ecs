@@ -63,7 +63,7 @@ module "nat_instance" {
   subnet_id       = "${module.public_subnets.subnets[0]}"
   image_id        = "${var.nat_image_id}"
   instance_type   = "${var.nat_instance_type}"
-  sq_inbound_rule = "${module.ecs_ec2_launch_configuration.sg_id}"
+  sq_inbound_rule = "${module.ec2_launch_configuration.sg_id}"
   route_table_id  = "${module.app_subnets.route_table_id}"
 }
 

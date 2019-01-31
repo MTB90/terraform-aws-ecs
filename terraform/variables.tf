@@ -17,18 +17,18 @@ variable "network_address_space" {
   default     = "10.0.0.0/16"
 }
 
-# ECS Cluster variables
-variable "ecs_ec2_launch_config_instance_type" {
+# EC2 variables
+variable "ec2_launch_config_instance_type" {
   description = "EC2 instance type for ECS cluster launch configuration"
   default     = "t2.micro"
 }
 
-variable "ecs_ec2_launch_config_image_id" {
+variable "ec2_launch_config_image_id" {
   description = "AMI image for EC2"
   default     = "ami-08a73ef2db6c656e5"
 }
 
-variable "ecs_ec2_autoscaling_group_capacity_limits" {
+variable "ec2_autoscaling_limits" {
   type = "map"
 
   default = {
@@ -38,6 +38,7 @@ variable "ecs_ec2_autoscaling_group_capacity_limits" {
   }
 }
 
+# ECS Cluster variables
 variable "ecs_docker_image_uri" {
   description = "Docker image uri for task definition"
   default     = "752734372808.dkr.ecr.us-west-2.amazonaws.com/photorec:dev"
@@ -71,4 +72,4 @@ variable "bastion_sq_inbound_rule" {
 
 variable "bastion_key_name" {
   description = "Key name for EC2 bastion key pair"
-}g
+}

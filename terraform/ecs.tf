@@ -5,25 +5,25 @@ module "ecs_cluster" {
   region = "${var.region}"
 }
 
-module "ecs_ec2_launch_configuration" {
-  source = "./modules/launch-configuration"
+module "ec2_launch_configuration" {
+  source = "./modules/ec2-launch-configuration"
   tags   = "${var.tags}"
 
   vpc_id          = "${aws_vpc.vpc.id}"
-  image_id        = "${var.ecs_ec2_launch_config_image_id}"
-  instance_type   = "${var.ecs_ec2_launch_config_instance_type}"
+  image_id        = "${var.ec2_launch_config_image_id}"
+  instance_type   = "${var.ec2_launch_config_instance_type}"
   user_data       = "${module.ecs_cluster.user_data}"
   sq_inbound_rule = "${module.alb.sg_id}"
   key_name        = "${var.bastion_key_name}"
 }
 
-module "ecs_ec2_autoscaling" {
-  source = "./modules/autoscaling"
+module "ec2_autoscaling" {
+  source = "./modules/ec2-autoscaling"
   tags   = "${var.tags}"
 
   subnets                 = "${module.app_subnets.subnets}"
-  launch_configuration_id = "${module.ecs_ec2_launch_configuration.id}"
-  capacity_limits         = "${var.ecs_ec2_autoscaling_group_capacity_limits}"
+  capacity_limits         = "${var.ec2_autoscaling_limits}"
+  launch_configuration_id = "${module.ec2_launch_configuration.id}"
 }
 
 module "ecs_ec2_task_definition" {
