@@ -13,7 +13,7 @@ module "ecs_ec2_launch_configuration" {
   image_id        = "${var.ecs_ec2_launch_config_image_id}"
   instance_type   = "${var.ecs_ec2_launch_config_instance_type}"
   user_data       = "${module.ecs_cluster.user_data}"
-  sq_inbound_rule = "${module.bastion_instance.sg_id}"
+  sq_inbound_rule = "${module.alb.sg_id}"
   key_name        = "${var.bastion_key_name}"
 }
 
@@ -42,10 +42,7 @@ module "ecs_ec2_service" {
   tags   = "${var.tags}"
 
   alb_arn             = "${module.alb.arn}"
-  alb_sg              = "${module.alb.sg_id}"
   tg_arn              = "${module.alb.tg_arn}"
-  vpc_id              = "${aws_vpc.vpc.id}"
-  subnets             = "${module.app_subnets.subnets}"
   cluster_id          = "${module.ecs_cluster.id}"
   task_definition_arn = "${module.ecs_ec2_task_definition.arn}"
   container_name      = "${module.ecs_ec2_task_definition.container_name}"

@@ -22,11 +22,11 @@ resource "aws_security_group" "config_sg" {
   name = "${format("%s-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
 
-  # Inbound SSH
+  # Inbound ALB
   ingress {
-    protocol        = "TCP"
-    from_port       = 22
-    to_port         = 22
+    protocol        = "-1"
+    from_port       = 0
+    to_port         = 0
     security_groups = ["${var.sq_inbound_rule}"]
   }
 

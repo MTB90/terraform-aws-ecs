@@ -12,11 +12,13 @@ resource "aws_ecs_service" "ecs_service" {
   launch_type         = "EC2"
   cluster             = "${var.cluster_id}"
   task_definition     = "${var.task_definition_arn}"
-  scheduling_strategy = "DAEMON"
+  scheduling_strategy = "REPLICA"
 
-  network_configuration {
-    subnets         = ["${var.subnets}"]
-    security_groups = ["${aws_security_group.ecs_service_sg.id}"]
+  desired_count   = 3
+
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
   }
 
   load_balancer {
@@ -28,29 +30,6 @@ resource "aws_ecs_service" "ecs_service" {
   # By depending on the null_resource,
   # this resource effectively depends on the ALB existing.
   depends_on = ["null_resource.alb_exists"]
-}
-
-resource "aws_security_group" "ecs_service_sg" {
-  name = "${format("%s-sg", local.name)}"
-  tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
-
-  # Inbound ALB
-  ingress {
-    protocol        = "-1"
-    from_port       = 0
-    to_port         = 0
-    security_groups = ["${var.alb_sg}"]
-  }
-
-  # Outbound
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  vpc_id = "${var.vpc_id}"
 }
 
 resource "null_resource" "alb_exists" {

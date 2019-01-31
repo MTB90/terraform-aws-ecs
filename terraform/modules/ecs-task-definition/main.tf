@@ -9,7 +9,7 @@ locals {
 # Resources
 resource "aws_ecs_task_definition" "task_definition" {
   family       = "${local.name}"
-  network_mode = "awsvpc"
+  network_mode = "bridge"
 
   container_definitions = <<DEF
 [
@@ -37,7 +37,7 @@ resource "aws_ecs_task_definition" "task_definition" {
     ],
     "portMappings": [
       {
-        "hostPort": 8080,
+        "hostPort": 0,
         "protocol": "tcp",
         "containerPort": 8080
       }
