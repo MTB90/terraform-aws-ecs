@@ -11,7 +11,7 @@ resource "aws_route53_zone" "route_53_zone" {
   tags = "${local.tags}"
 }
 
-resource "aws_route53_record" "www" {
+resource "aws_route53_record" "domain" {
   zone_id = "${aws_route53_zone.route_53_zone.zone_id}"
   name    = "${var.domian}"
   type    = "A"
@@ -19,6 +19,18 @@ resource "aws_route53_record" "www" {
   alias {
     name                   = "${var.alb_dns_name}"
     zone_id                = "${var.alb_zone_id}"
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_route53_record" "www_domain" {
+  zone_id = "${aws_route53_zone.route_53_zone.zone_id}"
+  name    = "${format("www.%s", var.domian)}"
+  type    = "A"
+
+  alias {
+    name                   = "${aws_route53_record.domain.name}"
+    zone_id                = "${aws_route53_record.domain.zone_id}"
     evaluate_target_health = true
   }
 }
