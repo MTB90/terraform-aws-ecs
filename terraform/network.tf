@@ -88,3 +88,13 @@ module "alb" {
   vpc_id  = "${aws_vpc.vpc.id}"
   subnets = "${module.public_subnets.subnets}"
 }
+
+# Hosted zones
+module "hosted_zones" {
+  source = "./modules/hosted-zones"
+  tags   = "${var.tags}"
+
+  domian       = "${var.domain}"
+  alb_zone_id  = "${module.alb.zone_id}"
+  alb_dns_name = "${module.alb.dns_name}"
+}
