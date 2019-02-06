@@ -15,7 +15,7 @@ resource "aws_alb" "alb" {
   subnets         = ["${var.subnets}"]
 }
 
-resource "aws_alb_listener" "alb_listener" {
+resource "aws_alb_listener" "alb_listener_https" {
   load_balancer_arn = "${aws_alb.alb.arn}"
   port              = 443
   protocol          = "HTTPS"
@@ -28,16 +28,40 @@ resource "aws_alb_listener" "alb_listener" {
   }
 }
 
+resource "aws_alb_listener" "alb_listener_http" {
+  load_balancer_arn = "${aws_alb.alb.arn}"
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
 resource "aws_security_group" "alb_sg" {
   name = "${format("%s-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
 
-  # Inbound HTTP
+  # Inbound HTTPS
   ingress {
     protocol    = "TCP"
     from_port   = 443
     to_port     = 443
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0", "::/0"]
+  }
+
+  # Inbound HTTP
+  ingress {
+    protocol    = "TCP"
+    from_port   = 80
+    to_port     = 80
+    cidr_blocks = ["0.0.0.0/0", "::/0"]
   }
 
   # Outbound
