@@ -14,3 +14,7 @@ variable "alb_zone_id" {
 variable "alb_dns_name" {
   description = "The DNS name for alb"
 }
+
+variable "cname_records" {
+  description = "CNAME records for hosted zones"
+}

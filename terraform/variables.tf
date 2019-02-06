@@ -89,7 +89,22 @@ variable "domain" {
   description = "WWW domain"
 }
 
-# SSL Cert
+# SSL cert
 variable "certificate_arn" {
   description = "The ARN of the default SSL server certificate"
+}
+
+# CNAME records
+variable "cname_records" {
+    type = "list"
+    default = [
+      {
+        name = ""
+        value = ""
+      },
+      {
+        name = ""
+        value = ""
+      }
+    ]
 }

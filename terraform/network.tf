@@ -95,7 +95,8 @@ module "hosted_zones" {
   source = "./modules/hosted-zones"
   tags   = "${var.tags}"
 
-  domian       = "${var.domain}"
-  alb_zone_id  = "${module.alb.zone_id}"
-  alb_dns_name = "${module.alb.dns_name}"
+  domian        = "${var.domain}"
+  alb_zone_id   = "${module.alb.zone_id}"
+  alb_dns_name  = "${module.alb.dns_name}"
+  cname_records = "${var.cname_records}"
 }

@@ -11,7 +11,7 @@ resource "aws_route53_zone" "route_53_zone" {
   tags = "${local.tags}"
 }
 
-resource "aws_route53_record" "domain" {
+resource "aws_route53_record" "alias_alb" {
   zone_id = "${aws_route53_zone.route_53_zone.zone_id}"
   name    = "${var.domian}"
   type    = "A"
@@ -23,14 +23,12 @@ resource "aws_route53_record" "domain" {
   }
 }
 
-resource "aws_route53_record" "www_domain" {
+resource "aws_route53_record" "cname_record" {
   zone_id = "${aws_route53_zone.route_53_zone.zone_id}"
-  name    = "${format("www.%s", var.domian)}"
-  type    = "A"
+  name    = "${lookup(var.cname_records[count.index], "name")}"
+  type    = "CNAME"
+  ttl     = "300"
 
-  alias {
-    name                   = "${aws_route53_record.domain.name}"
-    zone_id                = "${aws_route53_record.domain.zone_id}"
-    evaluate_target_health = true
-  }
+  count   = "${length(var.cname_records)}"
+  records = ["${lookup(var.cname_records[count.index], "value")}"]
 }
