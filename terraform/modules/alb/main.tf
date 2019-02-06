@@ -17,8 +17,10 @@ resource "aws_alb" "alb" {
 
 resource "aws_alb_listener" "alb_listener" {
   load_balancer_arn = "${aws_alb.alb.arn}"
-  port              = 80
-  protocol          = "HTTP"
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "${var.certificate_arn}"
 
   "default_action" {
     type             = "forward"
@@ -33,8 +35,8 @@ resource "aws_security_group" "alb_sg" {
   # Inbound HTTP
   ingress {
     protocol    = "TCP"
-    from_port   = 80
-    to_port     = 80
+    from_port   = 443
+    to_port     = 443
     cidr_blocks = ["0.0.0.0/0"]
   }
 

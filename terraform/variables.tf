@@ -83,3 +83,13 @@ variable "bastion_sq_inbound_rule" {
 variable "bastion_key_name" {
   description = "Key name for EC2 bastion key pair"
 }
+
+# Domain
+variable "domain" {
+  description = "WWW domain"
+}
+
+# SSL Cert
+variable "certificate_arn" {
+  description = "The ARN of the default SSL server certificate"
+}

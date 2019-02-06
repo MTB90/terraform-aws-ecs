@@ -11,3 +11,7 @@ variable "subnets" {
   description = "List of subnet IDs to launch recources in"
   default     = []
 }
+
+variable "certificate_arn" {
+  description = "The ARN of the default SSL server certificate"
+}

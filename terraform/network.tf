@@ -85,8 +85,9 @@ module "alb" {
   source = "./modules/alb"
   tags   = "${var.tags}"
 
-  vpc_id  = "${aws_vpc.vpc.id}"
-  subnets = "${module.public_subnets.subnets}"
+  vpc_id          = "${aws_vpc.vpc.id}"
+  subnets         = "${module.public_subnets.subnets}"
+  certificate_arn = "${var.certificate_arn}"
 }
 
 # Hosted zones
