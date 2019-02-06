@@ -50,25 +50,48 @@ resource "aws_security_group" "alb_sg" {
 
   # Inbound HTTPS
   ingress {
-    protocol    = "TCP"
-    from_port   = 443
-    to_port     = 443
-    cidr_blocks = ["0.0.0.0/0", "::/0"]
+    protocol         = "TCP"
+    from_port        = 443
+    to_port          = 443
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # Inbound HTTP
   ingress {
-    protocol    = "TCP"
-    from_port   = 80
-    to_port     = 80
-    cidr_blocks = ["0.0.0.0/0", "::/0"]
+    protocol         = "TCP"
+    from_port        = 80
+    to_port          = 80
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Inbound HTTPS
+  ingress {
+    protocol         = "TCP"
+    from_port        = 443
+    to_port          = 443
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  # Inbound HTTP
+  ingress {
+    protocol         = "TCP"
+    from_port        = 80
+    to_port          = 80
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   # Outbound
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
