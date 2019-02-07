@@ -9,7 +9,18 @@ resource "aws_cognito_user_pool" "user_pool" {
   name = "${local.name}"
   tags = "${local.tags}"
 
+  username_attributes      = ["email"]
 
+  schema {
+    name                = "nickname"
+    attribute_data_type = "String"
+    required            = true
+    mutable             = false
+  }
+
+  verification_message_template = {
+    default_email_option = "CONFIRM_WITH_LINK"
+  }
 }
 
 resource "aws_cognito_user_pool_client" "user_pool_client" {
