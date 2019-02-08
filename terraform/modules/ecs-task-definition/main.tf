@@ -27,12 +27,20 @@ resource "aws_ecs_task_definition" "task_definition" {
     ],
     "environment": [
       {
+        "name": "AWS_REGION",
+        "value": "${var.region}"
+      },
+      {
         "name": "FLASK_APP",
         "value": "app"
       },
       {
         "name": "FLASK_RUN_PORT",
         "value": "8080"
+      },
+      {
+        "name": "FLASK_SECRET",
+        "value": "${random_string.flask_secret.result}"
       },
       {
         "name": "COGNITO_POOL_ID",
@@ -53,10 +61,6 @@ resource "aws_ecs_task_definition" "task_definition" {
       {
         "name": "BASE_URL",
         "value": "${var.base_url}"
-      },
-      {
-        "name": "FLASK_SECRET",
-        "value": "${random_string.flask_secret.result}"
       }
     ],
     "portMappings": [
