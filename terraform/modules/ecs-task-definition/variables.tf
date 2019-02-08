@@ -23,7 +23,7 @@ variable "workdir" {
   description = "Working directory for container"
 }
 
-variable "cognito_poll_id" {
+variable "cognito_pool_id" {
   description = "Cognito pool id"
 }
 

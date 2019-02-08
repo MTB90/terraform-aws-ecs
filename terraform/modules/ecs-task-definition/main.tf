@@ -36,7 +36,7 @@ resource "aws_ecs_task_definition" "task_definition" {
       },
       {
         "name": "COGNITO_POOL_ID",
-        "value": "${var.cognito_poll_id}"
+        "value": "${var.cognito_pool_id}"
       },
       {
         "name": "COGNITO_CLIENT_ID",
@@ -83,6 +83,11 @@ resource "aws_ecs_task_definition" "task_definition" {
   }
 ]
 DEF
+}
+
+resource "random_string" "flask_secret" {
+  length = 16
+  special = true
 }
 
 resource "aws_cloudwatch_log_group" "container_log_group" {
