@@ -33,6 +33,26 @@ resource "aws_ecs_task_definition" "task_definition" {
       {
         "name": "FLASK_RUN_PORT",
         "value": "8080"
+      },
+      {
+        "name": "COGNITO_POOL_ID",
+        "value": "${var.cognito_poll_id}"
+      },
+      {
+        "name": "COGNITO_CLIENT_ID",
+        "value": "${var.cognito_client_id}"
+      },
+      {
+        "name": "COGNITO_CLIENT_SECRET",
+        "value": "${var.cognito_client_secret}"
+      },
+      {
+        "name": "COGNITO_DOMAIN",
+        "value": "${var.cognito_domain}"
+      },
+      {
+        "name": "BASE_URL",
+        "value": "${var.base_url}"
       }
     ],
     "portMappings": [

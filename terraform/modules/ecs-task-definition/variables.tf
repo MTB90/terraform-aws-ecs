@@ -23,6 +23,26 @@ variable "workdir" {
   description = "Working directory for container"
 }
 
+variable "cognito_poll_id" {
+  description = "Cognito pool id"
+}
+
+variable "cognito_client_id" {
+  description = "Cognito client id"
+}
+
+variable "cognito_client_secret" {
+  description = "Cognito client secret"
+}
+
+variable "cognito_domain" {
+  description = "Cognito domain name"
+}
+
+variable "base_url" {
+  description = "Base url for web"
+}
+
 variable "timeout" {
   description = "The time period in seconds to wait for health check to success"
   default     = 15

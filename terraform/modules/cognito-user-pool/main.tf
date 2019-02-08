@@ -39,6 +39,6 @@ resource "aws_cognito_user_pool_client" "user_pool_client" {
 }
 
 resource "aws_cognito_user_pool_domain" "user_pool_domian" {
-  domain          = "${local.tags["Project"]}"
-  user_pool_id    = "${aws_cognito_user_pool.user_pool.id}"
+  domain       = "${local.tags["Project"]}"
+  user_pool_id = "${aws_cognito_user_pool.user_pool.id}"
 }

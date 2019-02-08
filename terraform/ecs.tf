@@ -35,6 +35,12 @@ module "ecs_ec2_task_definition" {
   memory           = 128
   workdir          = "/app"
   docker_image_uri = "${var.ecs_docker_image_uri}"
+
+  base_url              = "${format("https://%s",var.domain)}"
+  cognito_domain        = "${module.cognito_user_pool.domain}"
+  cognito_pool_id       = "${module.cognito_user_pool.pool_id}"
+  cognito_client_id     = "${module.cognito_user_pool.client_id}"
+  cognito_client_secret = "${module.cognito_user_pool.client_secret}"
 }
 
 module "ecs_ec2_service" {
