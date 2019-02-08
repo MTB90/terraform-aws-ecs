@@ -26,6 +26,19 @@ resource "aws_cognito_user_pool" "user_pool" {
 resource "aws_cognito_user_pool_client" "user_pool_client" {
   name = "${format("%s-client",local.name)}"
 
+  user_pool_id                 = "${aws_cognito_user_pool.user_pool.id}"
+  supported_identity_providers = ["COGNITO"]
+  generate_secret              = true
+
+  allowed_oauth_scopes                 = ["openid"]
+  allowed_oauth_flows                  = ["code"]
+  allowed_oauth_flows_user_pool_client = true
+
+  callback_urls = ["${format("https://www.%s/callback", var.domain)}"]
+  logout_urls   = ["${format("https://www.%s/", var.domain)}"]
+}
+
+resource "aws_cognito_user_pool_domain" "user_pool_domian" {
+  domain          = "${local.tags["Project"]}"
   user_pool_id    = "${aws_cognito_user_pool.user_pool.id}"
-  generate_secret = true
 }
