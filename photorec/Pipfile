@@ -5,6 +5,8 @@ verify_ssl = true
 
 [packages]
 flask = "*"
+Flask-WTF = "*"
+Flask-Login = "*"
 
 [requires]
 python_version = "3.7.0"
