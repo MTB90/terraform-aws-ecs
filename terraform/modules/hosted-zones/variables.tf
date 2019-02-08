@@ -17,4 +17,6 @@ variable "alb_dns_name" {
 
 variable "cname_records" {
   description = "CNAME records for hosted zones"
+  default     = []
+  type        = "list"
 }

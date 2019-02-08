@@ -9,7 +9,7 @@ resource "aws_cognito_user_pool" "user_pool" {
   name = "${local.name}"
   tags = "${local.tags}"
 
-  username_attributes      = ["email"]
+  username_attributes = ["email"]
 
   schema {
     name                = "nickname"
@@ -26,6 +26,6 @@ resource "aws_cognito_user_pool" "user_pool" {
 resource "aws_cognito_user_pool_client" "user_pool_client" {
   name = "${format("%s-client",local.name)}"
 
-  user_pool_id = "${aws_cognito_user_pool.user_pool.id}"
-  generate_secret     = true
+  user_pool_id    = "${aws_cognito_user_pool.user_pool.id}"
+  generate_secret = true
 }

@@ -96,15 +96,16 @@ variable "certificate_arn" {
 
 # CNAME records
 variable "cname_records" {
-    type = "list"
-    default = [
-      {
-        name = ""
-        value = ""
-      },
-      {
-        name = ""
-        value = ""
-      }
-    ]
+  type = "list"
+
+  default = [
+    {
+      name  = ""
+      value = ""
+    },
+    {
+      name  = ""
+      value = ""
+    },
+  ]
 }
