@@ -53,6 +53,10 @@ resource "aws_ecs_task_definition" "task_definition" {
       {
         "name": "BASE_URL",
         "value": "${var.base_url}"
+      },
+      {
+        "name": "FLASK_SECRET",
+        "value": "${random_string.flask_secret.result}"
       }
     ],
     "portMappings": [
