@@ -11,5 +11,6 @@ output "client_secret" {
 }
 
 output "domain" {
-  value = "${aws_cognito_user_pool_domain.user_pool_domian.domain}"
+  value = "${format("%s.auth.us-west-2.amazoncognito.com",
+                     aws_cognito_user_pool_domain.user_pool_domian.domain)}"
 }

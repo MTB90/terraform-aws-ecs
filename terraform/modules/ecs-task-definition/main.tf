@@ -94,7 +94,7 @@ DEF
 }
 
 resource "random_string" "flask_secret" {
-  length = 16
+  length  = 16
   special = true
 }
 
