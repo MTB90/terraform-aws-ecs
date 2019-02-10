@@ -7,6 +7,8 @@ verify_ssl = true
 flask = "*"
 Flask-WTF = "*"
 Flask-Login = "*"
+requests = "*"
+python-jose = "*"
 
 [requires]
 python_version = "3.7.0"

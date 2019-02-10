@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
   {% if current_user.is_authenticated %}
-    Click <em>my photos</em> to access your photos.
+    You are authenticated.
   {% else %}
     Click <em>login in / sign up</em> to access this site.
   {% endif %}
