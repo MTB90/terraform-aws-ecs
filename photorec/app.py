@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 import logging
 import socket
 import requests
@@ -10,9 +11,12 @@ import flask_login
 from jose import jwt
 
 import config
-
 log = logging.getLogger(__name__)
+
 app = Flask(__name__)
+app.secret_key = config.FLASK_SECRET
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
 
 # load and cache cognito JSON Web Key (JWK)
 # https://docs.aws.amazon.com/cognito/latest/developerguide/
@@ -26,6 +30,23 @@ JWKS = requests.get(JWKS_URL).json()["keys"]
 class User(flask_login.UserMixin):
     """Standard flask_login UserMixin"""
     pass
+
+
+@login_manager.user_loader
+def user_loader(session_token):
+    """Populate user object, check expiry"""
+    if "expires" not in session:
+        return None
+
+    expires = datetime.utcfromtimestamp(session['expires'])
+    expires_seconds = (expires - datetime.utcnow()).total_seconds()
+    if expires_seconds < 0:
+        return None
+
+    user = User()
+    user.id = session_token
+    user.nickname = session['nickname']
+    return user
 
 
 @app.route('/')
