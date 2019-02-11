@@ -23,18 +23,6 @@ resource "aws_route53_record" "alias_alb" {
   }
 }
 
-resource "aws_route53_record" "alias_www" {
-  zone_id = "${aws_route53_zone.route_53_zone.zone_id}"
-  name    = "${format("www.%s", var.domian)}"
-  type    = "A"
-
-  alias {
-    name                   = "${aws_route53_record.alias_alb.name}"
-    zone_id                = "${aws_route53_record.alias_alb.zone_id}"
-    evaluate_target_health = true
-  }
-}
-
 resource "aws_route53_record" "cname_record" {
   zone_id = "${aws_route53_zone.route_53_zone.zone_id}"
   name    = "${lookup(var.cname_records[count.index], "name")}"

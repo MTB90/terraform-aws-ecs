@@ -86,7 +86,7 @@ variable "bastion_key_name" {
 
 # Domain
 variable "domain" {
-  description = "WWW domain"
+  description = "Domain name"
 }
 
 # SSL cert
