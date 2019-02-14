@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
   {% if current_user.is_authenticated %}
-    You are authenticated.
+    You are authenticated. Host: {{ host }}
   {% else %}
-    Click <em>login in / sign up</em> to access this site.
+    Click <em>login in / sign up</em> to access this site. Host: {{ host }}
   {% endif %}
 {% endblock %}

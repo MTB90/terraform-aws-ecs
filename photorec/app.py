@@ -52,7 +52,8 @@ def user_loader(session_token):
 @app.route('/')
 def index():
     """Homepage route"""
-    return render_template("index.html")
+    host = socket.gethostname()
+    return render_template("index.html", host)
 
 
 @app.route("/login")
