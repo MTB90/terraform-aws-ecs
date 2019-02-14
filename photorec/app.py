@@ -10,11 +10,12 @@ from flask import render_template, redirect, session, request, url_for
 import flask_login
 from jose import jwt
 
-import config
+import settings
 log = logging.getLogger(__name__)
 
 app = Flask(__name__)
-app.secret_key = config.FLASK_SECRET
+app.config.from_object(settings.DevConfig)
+
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
@@ -22,8 +23,8 @@ login_manager.init_app(app)
 # https://docs.aws.amazon.com/cognito/latest/developerguide/
 # amazon-cognito-user-pools-using-tokens-with-identity-providers.html
 
-JWKS_URL = f"https://cognito-idp.{config.AWS_REGION}.amazonaws.com/" \
-           f"{config.COGNITO_POOL_ID}/.well-known/jwks.json"
+JWKS_URL = f"https://cognito-idp.{app.config['AWS_REGION']}.amazonaws.com/" \
+           f"{app.config['COGNITO_POOL_ID']}/.well-known/jwks.json"
 JWKS = requests.get(JWKS_URL).json()["keys"]
 
 
@@ -53,7 +54,7 @@ def user_loader(session_token):
 def index():
     """Homepage route"""
     host = socket.gethostname()
-    return render_template("index.html", host)
+    return render_template("index.html", host=host)
 
 
 @app.route("/login")
@@ -65,10 +66,10 @@ def login():
                      "login?response_type=code&client_id=%s"
                      "&state=%s"
                      "&redirect_uri=%s/callback" %
-                     (config.COGNITO_DOMAIN,
-                      config.COGNITO_CLIENT_ID,
+                     (app.config['COGNITO_DOMAIN'],
+                      app.config['COGNITO_CLIENT_ID'],
                       session['csrf_state'],
-                      config.BASE_URL))
+                      app.config['BASE_URL']))
     return redirect(cognito_login)
 
 
@@ -79,9 +80,9 @@ def logout():
     flask_login.logout_user()
     cognito_logout = ("https://%s/"
                       "logout?response_type=code&client_id=%s"
-                      "&logout_uri=%s/" % (config.COGNITO_DOMAIN,
-                                           config.COGNITO_CLIENT_ID,
-                                           config.BASE_URL))
+                      "&logout_uri=%s/" % (app.config['COGNITO_DOMAIN'],
+                                           app.config['COGNITO_CLIENT_ID'],
+                                           app.config['BASE_URL']))
 
     return redirect(cognito_logout)
 
@@ -93,13 +94,13 @@ def callback():
     csrf_state = request.args.get('state')
     code = request.args.get('code')
     request_parameters = {'grant_type': 'authorization_code',
-                          'client_id': config.COGNITO_CLIENT_ID,
+                          'client_id': app.config['COGNITO_CLIENT_ID'],
                           'code': code,
-                          "redirect_uri": config.BASE_URL + "/callback"}
-    response = requests.post("https://%s/oauth2/token" % config.COGNITO_DOMAIN,
+                          "redirect_uri": app.config['BASE_URL'] + "/callback"}
+    response = requests.post("https://%s/oauth2/token" % app.config['COGNITO_DOMAIN'],
                              data=request_parameters,
-                             auth=HTTPBasicAuth(config.COGNITO_CLIENT_ID,
-                                                config.COGNITO_CLIENT_SECRET))
+                             auth=HTTPBasicAuth(app.config['COGNITO_CLIENT_ID'],
+                                                app.config['COGNITO_CLIENT_SECRET']))
 
     # the response:
     # http://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html
@@ -127,7 +128,7 @@ def verify(token, access_token=None):
     header = jwt.get_unverified_header(token)
     key = [k for k in JWKS if k["kid"] == header['kid']][0]
     id_token = jwt.decode(token, key,
-                          audience=config.COGNITO_CLIENT_ID,
+                          audience=app.config['COGNITO_CLIENT_ID'],
                           access_token=access_token)
     return id_token
 
