@@ -6,6 +6,9 @@ GREEN=\033[0;32m
 RED=\033[0;31m
 NC=\033[0m
 
+deploy-dev: push-dev
+	aws ecs update-service --cluster photorec-ecs-cluster-cluster --service photorec-ecs-service --force-new-deployment
+
 push-dev: build-image-dev tag-dev aws-login
 	@echo -e "$(RED)############################# $(GREEN) Push DEV image to AWS ECR $(RED)#############################$(NC)"
 	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:dev
@@ -18,12 +21,12 @@ build-image-dev:
 	cd docker; \
 		docker-compose -f docker-compose-dev.yml build --no-cache
 
+tag-dev:
+	@echo -e "$(RED)############################# $(GREEN) TAG docker image $(RED)#############################$(NC)"
+	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:dev
+	docker tag photorec:dev $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:dev
+
 aws-login:
 	@echo -e "$(RED)############################# $(GREEN) Login to AWS ECR $(RED)#############################$(NC)"
 	$(eval AWS_LOGIN_COMMAND=$(shell aws ecr get-login --no-include-email))
 	$(AWS_LOGIN_COMMAND)
-
-tag-dev: 
-	@echo -e "$(RED)############################# $(GREEN) TAG docker image $(RED)#############################$(NC)"
-	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:dev
-	docker tag photorec:dev $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:dev
