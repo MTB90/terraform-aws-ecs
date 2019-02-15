@@ -22,4 +22,4 @@ def create_app(config_object=settings.DevConfig):
 
 if __name__ == '__main__':
     app = create_app(settings.DevConfig)
-    app.run(host='0.0.0.0')
+    app.run()

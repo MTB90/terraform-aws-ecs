@@ -15,7 +15,7 @@ def index():
 
 
 @blueprint.route('/health')
-def health_check():
+def health():
     return jsonify({
         'status': 'running',
         'host': socket.gethostname()
