@@ -39,8 +39,8 @@ resource "aws_ecs_task_definition" "task_definition" {
         "value": "8080"
       },
       {
-        "name": "FLASK_SECRET",
-        "value": "${random_string.flask_secret.result}"
+        "name": "SECRET_KEY",
+        "value": "${random_string.secret_key.result}"
       },
       {
         "name": "COGNITO_POOL_ID",
@@ -93,7 +93,7 @@ resource "aws_ecs_task_definition" "task_definition" {
 DEF
 }
 
-resource "random_string" "flask_secret" {
+resource "random_string" "secret_key" {
   length  = 16
   special = true
 }

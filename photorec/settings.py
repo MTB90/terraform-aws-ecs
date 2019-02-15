@@ -10,7 +10,7 @@ class ConfigLoad(type):
         'COGNITO_CLIENT_ID',
         'COGNITO_CLIENT_SECRET',
         'COGNITO_DOMAIN',
-        'FLASK_SECRET'
+        'SECRET_KEY'
     ]
 
     def __new__(mcs, name, bases, attrs):
