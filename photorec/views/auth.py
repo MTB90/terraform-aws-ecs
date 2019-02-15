@@ -12,7 +12,6 @@ blueprint = Blueprint('auth', __name__)
 log = logging.getLogger(__name__)
 
 login_manager = flask_login.LoginManager()
-JWKS = None
 
 
 class User(flask_login.UserMixin):
@@ -45,7 +44,7 @@ def setup_blueprint(state):
     """
     app = state.app
     login_manager.init_app(app)
-    blueprint.config = {(key, value) for (key, value) in app.config.items()}
+    blueprint.config = {key: value for (key, value) in app.config.items()}
 
 
 @blueprint.route("/login")
@@ -53,11 +52,12 @@ def login():
     """ Login route """
     # http://docs.aws.amazon.com/cognito/latest/developerguide/login-endpoint.html
     session['csrf_state'] = os.urandom(8).hex()
+    log.error(blueprint.config)
     url = f"https://{blueprint.config['COGNITO_DOMAIN']}/login?response_type=code&" \
           f"client_id={blueprint.config['COGNITO_CLIENT_ID']}&" \
           f"state={session['csrf_state']}&" \
           f"redirect_uri={blueprint.config['BASE_URL']}/callback"
-
+    log.error(url)
     return redirect(url)
 
 
@@ -138,11 +138,10 @@ def verify(token, access_token=None):
     """ Verify a cognito JWT """
     # get the key id from the header, locate it in the cognito keys
     # and verify the key
-    if JWKS is None:
-        JWKS = well_known_jwks()
+    jwks = well_known_jwks()
 
     header = jwt.get_unverified_header(token)
-    key = [k for k in JWKS if k["kid"] == header['kid']][0]
+    key = [k for k in jwks if k["kid"] == header['kid']][0]
     id_token = jwt.decode(token, key,
                           audience=blueprint.config['COGNITO_CLIENT_ID'],
                           access_token=access_token)
