@@ -38,9 +38,9 @@
             <ul class="nav navbar-nav navbar-right">
               {% if current_user.is_authenticated %}
               <li><p class="navbar-text">Hello, {{current_user.nickname}}!</p></li>
-              <li><a href="{{ url_for('logout') }}">log out</a>
+              <li><a href="{{ url_for('auth.logout') }}">log out</a>
               {% else %}
-              <li><a href="{{ url_for('login') }}">log in / sign up</a>
+              <li><a href="{{ url_for('auth.login') }}">log in / sign up</a>
               {% endif %}
             </ul>
           </div><!--/.nav-collapse -->
