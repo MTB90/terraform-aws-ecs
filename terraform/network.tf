@@ -43,17 +43,6 @@ module "app_subnets" {
   shift  = "${local.subnets}"
 }
 
-# Create db subnets
-module "db_subnets" {
-  source = "./modules/subnets"
-  tags   = "${merge(var.tags, map("Name", "db"))}"
-
-  vpc_id = "${aws_vpc.vpc.id}"
-  azs    = "${data.aws_availability_zones.available.names}"
-  cidr   = "${var.network_address_space}"
-  shift  = "${2 * local.subnets}"
-}
-
 # NAT instance
 module "nat_instance" {
   source = "./modules/nat-instance"
