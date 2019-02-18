@@ -6,8 +6,8 @@ services:
     image: photorec:dev
     restart: always
     build:
-      context: ../photorec/web
-      dockerfile: ../../docker/photorec/dockerfile-dev
+      context: ../photorec
+      dockerfile: ../docker/photorec/dockerfile-dev
     ports:
       - "5000:8080"
-    command: python app.py
+    command: python run.py

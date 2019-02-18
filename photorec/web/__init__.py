@@ -1,13 +1,13 @@
 import logging
-import settings
 from flask import Flask
 from flask_debugtoolbar import DebugToolbarExtension
 
-from views import auth, main
+
+from web.views import auth, main
 log = logging.getLogger(__name__)
 
 
-def create_app(config_object=settings.DevConfig):
+def create_app(config_object):
     """
     Create new web application with selected config
 
@@ -23,8 +23,3 @@ def create_app(config_object=settings.DevConfig):
     app.register_blueprint(main.blueprint)
     app.register_blueprint(auth.blueprint)
     return app
-
-
-if __name__ == '__main__':
-    app = create_app(settings.DevConfig)
-    app.run(host="0.0.0.0", port="8080")
