@@ -7,7 +7,7 @@ from web.views import auth, main
 log = logging.getLogger(__name__)
 
 
-def create_app(config_object):
+def create_web_app(config_object):
     """
     Create new web application with selected config
 
