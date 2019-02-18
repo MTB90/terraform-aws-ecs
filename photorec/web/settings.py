@@ -41,11 +41,3 @@ class DevConfig(Config):
     ENV = 'dev'
     DEBUG = True
     DEFAULT_ENV = 'dev'
-
-
-class TestConfig(Config):
-    """Test configuration."""
-    ENV = 'test'
-    DEBUG = True
-    TESTING = True
-    DEFAULT_ENV = 'test'

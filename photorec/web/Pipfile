@@ -10,5 +10,8 @@ Flask-Login = "*"
 requests = "*"
 python-jose = "*"
 
+[dev-packages]
+flask-debugtoolbar = "*"
+
 [requires]
 python_version = "3.7.0"

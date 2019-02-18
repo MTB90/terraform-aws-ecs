@@ -1,6 +1,7 @@
 import logging
 import settings
 from flask import Flask
+from flask_debugtoolbar import DebugToolbarExtension
 
 from views import auth, main
 log = logging.getLogger(__name__)
@@ -15,6 +16,10 @@ def create_app(config_object=settings.DevConfig):
     """
     app = Flask(__name__)
     app.config.from_object(config_object)
+
+    if app.debug:
+        _ = DebugToolbarExtension(app)
+
     app.register_blueprint(main.blueprint)
     app.register_blueprint(auth.blueprint)
     return app
