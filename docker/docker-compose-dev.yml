@@ -6,8 +6,8 @@ services:
     image: photorec:dev
     restart: always
     build:
-      context: ../photorec
-      dockerfile: ../docker/photorec/Dockerfile
+      context: ../photorec/web
+      dockerfile: ../../docker/photorec/Dockerfile
     ports:
       - "5000:8080"
     environment:
