@@ -1,0 +1,2 @@
+class DynamodbyRepo:
+    pass
