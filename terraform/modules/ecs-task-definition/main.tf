@@ -31,14 +31,6 @@ resource "aws_ecs_task_definition" "task_definition" {
         "value": "${var.region}"
       },
       {
-        "name": "FLASK_APP",
-        "value": "app"
-      },
-      {
-        "name": "FLASK_RUN_PORT",
-        "value": "8080"
-      },
-      {
         "name": "SECRET_KEY",
         "value": "${random_string.secret_key.result}"
       },
