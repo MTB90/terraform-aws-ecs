@@ -1,0 +1,2 @@
+class PhotoRepo:
+    pass
