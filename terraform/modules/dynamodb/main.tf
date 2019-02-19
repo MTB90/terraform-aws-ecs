@@ -11,53 +11,51 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
 
   billing_mode = "PAY_PER_REQUEST"
 
-  hash_key = "Nickname"
+  hash_key  = "nickname"
   range_key = "thumb"
 
   attribute = [{
-    name = "Nickname"
+    name = "nickname"
     type = "S"
-  }, {
-    name = "Thumb"
-    type = "S"
-  }, {
-    name = "Photo"
-    type = "S"
-  }]
-}
+  },
+    {
+      name = "thumb"
+      type = "S"
+    },
+    {
+      name = "tag"
+      type = "S"
+    },
+    {
+      name = "likes"
+      type = "N"
+    },
+  ]
 
-resource "aws_dynamodb_table" "dynamodb_table_taged" {
-  name = "${format("%s-photos", local.name)}"
-  tags = "${local.tags}"
-
-  billing_mode = "PAY_PER_REQUEST"
-
-  hash_key = "Tag"
-  range_key = "Thumb"
-
-  attribute = [{
-    name = "Tag"
-    type = "S"
-  }, {
-    name = "Thumb"
-    type = "S"
-  }]
+  global_secondary_index {
+    name            = "tags"
+    hash_key        = "tag"
+    range_key       = "likes"
+    projection_type = "ALL"
+  }
 }
 
 resource "aws_dynamodb_table" "dynamodb_table_tags" {
-  name = "${format("%s-photos", local.name)}"
+  name = "${format("%s-tags", local.name)}"
   tags = "${local.tags}"
 
   billing_mode = "PAY_PER_REQUEST"
 
-  hash_key = "Tag"
-  range_key = "Score"
+  hash_key  = "tag"
+  range_key = "score"
 
   attribute = [{
-    name = "Tag"
+    name = "tag"
     type = "S"
-  }, {
-    name = "Score"
-    type = "N"
-  }]
+  },
+    {
+      name = "score"
+      type = "N"
+    },
+  ]
 }
