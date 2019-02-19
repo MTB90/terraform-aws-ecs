@@ -11,6 +11,7 @@ List of used AWS components:
 - Autoscaling group/policy (EC2)
 - COGNITO
 - Cloudwatch (logs EC2/Task)
+- Dynamodb
 
 ### Setup web site photorec
 
@@ -30,15 +31,8 @@ List of used AWS components:
 	- certificate_arn: provide cert arn
 	- cname_records: CNAME record to the DNS configuration for your domain
 
-5) Setup resources: 
-- push docker image to ECR
-```bash 
-$ make push-dev
-``` 
+5) Deployment: 
+```$ make deploy-dev ``` 
 
-- create AWS infrastructure:
-```bash
-cd terrraform
-source ../envile
-terraform apply
-```
+6) Update your domain and change nameservers to nameservers from AWS Zone Hosted
+
