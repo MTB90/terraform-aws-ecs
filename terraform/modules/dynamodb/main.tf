@@ -5,20 +5,59 @@ locals {
   tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 
-resource "aws_dynamodb_table" "dynamodb_table" {
-  name = "${local.name}"
+resource "aws_dynamodb_table" "dynamodb_table_photos" {
+  name = "${format("%s-photos", local.name)}"
   tags = "${local.tags}"
 
   billing_mode = "PAY_PER_REQUEST"
 
-  hash_key = "nickname"
-  range_key = "id"
+  hash_key = "Nickname"
+  range_key = "thumb"
 
   attribute = [{
-    name = "nickname"
+    name = "Nickname"
     type = "S"
   }, {
-    name = "id"
+    name = "Thumb"
     type = "S"
+  }, {
+    name = "Photo"
+    type = "S"
+  }]
+}
+
+resource "aws_dynamodb_table" "dynamodb_table_taged" {
+  name = "${format("%s-photos", local.name)}"
+  tags = "${local.tags}"
+
+  billing_mode = "PAY_PER_REQUEST"
+
+  hash_key = "Tag"
+  range_key = "Thumb"
+
+  attribute = [{
+    name = "Tag"
+    type = "S"
+  }, {
+    name = "Thumb"
+    type = "S"
+  }]
+}
+
+resource "aws_dynamodb_table" "dynamodb_table_tags" {
+  name = "${format("%s-photos", local.name)}"
+  tags = "${local.tags}"
+
+  billing_mode = "PAY_PER_REQUEST"
+
+  hash_key = "Tag"
+  range_key = "Score"
+
+  attribute = [{
+    name = "Tag"
+    type = "S"
+  }, {
+    name = "Score"
+    type = "N"
   }]
 }
