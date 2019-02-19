@@ -15,6 +15,7 @@ help:
 	@echo "make update-dev-image (Update service on AWS)"
 	@echo "make create-infra (Create infrastructure on AWS)"
 	@echo "make destroy-infra (Destroy infrastructure on AWS)"
+	@echo "make unittest (Run unittests)"
 
 deploy-dev: push-dev-image create-infra
 	@echo -e "$(RED)############################## $(GREEN)DEV environment is ready $(RED)##############################$(NC)"
@@ -56,7 +57,7 @@ _aws-login:
 	$(eval AWS_LOGIN_COMMAND=$(shell aws ecr get-login --no-include-email))
 	$(AWS_LOGIN_COMMAND)
 
-_unittest:
+unittest:
 	@echo -e "$(RED)############################# $(GREEN) Run unittests $(RED)#############################$(NC)"
 	@cd photorec; \
 		pipenv install --dev;\
