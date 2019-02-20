@@ -21,7 +21,8 @@ class PhotoRepo:
         :return:
         """
         query = self._validate_query(query)
-        filters = self._validate_filters(filters)
+        filters = all(self._validate_filters(filters))
+
         return []
 
     def _validate_query(self, query: Dict):
@@ -48,17 +49,20 @@ class PhotoRepo:
             if key not in self.FILTERS:
                 raise KeyError(f"Unknown key:{key} for filter supported: {self.FILTERS}")
 
-            if operator == 'begins_with':
-                if not isinstance(value, str):
-                    raise ValueError(f"Operator {operator} required string value")
-                continue
-            elif operator == 'between':
-                if not isinstance(value, tuple):
-                    raise ValueError(f"Operator {operator} required tuple value")
-                continue
-            elif operator in {'eq', 'lt', 'gt', 'lte', 'gte'}:
-                if not isinstance(value, int):
-                    raise ValueError(f"Operator {operator} required string value")
-                continue
+            yield self._validate_value(key, value, operator)
 
+    @staticmethod
+    def _validate_value(key, value, operator):
+        operators = {'eq', 'lt', 'gt', 'lte', 'gte', 'between', 'begins_with'}
+        if operator not in operators:
             raise ValueError(f"Operator {operator} is not supported")
+
+        cast_type = {'begins_with': str, 'between': tuple}
+        value_type = cast_type.get(operator, int)
+
+        if isinstance(value, value_type):
+            if value_type == tuple:
+                return Key(key).between(*value)
+            return getattr(Key(key), operator)(value)
+
+        raise ValueError(f"Operator {operator} required {value_type} value")
