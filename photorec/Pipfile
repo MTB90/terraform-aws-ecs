@@ -14,6 +14,7 @@ python-jose = "*"
 [dev-packages]
 flask-debugtoolbar = "*"
 pytest = "*"
+pytest-mock = "*"
 
 [requires]
 python_version = "3.7.0"

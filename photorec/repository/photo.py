@@ -1,5 +1,6 @@
 from boto3.dynamodb.conditions import Key
 from typing import Dict, List
+from functools import reduce
 
 
 class PhotoRepo:
@@ -20,10 +21,24 @@ class PhotoRepo:
         :param filters: Filters additional parameters for query
         :return:
         """
-        query = self._validate_query(query)
-        filters = all(self._validate_filters(filters))
+        valid_query = self._validate_query(query)
+        valid_filters = self._validate_filters(filters)
+        params = {}
 
-        return []
+        if valid_query is not None:
+            params['KeyConditionExpression'] = valid_query
+
+        if valid_filters is not None:
+            params['FilterExpression'] = reduce(
+                (lambda x, y: x & y), valid_filters
+            )
+
+        if valid_query is None:
+            response = self._photos.scan(**params)
+        else:
+            response = self._photos.query(**params)
+
+        return response['Items']
 
     def _validate_query(self, query: Dict):
         if query is None:
@@ -41,6 +56,7 @@ class PhotoRepo:
         if filters is None:
             return None
 
+        list_filters = []
         for key, value in filters.items():
             if '__' not in key:
                 key = key + '__eq'
@@ -49,20 +65,25 @@ class PhotoRepo:
             if key not in self.FILTERS:
                 raise KeyError(f"Unknown key:{key} for filter supported: {self.FILTERS}")
 
-            yield self._validate_value(key, value, operator)
+            list_filters.append(self._validate_value(key, value, operator))
+
+        return list_filters
 
     @staticmethod
     def _validate_value(key, value, operator):
-        operators = {'eq', 'lt', 'gt', 'lte', 'gte', 'between', 'begins_with'}
-        if operator not in operators:
+        valid_operators = {'eq', 'lt', 'gt', 'lte', 'gte', 'between', 'begins_with'}
+        if operator not in valid_operators:
             raise ValueError(f"Operator {operator} is not supported")
 
-        cast_type = {'begins_with': str, 'between': tuple}
-        value_type = cast_type.get(operator, int)
+        value_type = type(value)
 
-        if isinstance(value, value_type):
-            if value_type == tuple:
-                return Key(key).between(*value)
+        if value_type == str and operator in {'eq', 'begins_with'}:
             return getattr(Key(key), operator)(value)
 
-        raise ValueError(f"Operator {operator} required {value_type} value")
+        if value_type == int and operator in {'eq', 'lt', 'gt', 'lte', 'gte'}:
+            return getattr(Key(key), operator)(value)
+
+        if value_type == tuple and operator == 'between':
+            return Key(key).between(*value)
+
+        raise ValueError(f"Value: {value} with operator {operator} is not supported")
