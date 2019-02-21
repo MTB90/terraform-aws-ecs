@@ -59,3 +59,23 @@ resource "aws_dynamodb_table" "dynamodb_table_tags" {
     },
   ]
 }
+
+resource "aws_dynamodb_table" "dynamodb_table_likes" {
+  name = "${format("%s-likes", local.name)}"
+  tags = "${local.tags}"
+
+  billing_mode = "PAY_PER_REQUEST"
+
+  hash_key  = "submitter"
+  range_key = "thumb"
+
+  attribute = [{
+    name = "submniter"
+    type = "S"
+  },
+    {
+      name = "thumb"
+      type = "S"
+    },
+  ]
+}
