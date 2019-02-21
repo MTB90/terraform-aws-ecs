@@ -7,6 +7,10 @@ class TagRepo:
         self._tags = db.Table('photorec-dynamodb-tags')
 
     def list(self, limit=None):
+        """List all elements that meet query and filter conditions.
+
+        :param limit: Number of first tags
+        """
         response = self._tags.scan()
         items = response['Items']
         items.sort(reverse=True, key=lambda x: x['score'])

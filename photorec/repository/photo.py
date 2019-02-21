@@ -2,21 +2,7 @@ from boto3.dynamodb.conditions import Key
 from typing import Dict, List
 from functools import reduce
 
-
-class MissingArguments(Exception):
-    pass
-
-
-class UnsupportedQuery(Exception):
-    pass
-
-
-class UnsupportedFilter(Exception):
-    pass
-
-
-class UnsupportedFilterOperator(Exception):
-    pass
+from repository.exception import MissingArguments, UnsupportedQuery, UnsupportedFilter, UnsupportedFilterOperator
 
 
 class ValidQuery:
@@ -138,7 +124,6 @@ class PhotoRepo:
 
         :param query: Query parameters base parameters
         :param filters: Filters additional parameters for query
-        :return:
         """
         params = {}
 

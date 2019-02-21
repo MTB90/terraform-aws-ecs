@@ -1,7 +1,6 @@
 import pytest
 from repository.photo import PhotoRepo
-from repository.photo import MissingArguments, UnsupportedQuery
-from repository.photo import UnsupportedFilter, UnsupportedFilterOperator
+from repository.exception import MissingArguments, UnsupportedQuery, UnsupportedFilter, UnsupportedFilterOperator
 from boto3.dynamodb.conditions import Key
 
 
