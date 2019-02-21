@@ -86,7 +86,6 @@ class PhotoRepo:
 
     def __init__(self, db):
         self._photos = db.Table('photorec-dynamodb-photos')
-        self._tags = db.Table('photorec-dynamodb-tags')
 
     def add(self, item: Dict):
         """Add new photo to repository
@@ -95,8 +94,6 @@ class PhotoRepo:
         """
         self._validate_params(item, self.REQUIRED_FIELDS)
         item['likes'] = 0
-
-        self._increment_tag(item['tag'])
         return self._photos.put_item(Item=item)
 
     def get(self, key: Dict):
@@ -139,14 +136,6 @@ class PhotoRepo:
             response = self._photos.query(**params)
 
         return response['Items']
-
-    def _increment_tag(self, tag: str):
-        return self._tags.update_item(
-            Key={'tag': tag},
-            UpdateExpression='ADD score :inc',
-            ExpressionAttributeValues={':inc': 1},
-            ReturnValues="UPDATED_NEW"
-        )
 
     @staticmethod
     def _validate_params(params: Dict, reqiured: List):
