@@ -100,6 +100,7 @@ class PhotoRepo:
 
     def __init__(self, db):
         self._photos = db.Table('photorec-dynamodb-photos')
+        self._tags = db.Table('photorec-dynamodb-tags')
 
     def add(self, item: Dict):
         """Add new photo to repository
@@ -107,15 +108,22 @@ class PhotoRepo:
         :param item: Item with fields (nickname, thumb, photo, tag)
         """
         self._validate_params(item, self.REQUIRED_FIELDS)
-        self._photos.put_item(Item=item)
+        item['likes'] = 0
+
+        self._increment_tag(item['tag'])
+        return self._photos.put_item(Item=item)
 
     def get(self, key: Dict):
         """Get photo information
 
         :param key: Primary key for photo (nickname, thumb)
+        :return:
         """
         self._validate_params(key, self.REQUIRED_KEYS)
-        self._photos.get_item(Key=key)
+        response = self._photos.get_item(Key=key)
+        if 'Item' in response:
+            return response['Item']
+        return None
 
     def delete(self, key: Dict):
         """Delete photo from repository
@@ -123,7 +131,7 @@ class PhotoRepo:
         :param key: Primary key for photo (nickname, thumb)
         """
         self._validate_params(key, self.REQUIRED_KEYS)
-        self._photos.delete_item(Key=key)
+        return self._photos.delete_item(Key=key)
 
     def list(self, query: Dict=None, filters: Dict=None) -> List[Dict]:
         """List all elements that meet query and filter conditions.
@@ -147,8 +155,16 @@ class PhotoRepo:
 
         return response['Items']
 
+    def _increment_tag(self, tag: str):
+        return self._tags.update_item(
+            Key={'tag': tag},
+            UpdateExpression='ADD score :inc',
+            ExpressionAttributeValues={':inc': 1},
+            ReturnValues="UPDATED_NEW"
+        )
+
     @staticmethod
     def _validate_params(params: Dict, reqiured: List):
         for value in reqiured:
-            if value  not in params:
+            if value not in params:
                 raise MissingArguments(f"Missing: {value} in {params}")
