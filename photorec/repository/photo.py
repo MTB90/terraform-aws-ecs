@@ -95,8 +95,7 @@ class PhotoRepo:
     """
     Repository for photos that encapsulate access to resources.
     """
-
-    PRIMARY_KEY = {'nickname', 'thumb'}
+    REQUIRED_KEYS = ['nickname', 'thumb']
     REQUIRED_FIELDS = ['nickname', 'thumb', 'photo', 'tag']
 
     def __init__(self, db):
@@ -107,10 +106,7 @@ class PhotoRepo:
 
         :param item: Item with fields (nickname, thumb, photo, tag)
         """
-        for field in self.REQUIRED_FIELDS:
-            if field not in item:
-                raise MissingArguments(f"Missing field: {field} in {item}")
-
+        self._validate_params(item, self.REQUIRED_FIELDS)
         self._photos.put_item(Item=item)
 
     def get(self, key: Dict):
@@ -118,6 +114,7 @@ class PhotoRepo:
 
         :param key: Primary key for photo (nickname, thumb)
         """
+        self._validate_params(key, self.REQUIRED_KEYS)
         self._photos.get_item(Key=key)
 
     def delete(self, key: Dict):
@@ -125,6 +122,7 @@ class PhotoRepo:
 
         :param key: Primary key for photo (nickname, thumb)
         """
+        self._validate_params(key, self.REQUIRED_KEYS)
         self._photos.delete_item(Key=key)
 
     def list(self, query: Dict=None, filters: Dict=None) -> List[Dict]:
@@ -148,3 +146,9 @@ class PhotoRepo:
             response = self._photos.query(**params)
 
         return response['Items']
+
+    @staticmethod
+    def _validate_params(params: Dict, reqiured: List):
+        for value in reqiured:
+            if value  not in params:
+                raise MissingArguments(f"Missing: {value} in {params}")

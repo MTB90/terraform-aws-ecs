@@ -104,3 +104,17 @@ def test_when_add_elemnt_with_missing_params_then_missing_arguments(empty_db):
 
     with pytest.raises(MissingArguments):
         repo.add({'nickname', 'nick'})
+
+
+def test_when_get_elemnt_with_missing_params_then_missing_arguments(empty_db):
+    repo = PhotoRepo(empty_db)
+
+    with pytest.raises(MissingArguments):
+        repo.get({'nickname', 'nick'})
+
+
+def test_when_delete_elemnt_with_missing_params_then_missing_arguments(empty_db):
+    repo = PhotoRepo(empty_db)
+
+    with pytest.raises(MissingArguments):
+        repo.delete({'nickname', 'nick'})
