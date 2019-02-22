@@ -46,11 +46,11 @@ resource "aws_dynamodb_table" "dynamodb_table_tags" {
 
   billing_mode = "PAY_PER_REQUEST"
 
-  hash_key  = "tag"
+  hash_key  = "name"
   range_key = "score"
 
   attribute = [{
-    name = "tag"
+    name = "name"
     type = "S"
   },
     {

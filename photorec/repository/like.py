@@ -1,21 +1,21 @@
 from typing import Dict, List
-from repository.exceptions import MissingArguments
+from .base import RepoBase
 
 
-class LikeRepo:
+class RepoLike(RepoBase):
     REQUIRED_KEYS = ['thumb', 'submniter']
 
     def __init__(self, db):
         self._tags = db.Table('photorec-dynamodb-likes')
 
     def add(self, key: Dict):
-        self._validate_params(key, self.REQUIRED_KEYS)
+        self.validate_data(key, self.REQUIRED_KEYS)
 
     def delete(self, key: Dict):
-        self._validate_params(key, self.REQUIRED_KEYS)
+        self.validate_data(key, self.REQUIRED_KEYS)
 
-    @staticmethod
-    def _validate_params(params: Dict, reqiured: List):
-        for value in reqiured:
-            if value not in params:
-                raise MissingArguments(f"Missing: {value} in {params}")
+    def get(self, key: Dict)-> Dict:
+        pass
+
+    def list(self, query: Dict, filters: Dict) -> List[Dict]:
+        pass

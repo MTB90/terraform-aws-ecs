@@ -1,5 +1,5 @@
 import pytest
-from repository.like import LikeRepo
+from repository.like import RepoLike
 from repository.exceptions import MissingArguments
 
 
@@ -10,14 +10,14 @@ def empty_db(mocker):
 
 
 def test_when_add_elemnt_with_missing_params_then_missing_arguments(empty_db):
-    repo = LikeRepo(empty_db)
+    repo = RepoLike(empty_db)
 
     with pytest.raises(MissingArguments):
         repo.add({'nickname', 'nick'})
 
 
 def test_when_delete_elemnt_with_missing_params_then_missing_arguments(empty_db):
-    repo = LikeRepo(empty_db)
+    repo = RepoLike(empty_db)
 
     with pytest.raises(MissingArguments):
         repo.delete({'nickname', 'nick'})

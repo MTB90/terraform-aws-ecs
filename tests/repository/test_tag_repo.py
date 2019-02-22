@@ -1,5 +1,5 @@
 import pytest
-from repository.tag import TagRepo
+from repository.tag import RepoTag
 
 
 @pytest.fixture
@@ -9,5 +9,5 @@ def empty_db(mocker):
 
 
 def test_given_photos_repo_when_init_then_object_created(empty_db):
-    tag_repo = TagRepo(empty_db)
+    tag_repo = RepoTag(empty_db)
     assert tag_repo
