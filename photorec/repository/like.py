@@ -3,7 +3,7 @@ from repository.exception import MissingArguments
 
 
 class LikeRepo:
-    REQUIRED_KEYS = ['submitter', 'thumb']
+    REQUIRED_KEYS = ['thumb', 'submniter']
 
     def __init__(self, db):
         self._tags = db.Table('photorec-dynamodb-likes')
