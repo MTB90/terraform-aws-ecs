@@ -12,6 +12,7 @@ class RepoTag(RepoBase):
         self._tags = db.Table('photorec-dynamodb-tags')
 
     def add(self, item: Dict):
+        item['type'] = 'tag'
         return self._tags.update_item(
             Key={'name': item['name']},
             UpdateExpression='ADD score :inc',
@@ -20,9 +21,8 @@ class RepoTag(RepoBase):
         )
 
     def list(self, query: Dict=None, filters: Dict=None) -> List[Dict]:
-        response = self._tags.scan()
+        response = self._tags.scan(ScanIndexForward=False)
         items = response['Items']
-        items.sort(reverse=True, key=lambda x: x['score'])
         return items
 
     def get(self, key: Dict) -> Dict:
