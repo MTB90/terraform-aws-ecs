@@ -2,7 +2,7 @@ from boto3.dynamodb.conditions import Key
 from typing import Dict, List
 from functools import reduce
 
-from repository.exception import MissingArguments, UnsupportedQuery, UnsupportedFilter, UnsupportedFilterOperator
+from repository.exceptions import MissingArguments, UnsupportedQuery, UnsupportedFilter, UnsupportedFilterOperator
 
 
 class ValidQuery:

@@ -1,5 +1,5 @@
 from typing import Dict, List
-from repository.exception import MissingArguments
+from repository.exceptions import MissingArguments
 
 
 class LikeRepo:

@@ -1,6 +1,6 @@
 import pytest
 from repository.like import LikeRepo
-from repository.exception import MissingArguments
+from repository.exceptions import MissingArguments
 
 
 @pytest.fixture
