@@ -2,7 +2,51 @@ from boto3.dynamodb.conditions import Key
 from typing import Dict, List
 from functools import reduce
 
-from repository.exceptions import MissingArguments, UnsupportedQuery, UnsupportedFilter, UnsupportedFilterOperator
+from .base import RepoBase
+from .exceptions import UnsupportedQuery, UnsupportedFilter, UnsupportedFilterOperator
+
+
+class RepoPhoto(RepoBase):
+    """
+    Repository for photos that encapsulate access to resources.
+    """
+    REQUIRED_KEYS = ['nickname', 'thumb']
+    REQUIRED_FIELDS = ['nickname', 'thumb', 'photo', 'tag']
+
+    def __init__(self, db):
+        self._photos = db.Table('photorec-dynamodb-photos')
+
+    def add(self, item: Dict):
+        self.validate_data(item, self.REQUIRED_FIELDS)
+        item['likes'] = 0
+        return self._photos.put_item(Item=item)
+
+    def get(self, key: Dict)-> Dict:
+        self.validate_data(key, self.REQUIRED_KEYS)
+        response = self._photos.get_item(Key=key)
+        if 'Item' in response:
+            return response['Item']
+        return None
+
+    def delete(self, key: Dict):
+        self.validate_data(key, self.REQUIRED_KEYS)
+        return self._photos.delete_item(Key=key)
+
+    def list(self, query: Dict=None, filters: Dict=None) -> List[Dict]:
+        params = {}
+
+        if query is not None:
+            params['KeyConditionExpression'] = ValidQuery(query)
+
+        if filters is not None:
+            params['FilterExpression'] = ValidFilters(filters)
+
+        if query is None:
+            response = self._photos.scan(**params)
+        else:
+            response = self._photos.query(**params)
+
+        return response['Items']
 
 
 class ValidQuery:
@@ -75,70 +119,3 @@ class ValidFilters:
         raise UnsupportedFilterOperator(
             f"Value: {value} with operator {operator} is not supported"
         )
-
-
-class PhotoRepo:
-    """
-    Repository for photos that encapsulate access to resources.
-    """
-    REQUIRED_KEYS = ['nickname', 'thumb']
-    REQUIRED_FIELDS = ['nickname', 'thumb', 'photo', 'tag']
-
-    def __init__(self, db):
-        self._photos = db.Table('photorec-dynamodb-photos')
-
-    def add(self, item: Dict):
-        """Add new photo to repository
-
-        :param item: Item with fields (nickname, thumb, photo, tag)
-        """
-        self._validate_params(item, self.REQUIRED_FIELDS)
-        item['likes'] = 0
-        return self._photos.put_item(Item=item)
-
-    def get(self, key: Dict):
-        """Get photo information
-
-        :param key: Primary key for photo (nickname, thumb)
-        :return:
-        """
-        self._validate_params(key, self.REQUIRED_KEYS)
-        response = self._photos.get_item(Key=key)
-        if 'Item' in response:
-            return response['Item']
-        return None
-
-    def delete(self, key: Dict):
-        """Delete photo from repository
-
-        :param key: Primary key for photo (nickname, thumb)
-        """
-        self._validate_params(key, self.REQUIRED_KEYS)
-        return self._photos.delete_item(Key=key)
-
-    def list(self, query: Dict=None, filters: Dict=None) -> List[Dict]:
-        """List all elements that meet query and filter conditions.
-
-        :param query: Query parameters base parameters
-        :param filters: Filters additional parameters for query
-        """
-        params = {}
-
-        if query is not None:
-            params['KeyConditionExpression'] = ValidQuery(query)
-
-        if filters is not None:
-            params['FilterExpression'] = ValidFilters(filters)
-
-        if query is None:
-            response = self._photos.scan(**params)
-        else:
-            response = self._photos.query(**params)
-
-        return response['Items']
-
-    @staticmethod
-    def _validate_params(params: Dict, reqiured: List):
-        for value in reqiured:
-            if value not in params:
-                raise MissingArguments(f"Missing: {value} in {params}")

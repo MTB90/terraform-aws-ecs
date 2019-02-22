@@ -19,7 +19,7 @@ class RepoTag(RepoBase):
             ReturnValues="UPDATED_NEW"
         )
 
-    def list(self, query: Dict, filters: Dict) -> List[Dict]:
+    def list(self, query: Dict=None, filters: Dict=None) -> List[Dict]:
         response = self._tags.scan()
         items = response['Items']
         items.sort(reverse=True, key=lambda x: x['score'])

@@ -17,5 +17,5 @@ class RepoLike(RepoBase):
     def get(self, key: Dict)-> Dict:
         pass
 
-    def list(self, query: Dict, filters: Dict) -> List[Dict]:
+    def list(self, query: Dict=None, filters: Dict=None) -> List[Dict]:
         pass

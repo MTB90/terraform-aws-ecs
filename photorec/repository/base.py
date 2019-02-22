@@ -26,7 +26,7 @@ class RepoBase(ABC):
         """
 
     @abstractmethod
-    def list(self, query: Dict, filters: Dict) ->List[Dict]:
+    def list(self, query: Dict=None, filters: Dict=None) ->List[Dict]:
         """List all items that meet query and filters conditions
 
         :param query: Query parameters
