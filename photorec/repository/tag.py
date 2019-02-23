@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict
 
 from .base import RepoBase
 from .base import ValidFilters, ValidQuery
@@ -16,37 +16,31 @@ class RepoTag(RepoBase):
     """
     Repository for tags that encapsulate access to resources.
     """
+    ValidQueryClass = ValidQueryTag
+    ValidFiltersClass = ValidFiltersTag
+
+    REQUIRED_FIELDS = ['name']
 
     def __init__(self, db):
         self._tags = db.Table('photorec-dynamodb-tags')
 
+    @property
+    def table(self):
+        return self._tags
+
     def add(self, item: Dict):
+        self.validate_data(item, self.REQUIRED_FIELDS)
         item['type'] = 'tag'
-        return self._tags.update_item(
+
+        return self.table.update_item(
             Key={'name': item['name']},
             UpdateExpression='ADD score :inc',
             ExpressionAttributeValues={':inc': 1},
             ReturnValues="UPDATED_NEW"
         )
 
-    def list(self, query: Dict=None, filters: Dict=None) -> List[Dict]:
-        params = {}
-
-        if query is not None:
-            params['KeyConditionExpression'] = ValidQueryTag(query)
-
-        if filters is not None:
-            params['FilterExpression'] = ValidFiltersTag(filters)
-
-        if query is None:
-            response = self._tags.scan(**params)
-        else:
-            response = self._tags.query(**params)
-
-        return response['Items']
-
     def get(self, key: Dict) -> Dict:
-        pass
+        raise NotImplemented("Method get for repo tag is unsupported")
 
     def delete(self, key: Dict):
-        pass
+        raise NotImplemented("Method delete for repo tag is unsupported")

@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 from functools import reduce
 from typing import Dict, List
 
@@ -9,6 +9,14 @@ from .exceptions import MissingArguments
 
 
 class RepoBase(ABC):
+    ValidQueryClass = None
+    ValidFiltersClass = None
+
+    @property
+    @abstractmethod
+    def table(self):
+        """Table for repository"""
+
     @abstractmethod
     def add(self, item: Dict):
         """Add new item to repository
@@ -30,13 +38,26 @@ class RepoBase(ABC):
         :param key: Primary key for item
         """
 
-    @abstractmethod
     def list(self, query: Dict=None, filters: Dict=None) ->List[Dict]:
         """List all items that meet query and filters conditions
 
         :param query: Query parameters
         :param filters: Additional parameters for filter list
         """
+        params = {}
+
+        if query is not None:
+            params['KeyConditionExpression'] = self.ValidQueryClass(query)
+
+        if filters is not None:
+            params['FilterExpression'] = self.ValidFiltersClass(filters)
+
+        if query is None:
+            response = self.table.scan(**params)
+        else:
+            response = self.table.query(**params)
+
+        return response['Items']
 
     @staticmethod
     def validate_data(data: Dict, required: Dict):
