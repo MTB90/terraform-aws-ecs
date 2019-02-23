@@ -8,7 +8,7 @@ class ValidQueryPhoto(ValidQuery):
     VALID_KEY = {'nickname', 'tag'}
 
 
-class ValidFilterPhoto(ValidFilters):
+class ValidFiltersPhoto(ValidFilters):
     VALID_FILTER = {'nickname', 'tag', 'likes'}
 
 
@@ -45,7 +45,7 @@ class RepoPhoto(RepoBase):
             params['KeyConditionExpression'] = ValidQueryPhoto(query)
 
         if filters is not None:
-            params['FilterExpression'] = ValidFilterPhoto(filters)
+            params['FilterExpression'] = ValidFiltersPhoto(filters)
 
         if query is None:
             response = self._photos.scan(**params)

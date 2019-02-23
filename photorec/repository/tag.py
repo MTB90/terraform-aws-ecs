@@ -1,6 +1,15 @@
 from typing import Dict, List
 
 from .base import RepoBase
+from .base import ValidFilters, ValidQuery
+
+
+class ValidQueryTag(ValidQuery):
+    VALID_KEY = {'type'}
+
+
+class ValidFiltersTag(ValidFilters):
+    VALID_FILTER = {'score'}
 
 
 class RepoTag(RepoBase):
@@ -21,9 +30,20 @@ class RepoTag(RepoBase):
         )
 
     def list(self, query: Dict=None, filters: Dict=None) -> List[Dict]:
-        response = self._tags.scan(ScanIndexForward=False)
-        items = response['Items']
-        return items
+        params = {}
+
+        if query is not None:
+            params['KeyConditionExpression'] = ValidQueryTag(query)
+
+        if filters is not None:
+            params['FilterExpression'] = ValidFiltersTag(filters)
+
+        if query is None:
+            response = self._tags.scan(**params)
+        else:
+            response = self._tags.query(**params)
+
+        return response['Items']
 
     def get(self, key: Dict) -> Dict:
         pass
