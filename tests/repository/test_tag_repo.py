@@ -20,7 +20,7 @@ def test_when_filter_int_operator_with_str_then_unsupported_filter_operator(empt
             repo.list(filters={f'score__{operator}': 'str'})
 
 
-def test_when_filter_between_operator_with_int_then_unsupported_filter_opeartor(empty_db):
+def test_when_filter_between_operator_with_int_then_unsupported_filter_operator(empty_db):
     repo = RepoTag(empty_db)
     with pytest.raises(UnsupportedFilterOperator):
         repo.list(filters={f'score__between': 100})

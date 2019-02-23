@@ -55,7 +55,7 @@ def test_when_filter_int_operator_with_str_then_unsupported_filter_operator(empt
             repo.list(filters={f'likes__{operator}': 'str'})
 
 
-def test_when_filter_between_operator_with_int_then_unsupported_filter_opeartor(empty_db):
+def test_when_filter_between_operator_with_int_then_unsupported_filter_operator(empty_db):
     repo = RepoPhoto(empty_db)
     with pytest.raises(UnsupportedFilterOperator):
         repo.list(filters={f'likes__between': 100})
@@ -98,21 +98,21 @@ def test_when_correct_query_and_filters_then_called_with_query_and_filters(empty
     )
 
 
-def test_when_add_elemnt_with_missing_params_then_missing_arguments(empty_db):
+def test_when_add_element_with_missing_params_then_missing_arguments(empty_db):
     repo = RepoPhoto(empty_db)
 
     with pytest.raises(MissingArguments):
         repo.add({'nickname', 'nick'})
 
 
-def test_when_get_elemnt_with_missing_params_then_missing_arguments(empty_db):
+def test_when_get_element_with_missing_params_then_missing_arguments(empty_db):
     repo = RepoPhoto(empty_db)
 
     with pytest.raises(MissingArguments):
         repo.get({'nickname', 'nick'})
 
 
-def test_when_delete_elemnt_with_missing_params_then_missing_arguments(empty_db):
+def test_when_delete_element_with_missing_params_then_missing_arguments(empty_db):
     repo = RepoPhoto(empty_db)
 
     with pytest.raises(MissingArguments):
