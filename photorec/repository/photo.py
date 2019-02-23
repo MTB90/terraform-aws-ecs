@@ -1,11 +1,11 @@
-from typing import Dict
+from typing import Dict, List
 
 from .base import ValidQuery, ValidFilters
 from .base import RepoBase
 
 
 class ValidQueryPhoto(ValidQuery):
-    VALID_KEY = {'nickname', 'tag'}
+    VALID_QUERY = {'nickname', 'tag'}
 
 
 class ValidFiltersPhoto(ValidFilters):
@@ -19,9 +19,6 @@ class RepoPhoto(RepoBase):
     ValidQueryClass = ValidQueryPhoto
     ValidFiltersClass = ValidFiltersPhoto
 
-    REQUIRED_KEYS = ['nickname', 'thumb']
-    REQUIRED_FIELDS = ['nickname', 'thumb', 'photo', 'tag']
-
     def __init__(self, db):
         self._photos = db.Table('photorec-dynamodb-photos')
 
@@ -29,18 +26,15 @@ class RepoPhoto(RepoBase):
     def table(self):
         return self._photos
 
+    @property
+    def required_keys(self)-> List[str]:
+        return ['nickname', 'thumb']
+
+    @property
+    def required_fields(self)-> List[str]:
+        return ['nickname', 'thumb', 'photo', 'tag']
+
     def add(self, item: Dict):
-        self.validate_data(item, self.REQUIRED_FIELDS)
+        self.validate_data(item, self.required_fields)
         item['likes'] = 0
         return self.table.put_item(Item=item)
-
-    def get(self, key: Dict)-> Dict:
-        self.validate_data(key, self.REQUIRED_KEYS)
-        response = self.table.get_item(Key=key)
-        if 'Item' in response:
-            return response['Item']
-        return None
-
-    def delete(self, key: Dict):
-        self.validate_data(key, self.REQUIRED_KEYS)
-        return self.table.delete_item(Key=key)

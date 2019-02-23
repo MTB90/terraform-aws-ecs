@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 from functools import reduce
 from typing import Dict, List
 
@@ -15,28 +15,44 @@ class RepoBase(ABC):
     @property
     @abstractmethod
     def table(self):
-        """Table for repository"""
+        """Get table for repository"""
 
+    @property
     @abstractmethod
+    def required_keys(self)-> List[str]:
+        """Required keys"""
+
+    @property
+    @abstractmethod
+    def required_fields(self)-> List[str]:
+        """Required fields"""
+
     def add(self, item: Dict):
         """Add new item to repository
 
         :param item: Item with all required fields
         """
+        self.validate_data(item, self.required_fields)
+        return self.table.put_item(Item=item)
 
-    @abstractmethod
     def get(self, key: Dict)-> Dict:
         """Get item from repository
 
         :param key: Primary key for item
         """
+        self.validate_data(key, self.required_keys)
+        response = self.table.get_item(Key=key)
+        if 'Item' in response:
+            return response['Item']
+        return None
 
-    @abstractmethod
     def delete(self, key: Dict):
         """Remove item from repository
 
         :param key: Primary key for item
         """
+        self.validate_data(key, self.required_keys)
+        return self.table.delete_item(Key=key)
 
     def list(self, query: Dict=None, filters: Dict=None) ->List[Dict]:
         """List all items that meet query and filters conditions
@@ -72,7 +88,7 @@ class RepoBase(ABC):
 
 
 class ValidQuery:
-    VALID_KEY = None
+    VALID_QUERY = None
 
     def __new__(cls, query: Dict):
         if len(query) > 1:
@@ -85,8 +101,8 @@ class ValidQuery:
 
     @classmethod
     def _validate_key(cls, key):
-        if key not in cls.VALID_KEY:
-            raise UnsupportedQuery(f"Unsupported key:{key} supported: {cls.VALID_KEY}")
+        if key not in cls.VALID_QUERY:
+            raise UnsupportedQuery(f"Unsupported key:{key} supported: {cls.VALID_QUERY}")
 
     @classmethod
     def _cast_value(cls, key, value):

@@ -1,11 +1,11 @@
-from typing import Dict
+from typing import Dict, List
 
 from .base import RepoBase
 from .base import ValidFilters, ValidQuery
 
 
 class ValidQueryTag(ValidQuery):
-    VALID_KEY = {'type'}
+    VALID_QUERY = {'type'}
 
 
 class ValidFiltersTag(ValidFilters):
@@ -19,8 +19,6 @@ class RepoTag(RepoBase):
     ValidQueryClass = ValidQueryTag
     ValidFiltersClass = ValidFiltersTag
 
-    REQUIRED_FIELDS = ['name']
-
     def __init__(self, db):
         self._tags = db.Table('photorec-dynamodb-tags')
 
@@ -28,8 +26,16 @@ class RepoTag(RepoBase):
     def table(self):
         return self._tags
 
+    @property
+    def required_keys(self)-> List[str]:
+        return ['name']
+
+    @property
+    def required_fields(self)-> List[str]:
+        return ['name']
+
     def add(self, item: Dict):
-        self.validate_data(item, self.REQUIRED_FIELDS)
+        self.validate_data(item, self.required_fields)
         item['type'] = 'tag'
 
         return self.table.update_item(
@@ -38,9 +44,3 @@ class RepoTag(RepoBase):
             ExpressionAttributeValues={':inc': 1},
             ReturnValues="UPDATED_NEW"
         )
-
-    def get(self, key: Dict) -> Dict:
-        raise NotImplemented("Method get for repo tag is unsupported")
-
-    def delete(self, key: Dict):
-        raise NotImplemented("Method delete for repo tag is unsupported")
