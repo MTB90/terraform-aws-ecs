@@ -1,9 +1,21 @@
+from typing import List
+
 from .base import RepoBase
+from .base import ValidQuery, ValidFilters
+
+
+class ValidQueryLike(ValidQuery):
+    VALID_QUERY = {'thumb'}
+
+
+class ValidFiltersLike(ValidFilters):
+    VALID_FILTER = {'submitter'}
 
 
 class RepoLikes(RepoBase):
-    REQUIRED_KEYS = ['thumb', 'submniter']
-    REQUIRED_FIELDS = ['thumb', 'submniter']
+
+    ValidQueryClass = ValidQueryLike
+    ValidFiltersClass = ValidFiltersLike
 
     def __init__(self, db):
         self._likes = db.Table('photorec-dynamodb-likes')
@@ -11,3 +23,11 @@ class RepoLikes(RepoBase):
     @property
     def table(self):
         return self._likes
+
+    @property
+    def required_keys(self) -> List[str]:
+        return ['thumb', 'submitter']
+
+    @property
+    def required_fields(self) -> List[str]:
+        return ['thumb', 'submitter']

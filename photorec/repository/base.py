@@ -4,7 +4,7 @@ from typing import Dict, List
 
 from boto3.dynamodb.conditions import Key
 
-from repository.exceptions import UnsupportedQuery, UnsupportedFilter, UnsupportedFilterOperator
+from .exceptions import UnsupportedQuery, UnsupportedFilter, UnsupportedFilterOperator
 from .exceptions import MissingArguments
 
 

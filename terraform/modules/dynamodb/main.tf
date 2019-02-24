@@ -78,11 +78,11 @@ resource "aws_dynamodb_table" "dynamodb_table_likes" {
   billing_mode = "PAY_PER_REQUEST"
 
   hash_key  = "thumb"
-  range_key = "submniter"
+  range_key = "submitter"
 
   attribute = [
     {
-      name = "submniter"
+      name = "submitter"
       type = "S"
     },
     {
