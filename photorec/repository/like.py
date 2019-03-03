@@ -12,7 +12,7 @@ class ValidFiltersLike(ValidFilters):
     VALID_FILTER = {'submitter'}
 
 
-class RepoLikes(RepoBase):
+class RepoLike(RepoBase):
 
     ValidQueryClass = ValidQueryLike
     ValidFiltersClass = ValidFiltersLike
