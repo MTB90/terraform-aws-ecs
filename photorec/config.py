@@ -28,6 +28,7 @@ class ConfigLoad(type):
 class Config(metaclass=ConfigLoad):
     """Base class configuration."""
     DEFAULT_ENV = None
+    NAME = "Photorec"
     HOST = "0.0.0.0"
     PORT = "8080"
 

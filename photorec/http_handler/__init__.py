@@ -3,19 +3,19 @@ from flask import Flask
 from flask_debugtoolbar import DebugToolbarExtension
 
 
-from web.views import auth, main
+from http_handler.views import auth, main
 log = logging.getLogger(__name__)
 
 
-def create_web_app(config_object):
+def create_http_app(config):
     """
-    Create new web application with selected config
+    Create new http application with selected config
 
-    :param config_object: Object config for app
-    :return: Web application
+    :param config: Object config for app
+    :return: Http application
     """
-    app = Flask(__name__)
-    app.config.from_object(config_object)
+    app = Flask(config.NAME)
+    app.config.from_object(config)
 
     if app.debug:
         _ = DebugToolbarExtension(app)
