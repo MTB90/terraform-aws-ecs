@@ -41,6 +41,18 @@ test-run:
 		pipenv install --dev;\
 		pipenv run pytest ../tests || exit 1
 
+pip-install:
+	@echo "$(GREEN)Create virutalenv and install packages$(NC)"
+	@cd photorec; \
+                pipenv --rm;\
+                pipenv install
+
+pip-install-dev:
+	@echo "$(GREEN)Create dev virutalenv and install packages$(NC)"
+	@cd photorec; \
+                pipenv --rm;\
+		pipenv install --dev\
+
 _docker-tag-image:
 	@echo "$(GREEN)TAG docker image$(NC)"
 	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:dev
