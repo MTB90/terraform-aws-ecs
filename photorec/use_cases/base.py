@@ -1,9 +1,17 @@
 from abc import ABC, abstractmethod
 
 
-class UseCase(ABC):
-    """Base class for use cases."""
+class Command(ABC):
+    """Base command class for use case."""
 
     @abstractmethod
-    def execute(self, request_object):
-        """Execute use case"""
+    def execute(self, **kwargs):
+        """Execute command"""
+
+
+class Query(ABC):
+    """Base query class for use case."""
+
+    @abstractmethod
+    def execute(self, **kwargs):
+        """Execute query"""

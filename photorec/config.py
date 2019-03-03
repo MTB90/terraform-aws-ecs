@@ -28,6 +28,8 @@ class ConfigLoad(type):
 class Config(metaclass=ConfigLoad):
     """Base class configuration."""
     DEFAULT_ENV = None
+    HOST = "0.0.0.0"
+    PORT = "8080"
 
 
 class ProdConfig(Config):

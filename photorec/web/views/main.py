@@ -2,6 +2,8 @@ import socket
 import logging
 
 from flask import Blueprint, render_template, jsonify
+from use_cases.factories import cq_factory
+from use_cases.tag.get_all_tags import GetAllTags
 
 
 blueprint = Blueprint('main', __name__)
@@ -24,7 +26,8 @@ def top():
 @blueprint.route('/tags')
 def tags():
     """All tags sorted by popularity"""
-
+    use_case = cq_factory.get(GetAllTags)
+    response = use_case.execute()
     return render_template("tags.html")
 
 
