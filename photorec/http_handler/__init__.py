@@ -14,7 +14,7 @@ def create_http_app(config):
     :param config: Object config for app
     :return: Http application
     """
-    app = Flask(config.NAME)
+    app = Flask(__name__)
     app.config.from_object(config)
 
     if app.debug:

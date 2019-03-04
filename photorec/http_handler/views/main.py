@@ -3,7 +3,7 @@ import logging
 
 from flask import Blueprint, render_template, jsonify
 from use_cases.factories import cq_factory
-from use_cases.tag.get_all_tags import GetAllTags
+from use_cases.tag.get_tags import GetTags
 
 
 blueprint = Blueprint('main', __name__)
@@ -26,9 +26,16 @@ def top():
 @blueprint.route('/tags')
 def tags():
     """All tags sorted by popularity"""
-    use_case = cq_factory.get(GetAllTags)
+    use_case = cq_factory.get(GetTags)
     response = use_case.execute()
-    return render_template("tags.html")
+    return render_template("tags.html", tags=response)
+
+
+@blueprint.route('/tags/<name>')
+def tag(name):
+    """All tags sorted by popularity"""
+
+    return name
 
 
 @blueprint.route('/health')

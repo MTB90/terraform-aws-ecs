@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Number</th>
+      <th scope="col">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for tag in tags %}
+    <tr>
+      <td>{{tag.name}}</td>
+      <td>{{tag.score}}</td>
+      <td><a class="nav-link" href="/tags/{{tag.name}}">Link</a></td>
+    </tr>
+  {% endfor %}
+
+  </tbody>
+</table>
+{% endblock %}
