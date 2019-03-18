@@ -33,6 +33,7 @@ tf-create:
 tf-destroy:
 	@echo "$(GREEN)Clean AWS infrastructure$(NC)"
 	cd terraform; \
+		terraform init; \
 		terraform destroy
 
 test-run:
