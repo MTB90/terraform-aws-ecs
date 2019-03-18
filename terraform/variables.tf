@@ -25,7 +25,7 @@ variable "ec2_launch_config_instance_type" {
 
 variable "ec2_launch_config_image_id" {
   description = "AMI image for EC2"
-  default     = "ami-08a73ef2db6c656e5"
+  default     = "ami-0302f3ec240b9d23c"
 }
 
 variable "ec2_autoscaling_limits" {
