@@ -20,10 +20,10 @@ resource "aws_ecs_task_definition" "task_definition" {
     "memory": ${var.memory},
     "memoryReservation": ${var.memory},
     "entryPoint": [
-      "flask"
+      "python"
     ],
     "command": [
-      "run", "--host=0.0.0.0"
+      "run.py"
     ],
     "environment": [
       {
