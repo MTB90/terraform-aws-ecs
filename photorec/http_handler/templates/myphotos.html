@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+  <form method="POST" enctype="multipart/form-data" action="{{ url_for('myphotos.myphotos') }}">
+    {{ form.csrf_token }}
+    <div class="control-group">
+      <label class="control-label">Photo</label>
+      {{ form.photo() }}
+    </div>
+    &nbsp;
+    <div class="control-group">
+      <div class="controls">
+        <input class="btn btn-primary" type="submit" value="Upload">
+      </div>
+    </div>
+  </form>
+
+{% endblock %}

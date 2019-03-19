@@ -1,8 +1,8 @@
-from ..base import Query
+from ..base import BaseCQ
 from typing import Dict
 
 
-class GetTags(Query):
+class GetTagsQuery(BaseCQ):
     def __init__(self, repo__tag):
         self._tag_repo = repo__tag
 

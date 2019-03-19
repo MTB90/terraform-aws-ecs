@@ -1,0 +1,2 @@
+class ServiceStorage:
+    pass
