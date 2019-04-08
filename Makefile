@@ -1,3 +1,4 @@
+.EXPORT_ALL_VARIABLES:
 include envfile
 
 ############### CONSTS ##############
@@ -18,7 +19,7 @@ usage:
 
 ecr-push-image: test-run _docker-build-image _docker-tag-image _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
-	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:dev
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
 
 ecs-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
@@ -56,16 +57,16 @@ pip-install-dev:
 
 _docker-tag-image:
 	@echo "$(GREEN)TAG docker image$(NC)"
-	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:dev
-	docker tag photorec:dev $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:dev
+	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
+	docker tag photorec:prod $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
 
 _docker-build-image:
 	@echo "$(GREEN)Build docker image$(NC)"
-	$(eval IMAGES=$(shell docker images -a | grep -e photorec.*dev | awk '{print $$3}'))
+	$(eval IMAGES=$(shell docker images -a | grep -e photorec.*prod | awk '{print $$3}'))
 	@if [ -z "$(IMAGES)" ]; then echo "No image to delete"; else docker rmi $(IMAGES) --force; fi
 
 	cd docker; \
-		docker-compose -f docker-compose-dev.yml build --no-cache
+		docker-compose -f docker-compose.yml build --no-cache
 
 _aws-login:
 	@echo "$(GREEN)Login to AWS ECR$(NC)"

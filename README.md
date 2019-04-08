@@ -13,36 +13,38 @@ List of used AWS components:
 - Cloudwatch (logs EC2/Task)
 - Dynamodb
 
-### Setup web site photorec
+### AWS web site configuration
 
-1) Create on AWS:
+1) AWS:
 	- certificate for your domain name
 	- EC2 key
 	- ECR repository named photorec
 
 2) Update file envfile with your variables: AWS_PROFILE, AWS_ACCOUNT_ID, REGION
-
 3) Update file terraform/main.tf for tfstate location
-
 4) Update file terraform/variables.tf: 
 	- bastion_sq_inbaound_rule: with your ip e.g 190.32.43.2/32
 	- bastion_key_name: name of ec2 key
 	- domain: your domain name for which you request certificate
 	- certificate_arn: provide cert arn
 	- cname_records: CNAME record to the DNS configuration for your domain
-
 5) Deployment:
-* Setup environment
+
+Setup environment:
 ```bash
 $ make ecr-push-image
 $ make tf-create 
 ```
-* Create new image and update service
+Create new image and update service:
 ```bash
 $ make ecr-push-image
 $ make ecr-update-service
 ``` 
-* Destroy environment
+Destroy environment:
 ```bash
 $ make tf-destroy
 ```
+ 
+ ### Development web site configuration
+ 1) Setup database
+ 

@@ -43,3 +43,10 @@ class DevConfig(Config):
     ENV = 'dev'
     DEBUG = True
     DEFAULT_ENV = 'dev'
+
+
+def get_cofnig():
+    debug = os.getenv('DEBUG', False)
+    if debug:
+        return DevConfig
+    return ProdConfig

@@ -1,7 +1,5 @@
 import logging
 from flask import Flask
-from flask_debugtoolbar import DebugToolbarExtension
-
 
 from http_handler.views import auth, main, user_photos
 log = logging.getLogger(__name__)
@@ -18,6 +16,7 @@ def create_http_app(config):
     app.config.from_object(config)
 
     if app.debug:
+        from flask_debugtoolbar import DebugToolbarExtension
         _ = DebugToolbarExtension(app)
 
     app.register_blueprint(main.blueprint)

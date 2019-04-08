@@ -1,10 +1,10 @@
-import config as app_settings
+from config import get_cofnig
 from http_handler import create_http_app
 from infrastructure import initialization
 
 
 if __name__ == '__main__':
-    config = app_settings.DevConfig
+    config = get_cofnig()
     initialization(config)
 
     http_app = create_http_app(config)

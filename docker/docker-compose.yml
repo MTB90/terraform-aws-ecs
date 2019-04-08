@@ -3,11 +3,11 @@ version: '3'
 services:
   web:
     container_name: web
-    image: photorec:dev
+    image: photorec:prod
     restart: always
     build:
       context: ../photorec
-      dockerfile: ../docker/photorec/dockerfile-dev
+      dockerfile: ../docker/photorec/dockerfile
     ports:
       - "5000:8080"
     command: python run.py
