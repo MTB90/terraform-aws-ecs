@@ -16,7 +16,7 @@ login_manager = flask_login.LoginManager()
 
 class User(flask_login.UserMixin):
     """Standard flask_login UserMixin"""
-    pass
+    nickname = None
 
 
 @login_manager.user_loader
