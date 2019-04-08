@@ -31,8 +31,18 @@ List of used AWS components:
 	- certificate_arn: provide cert arn
 	- cname_records: CNAME record to the DNS configuration for your domain
 
-5) Deployment: 
-```$ make deploy-dev ``` 
-
-6) Update your domain and change nameservers to nameservers from AWS Zone Hosted
-
+5) Deployment:
+* Setup environment
+```bash
+$ make ecr-push-image
+$ make tf-create 
+```
+* Create new image and update service
+```bash
+$ make ecr-push-image
+$ make ecr-update-service
+``` 
+* Destroy environment
+```bash
+$ make tf-destroy
+```
