@@ -12,7 +12,7 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
   billing_mode = "PAY_PER_REQUEST"
 
   hash_key  = "nickname"
-  range_key = "thumb"
+  range_key = "uuid"
 
   attribute = [
     {
@@ -20,7 +20,7 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
       type = "S"
     },
     {
-      name = "thumb"
+      name = "uuid"
       type = "S"
     },
     {
