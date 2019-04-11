@@ -1,5 +1,5 @@
 import pytest
-from repository.base import Expression, UnsupportedExpression
+from photorec.repository.base import Expression, UnsupportedExpression
 
 
 @pytest.mark.parametrize("expression", [

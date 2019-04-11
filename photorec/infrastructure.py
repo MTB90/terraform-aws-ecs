@@ -4,6 +4,8 @@ from repository.like import RepoLike
 from repository.photo import RepoPhoto
 from repository.tag import RepoTag
 from services.storage import ServiceStorageS3
+from validators.nickname import ValidatorNickname
+
 from database import create_db
 
 
@@ -17,9 +19,14 @@ service = NamespacedContainer('service')
 service.register_callable_with_deps('storage', ServiceStorageS3)
 service.add_sub_container(repo)
 
+validator = NamespacedContainer('validator')
+validator.register_callable_with_deps('nickname', ValidatorNickname)
+validator.add_sub_container(repo)
+
 cq = NamespacedContainer('cq')
 cq.add_sub_container(repo)
 cq.add_sub_container(service)
+cq.add_sub_container(validator)
 
 
 def initialization(config):

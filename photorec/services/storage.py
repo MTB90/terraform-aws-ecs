@@ -6,6 +6,9 @@ class ServiceStorageS3:
         self._config = config
         self._s3_client = boto3.client('s3')
 
+    def delete(self, key: str):
+        pass
+
     def put(self, file_name: str, data):
         self._s3_client.put_object(
             Bucket=self._config.S3_BUCKET,
