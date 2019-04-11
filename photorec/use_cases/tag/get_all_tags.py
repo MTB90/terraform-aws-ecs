@@ -2,7 +2,7 @@ from ..base import BaseCQ
 from typing import Dict
 
 
-class GetTagsQuery(BaseCQ):
+class GetAllTagsQuery(BaseCQ):
     def __init__(self, repo__tag):
         self._tag_repo = repo__tag
 
