@@ -45,7 +45,7 @@ test-run:
 travis-setup:
 	pip install pipenv
 	@cd photorec; \
-		pipenv install --dev\
+		pipenv install --dev --three
 
 pip-install:
 	@echo "$(GREEN)Create virutalenv and install packages$(NC)"
