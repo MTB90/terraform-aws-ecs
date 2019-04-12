@@ -7,7 +7,7 @@ GREEN=\033[0;32m
 RED=\033[0;31m
 NC=\033[0m
 
-export PYTHONPATH=${CURDIR}/photorec/
+export PYTHONPATH=${CURDIR}:${CURDIR}/photorec/
 
 usage:
 	@echo "$(GREEN)Usage (commands list):$(NC)"
@@ -40,19 +40,23 @@ tf-destroy:
 test-run:
 	@echo "$(GREEN)Running unittests$(NC)"
 	@cd photorec; \
-		pipenv install --dev;\
 		pipenv run pytest ../tests || exit 1
+
+travis-setup:
+	pip install pipenv
+	@cd photorec; \
+		pipenv install --dev\
 
 pip-install:
 	@echo "$(GREEN)Create virutalenv and install packages$(NC)"
 	@cd photorec; \
-                pipenv --rm;\
-                pipenv install
+		pipenv --rm;\
+		pipenv install
 
-pip-install-dev:
+pip-install-test:
 	@echo "$(GREEN)Create dev virutalenv and install packages$(NC)"
 	@cd photorec; \
-                pipenv --rm;\
+		pipenv --rm;\
 		pipenv install --dev\
 
 _docker-tag-image:
