@@ -16,6 +16,9 @@ usage:
 	@echo "make tf-create (Create infrastructure on AWS)"
 	@echo "make tf-destroy (Destroy infrastructure on AWS)"
 	@echo "make test-run (Run unittests)"
+	@echo "make pip-install (Create production python venv)"
+	@echo "make pip-install-test (Create test python venv)"
+	@echo "make docker-build-image (Build docker image)"
 
 ecr-push-image: test-run _docker-build-image _docker-tag-image _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
@@ -59,18 +62,18 @@ pip-install-test:
 		pipenv --rm;\
 		pipenv install --dev\
 
-_docker-tag-image:
-	@echo "$(GREEN)TAG docker image$(NC)"
-	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
-	docker tag photorec:prod $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
-
-_docker-build-image:
+docker-build-image:
 	@echo "$(GREEN)Build docker image$(NC)"
 	$(eval IMAGES=$(shell docker images -a | grep -e photorec.*prod | awk '{print $$3}'))
 	@if [ -z "$(IMAGES)" ]; then echo "No image to delete"; else docker rmi $(IMAGES) --force; fi
 
 	cd docker; \
 		docker-compose -f docker-compose.yml build --no-cache
+
+_docker-tag-image:
+	@echo "$(GREEN)TAG docker image$(NC)"
+	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
+	docker tag photorec:prod $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
 
 _aws-login:
 	@echo "$(GREEN)Login to AWS ECR$(NC)"
