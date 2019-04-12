@@ -1,4 +1,7 @@
 # Simple web site on AWS.
+[![Build Status](https://travis-ci.com/MTB90/terraform-aws-ecs.svg?branch=master)](https://travis-ci.com/MTB90/terraform-aws-ecs)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 List of used AWS components:
 - VPC, Subnets, Internet gateway
