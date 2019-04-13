@@ -71,6 +71,7 @@ _docker-tag:
 	docker tag photorec:prod $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
 
 travis:
+	@echo "$(GREEN)Setup travis env$(NC)"
 	pip install pipenv
 	@cd photorec; \
 		pipenv install --dev --three
@@ -78,4 +79,6 @@ travis:
 test:
 	@echo "$(GREEN)Running unittests$(NC)"
 	@cd photorec; \
-		pipenv run pytest ../tests || exit 1
+		pipenv run pytest ../tests || exit 1; \
+		pipenv run flake8 || exit 1
+
