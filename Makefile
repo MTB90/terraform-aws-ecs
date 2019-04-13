@@ -74,11 +74,10 @@ travis:
 	@echo "$(GREEN)Setup travis env$(NC)"
 	pip install pipenv
 	@cd photorec; \
-		pipenv install --dev --three
+		pipenv install --dev --system
 
 test:
 	@echo "$(GREEN)Running unittests$(NC)"
 	@cd photorec; \
-		pipenv run pytest ../tests || exit 1; \
-		pipenv run flake8 || exit 1
-
+		pytest ../tests || exit 1
+	flake8
