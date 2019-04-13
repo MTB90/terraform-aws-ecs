@@ -15,6 +15,6 @@ env:
     - PIPENV_IGNORE_VIRTUALENVS=1
 
 # command to install dependencies
-install: make travis-setup
+install: make travis
 # # command to run tests
-script: make test-run
+script: make test

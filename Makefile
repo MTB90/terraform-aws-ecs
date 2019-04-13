@@ -11,58 +11,53 @@ export PYTHONPATH=${CURDIR}:${CURDIR}/photorec/
 
 usage:
 	@echo "$(GREEN)Usage (commands list):$(NC)"
-	@echo "make ecr-push-image (Push image to AWS ECR)"
-	@echo "make ecs-update-service (Update service on AWS)"
-	@echo "make tf-create (Create infrastructure on AWS)"
-	@echo "make tf-destroy (Destroy infrastructure on AWS)"
-	@echo "make test-run (Run unittests)"
-	@echo "make pip-install (Create production python venv)"
-	@echo "make pip-install-test (Create test python venv)"
-	@echo "make docker-build-image (Build docker image)"
+	@echo "make aws-push-image (Push image to AWS ECR)"
+	@echo "make aws-update-service (Update service on AWS)"
+	@echo "make aws-tf-create (Create infrastructure on AWS)"
+	@echo "make aws-tf-destroy (Destroy infrastructure on AWS)"
+	@echo "make test (Run tests)"
+	@echo "make pipenv-install (Create production python venv)"
+	@echo "make pipenv-install-test (Create test python venv)"
+	@echo "make docker-build (Build docker image)"
 
-ecr-push-image: test-run _docker-build-image _docker-tag-image _aws-login
+aws-push-image: docker-build _docker-tag _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
 	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
 
-ecs-update-service:
+aws-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
 	aws ecs update-service --cluster photorec-ecs-cluster-cluster --service photorec-ecs-service --force-new-deployment
 
-tf-create:
+_aws-login:
+	@echo "$(GREEN)Login to AWS ECR$(NC)"
+	$(eval AWS_LOGIN_COMMAND=$(shell aws ecr get-login --no-include-email))
+	$(AWS_LOGIN_COMMAND)
+
+aws-tf-create:
 	@echo "$(GREEN)Create AWS infrastructure$(NC)"
 	cd terraform; \
 		terraform init; \
 		terraform apply
 
-tf-destroy:
+aws-tf-destroy:
 	@echo "$(GREEN)Clean AWS infrastructure$(NC)"
 	cd terraform; \
 		terraform init; \
 		terraform destroy
 
-test-run:
-	@echo "$(GREEN)Running unittests$(NC)"
-	@cd photorec; \
-		pipenv run pytest ../tests || exit 1
-
-travis-setup:
-	pip install pipenv
-	@cd photorec; \
-		pipenv install --dev --three
-
-pip-install:
+pipenv-install:
 	@echo "$(GREEN)Create virutalenv and install packages$(NC)"
 	@cd photorec; \
 		pipenv --rm;\
 		pipenv install
 
-pip-install-test:
+pipenv-install-test:
 	@echo "$(GREEN)Create dev virutalenv and install packages$(NC)"
 	@cd photorec; \
 		pipenv --rm;\
 		pipenv install --dev\
 
-docker-build-image:
+docker-build:
 	@echo "$(GREEN)Build docker image$(NC)"
 	$(eval IMAGES=$(shell docker images -a | grep -e photorec.*prod | awk '{print $$3}'))
 	@if [ -z "$(IMAGES)" ]; then echo "No image to delete"; else docker rmi $(IMAGES) --force; fi
@@ -70,12 +65,17 @@ docker-build-image:
 	cd docker; \
 		docker-compose -f docker-compose.yml build --no-cache
 
-_docker-tag-image:
+_docker-tag:
 	@echo "$(GREEN)TAG docker image$(NC)"
 	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
 	docker tag photorec:prod $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
 
-_aws-login:
-	@echo "$(GREEN)Login to AWS ECR$(NC)"
-	$(eval AWS_LOGIN_COMMAND=$(shell aws ecr get-login --no-include-email))
-	$(AWS_LOGIN_COMMAND)
+travis:
+	pip install pipenv
+	@cd photorec; \
+		pipenv install --dev --three
+
+test:
+	@echo "$(GREEN)Running unittests$(NC)"
+	@cd photorec; \
+		pipenv run pytest ../tests || exit 1
