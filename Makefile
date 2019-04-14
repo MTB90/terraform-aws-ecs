@@ -80,4 +80,4 @@ test:
 	@echo "$(GREEN)Running unittests$(NC)"
 	@cd photorec; \
 		pytest ../tests || exit 1
-	flake8
+	flake8 || exit 1

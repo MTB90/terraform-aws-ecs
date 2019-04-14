@@ -7,7 +7,7 @@ class GetUserPhotosQuery(BaseCQ):
         self._photo_repo = repo__photo
         self._storage_service = service_storage
 
-    def execute(self, request: Dict=None):
+    def execute(self, request: Dict = None):
         photos = self._photo_repo.list(request)
 
         for photo in photos:
