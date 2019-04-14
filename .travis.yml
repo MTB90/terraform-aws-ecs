@@ -9,12 +9,8 @@ branches:
 language: python
 python:
   - "3.7"
-env:
-  global:
-    - PIPENV_VENV_IN_PROJECT=1
-    - PIPENV_IGNORE_VIRTUALENVS=1
 
 # command to install dependencies
-install: make travis-setup
+install: make travis
 # # command to run tests
-script: make test-run
+script: make test
