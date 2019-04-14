@@ -1,5 +1,11 @@
-from ..base import BaseCQ
 from typing import Dict
+
+from exceptions.domian_errors import ValidationError
+from ..base import BaseCQ
+
+
+class PhotoNotFoundError(ValidationError):
+    pass
 
 
 class DeleteUserPhotoCommand(BaseCQ):
@@ -8,7 +14,7 @@ class DeleteUserPhotoCommand(BaseCQ):
         self._nickname_validator = validator__nickname
         self._storage_service = service__storage
 
-    def execute(self, request: Dict=None):
+    def execute(self, request: Dict = None):
         nickname = request.get('nickname')
         uuid = request.get('uuid')
 
@@ -19,3 +25,5 @@ class DeleteUserPhotoCommand(BaseCQ):
             self._photo_repo.delete(key={'nickname': nickname, 'uuid': uuid})
             self._storage_service.delete(key=photo['thumb'])
             self._storage_service.delete(key=photo['photo'])
+        else:
+            raise PhotoNotFoundError("Photo already not exist")

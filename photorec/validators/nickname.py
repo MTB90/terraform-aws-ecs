@@ -1,4 +1,4 @@
-from errors.domian_errors import ValidationError
+from exceptions.domian_errors import ValidationError
 
 
 class NicknameError(ValidationError):

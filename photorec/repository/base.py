@@ -35,7 +35,7 @@ class RepoBase(ABC):
         """
         return self.table.delete_item(Key=key)
 
-    def list(self, query: Dict=None, filters: Dict=None) -> List[Dict]:
+    def list(self, query: Dict = None, filters: Dict = None) -> List[Dict]:
         """List all items that meet query and filters conditions
 
         :param query: Query parameters
