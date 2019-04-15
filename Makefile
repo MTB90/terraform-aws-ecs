@@ -83,4 +83,4 @@ test:
 
 code-style:
 	@echo "$(GREEN)Running FLAKE8$(NC)"
-	flake8
+	flake8 || exit 1
