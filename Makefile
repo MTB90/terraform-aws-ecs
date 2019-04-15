@@ -80,4 +80,7 @@ test:
 	@echo "$(GREEN)Running unittests$(NC)"
 	@cd photorec; \
 		pytest ../tests || exit 1
+
+code-style:
+	@echo "$(GREEN)Running FLAKE8$(NC)"
 	flake8 || exit 1

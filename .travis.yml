@@ -9,8 +9,23 @@ branches:
 language: python
 python:
   - "3.7"
+env:
+  global:
+    - PIPENV_VENV_IN_PROJECT=1
+    - PIPENV_IGNORE_VIRTUALENVS=1
 
-# command to install dependencies
-install: make travis
-# # command to run tests
-script: make test
+stages:
+  - test
+  - name: deploy
+    if: branch = master AND type ~= push
+
+jobs:
+  include:
+    - stage: test
+      install: make travis
+      script:
+        - make test
+        - make code-style
+
+    - stage: deploy
+      script: echo Deploy
