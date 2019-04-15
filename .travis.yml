@@ -12,7 +12,8 @@ python:
 
 stages:
   - test
-  - deploy
+  - name: deploy
+    if: branch = master
 
 jobs:
   include:
@@ -21,5 +22,6 @@ jobs:
       script:
         - make test
         - make code-style
+
     - stage: deploy
       script: echo Deploy
