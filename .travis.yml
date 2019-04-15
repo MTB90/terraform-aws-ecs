@@ -10,7 +10,8 @@ language: python
 python:
   - "3.7"
 
-# command to install dependencies
 install: make travis
-# # command to run tests
-script: make test
+
+script:
+  - make test
+  - make code-style
