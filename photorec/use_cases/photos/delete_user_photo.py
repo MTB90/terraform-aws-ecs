@@ -1,6 +1,6 @@
 from typing import Dict
 
-from exceptions.domian_errors import ValidationError
+from common.errors import ValidationError
 from ..base import BaseCQ
 
 

@@ -1,7 +1,6 @@
 import pytest
 from unittest.mock import create_autospec, Mock, call
 
-
 from photorec.repository.photo import RepoPhoto
 from photorec.services.storage import ServiceStorageS3
 from photorec.validators.nickname import ValidatorNickname, NicknameError
