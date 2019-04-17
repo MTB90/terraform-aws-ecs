@@ -1,7 +1,6 @@
 import pytest
 from unittest.mock import create_autospec, Mock, call
 
-
 from photorec.repository.photo import RepoPhoto
 from photorec.services.storage import ServiceStorageS3
 from photorec.validators.nickname import ValidatorNickname, NicknameError
@@ -32,16 +31,14 @@ class TestDeleteUserPhoto:
             validator__nickname=validator
         )
         with pytest.raises(NicknameError):
-            command.execute(Mock())
+            command.execute(nickname=Mock(), uuid=Mock())
 
     def test_given_nickname_uuid_when_delete_not_existing_photo_then_raise_and_no_changes(
             self, repo_photo, service_storage):
         repo_photo.get.return_value = None
         
-        request = {
-            'uuid': 'd48f920c-3994-4ac7-9400-17055854f645',
-            'nickname': 'nickname'
-        }
+        uuid = 'd48f920c-3994-4ac7-9400-17055854f645'
+        nickname = 'nickname'
     
         command = DeleteUserPhotoCommand(
             repo__photo=repo_photo,
@@ -50,7 +47,7 @@ class TestDeleteUserPhoto:
         )
 
         with pytest.raises(PhotoNotFoundError):
-            command.execute(request)
+            command.execute(nickname=nickname, uuid=uuid)
 
         repo_photo.get.assert_called_once()
         repo_photo.delete.assert_not_called()
@@ -67,19 +64,18 @@ class TestDeleteUserPhoto:
             'likes': 10
         }
         repo_photo.get.return_value = photo
-        
-        request = {
-            'uuid': 'd48f920c-3994-4ac7-9400-17055854f645',
-            'nickname': 'nickname'
-        }
-        
+
+        uuid = 'd48f920c-3994-4ac7-9400-17055854f645'
+        nickname = 'nickname'
+
         command = DeleteUserPhotoCommand(
             repo__photo=repo_photo,
             service__storage=service_storage,
             validator__nickname=Mock()
         )
-        command.execute(request)
+        command.execute(nickname=nickname, uuid=uuid)
     
+        request = {'uuid': uuid, 'nickname': nickname}
         repo_photo.get.assert_called_once()
         repo_photo.delete.assert_called_once_with(key=request)
         service_storage.delete.assert_has_calls([
