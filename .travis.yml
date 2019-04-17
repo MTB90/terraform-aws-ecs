@@ -15,7 +15,8 @@ env:
     - PIPENV_IGNORE_VIRTUALENVS=1
 
 stages:
-  - test
+  - name: test
+    if: branch = master
   - name: deploy
     if: branch = master AND type ~= push
 

@@ -1,5 +1,3 @@
-from typing import Dict
-
 from common.errors import ValidationError
 from ..base import BaseCQ
 
