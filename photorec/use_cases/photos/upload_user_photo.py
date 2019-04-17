@@ -7,6 +7,6 @@ class UploadUserPhotoCommand(BaseCQ):
         self._photo_repo = repo__photo
         self._storage_service = service_storage
 
-    def execute(self, request: Dict = None):
+    def execute(self, nickname: str, data):
         # TODO
         return []

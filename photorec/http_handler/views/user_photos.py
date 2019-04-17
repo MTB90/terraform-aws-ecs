@@ -30,15 +30,10 @@ def myphotos():
 
     if form.validate_on_submit():
         upload_command = cq_factory.get(UploadUserPhotoCommand)
-        upload_command.execute({
-            'data': form.photo.data,
-            'nickname': user_nickname
-        })
+        upload_command.execute(nickname=user_nickname, data=form.photo.data)
 
     photos_query = cq_factory.get(GetUserPhotosQuery)
-    photos = photos_query.execute({
-        'nickname': user_nickname
-    })
+    photos = photos_query.execute(nickname=user_nickname)
 
     return render_template("myphotos.html", form=form, photos=photos)
 
@@ -49,9 +44,6 @@ def myphotos_delete(uuid):
     """Delete photo route"""
     user_nickname = flask_login.current_user.nickname
     photos_delete = cq_factory.get(DeleteUserPhotoCommand)
-    photos_delete.execute({
-        'nickname': user_nickname,
-        'uuid': uuid
-    })
+    photos_delete.execute(nickname=user_nickname, uuid=uuid)
 
     return redirect(url_for("myphotos"))

@@ -14,15 +14,13 @@ class DeleteUserPhotoCommand(BaseCQ):
         self._nickname_validator = validator__nickname
         self._storage_service = service__storage
 
-    def execute(self, request: Dict = None):
-        nickname = request.get('nickname')
-        uuid = request.get('uuid')
-
+    def execute(self, nickname: str, uuid: str):
         self._nickname_validator.validate(nickname=nickname)
-        photo = self._photo_repo.get(request)
+        key = {'nickname': nickname, 'uuid': uuid}
 
+        photo = self._photo_repo.get(key=key)
         if photo is not None:
-            self._photo_repo.delete(key={'nickname': nickname, 'uuid': uuid})
+            self._photo_repo.delete(key=key)
             self._storage_service.delete(key=photo['thumb'])
             self._storage_service.delete(key=photo['photo'])
         else:
