@@ -1,8 +1,8 @@
-from common.errors import ValidationError
+from common.errors import BadRequestError
 
 
-class NicknameError(ValidationError):
-    def __init__(self, code=404, message="Error nickname not defined"):
+class NicknameError(BadRequestError):
+    def __init__(self, code=400, message="Error nickname not defined"):
         super().__init__(code=code, message=message)
 
 
