@@ -15,8 +15,7 @@ env:
     - PIPENV_IGNORE_VIRTUALENVS=1
 
 stages:
-  - name: test
-    if: branch = master
+  - test
   - name: deploy
     if: branch = master AND type ~= push
 
@@ -27,6 +26,8 @@ jobs:
       script:
         - make test
         - make code-style
+      after_success:
+        - codecov
 
     - stage: deploy
       script: echo Deploy
