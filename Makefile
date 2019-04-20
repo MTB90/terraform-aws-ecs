@@ -21,7 +21,7 @@ usage:
 
 aws-push-image: docker-build _docker-tag _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
-	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:prod
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:latest
 
 aws-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
@@ -58,7 +58,7 @@ pipenv-install-test:
 
 docker-build:
 	@echo "$(GREEN)Build docker image$(NC)"
-	$(eval IMAGES=$(shell docker images -a | grep -e photorec.*prod | awk '{print $$3}'))
+	$(eval IMAGES=$(shell docker images -a | grep -e photorec.*latest | awk '{print $$3}'))
 	@if [ -z "$(IMAGES)" ]; then echo "No image to delete"; else docker rmi $(IMAGES) --force; fi
 
 	cd docker; \
@@ -66,8 +66,8 @@ docker-build:
 
 _docker-tag:
 	@echo "$(GREEN)TAG docker image$(NC)"
-	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:prod
-	docker tag photorec:prod $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:prod
+	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:latest
+	docker tag photorec:latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:latest
 
 travis-env:
 	@echo "$(GREEN)Setup travis env$(NC)"

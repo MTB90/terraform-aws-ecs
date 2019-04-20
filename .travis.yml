@@ -36,4 +36,9 @@ jobs:
       services:
         - docker
       script:
-        - make aws-push-image
+        - make docker-build
+      after_success:
+        - export PATH=$PATH:$HOME/.local/bin
+        - eval $(aws ecr get-login --region us-west-2)
+        - docker tag photorec:latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:prod
+        - docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:prod
