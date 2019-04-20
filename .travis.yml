@@ -1,4 +1,4 @@
-sudo: false
+sudo: required
 
 dist: xenial
 
@@ -11,6 +11,7 @@ branches:
 language: python
 python:
   - "3.7"
+
 env:
   global:
     - PIPENV_VENV_IN_PROJECT=1
@@ -19,18 +20,39 @@ env:
 stages:
   - name: test
     if: branch = master
-  - name: deploy
-    if: branch = master AND type ~= push
+  - name: develop
+    if: branch = master AND type = pull_request
+  - name: production
+    if: branch = master AND type = push
 
 jobs:
   include:
     - stage: test
-      install: make travis
+      install: make travis-env
       script:
         - make test
         - make code-style
       after_success:
         - codecov
 
-    - stage: deploy
-      script: echo Deploy
+    - stage: develop
+      install: make travis-aws
+      services:
+        - docker
+      script:
+        - make docker-build
+        - export PATH=$PATH:$HOME/.local/bin
+        - eval $(aws ecr get-login --region $AWS_REGION --no-include-email)
+        - docker tag photorec:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/photorec:latest
+        - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/photorec:latest
+
+    - stage: production
+      install: make travis-aws
+      services:
+        - docker
+      script:
+        - make docker-build
+        - export PATH=$PATH:$HOME/.local/bin
+        - eval $(aws ecr get-login --region $AWS_REGION --no-include-email)
+        - docker tag photorec:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/photorec:prod
+        - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/photorec:prod
