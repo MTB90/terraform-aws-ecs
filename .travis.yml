@@ -1,4 +1,4 @@
-sudo: false
+sudo: required
 
 dist: xenial
 
@@ -11,21 +11,20 @@ branches:
 language: python
 python:
   - "3.7"
+
 env:
   global:
     - PIPENV_VENV_IN_PROJECT=1
     - PIPENV_IGNORE_VIRTUALENVS=1
 
 stages:
-  - name: test
-    if: branch = master
-  - name: deploy
-    if: branch = master AND type ~= push
+  - test
+  - deploy
 
 jobs:
   include:
     - stage: test
-      install: make travis
+      install: make travis-env
       script:
         - make test
         - make code-style
@@ -33,4 +32,8 @@ jobs:
         - codecov
 
     - stage: deploy
-      script: echo Deploy
+      install: make travis-env
+      services:
+        - docker
+      script:
+        - make aws-push-image

@@ -1,5 +1,4 @@
 .EXPORT_ALL_VARIABLES:
-include envfile
 
 ############### CONSTS ##############
 PYTHON_SCRIPT=test
@@ -22,7 +21,7 @@ usage:
 
 aws-push-image: docker-build _docker-tag _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
-	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:prod
 
 aws-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
@@ -67,15 +66,19 @@ docker-build:
 
 _docker-tag:
 	@echo "$(GREEN)TAG docker image$(NC)"
-	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
-	docker tag photorec:prod $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/photorec:prod
+	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:prod
+	docker tag photorec:prod $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:prod
 
-travis:
+travis-env:
 	@echo "$(GREEN)Setup travis env$(NC)"
 	pip install codecov
 	pip install pipenv
 	@cd photorec; \
 		pipenv install --dev --system
+
+travis-aws:
+	@echo "$(GREEN)Setup travis AWS$(NC)"
+	pip install --user awscli
 
 test:
 	@echo "$(GREEN)Running unittests$(NC)"
