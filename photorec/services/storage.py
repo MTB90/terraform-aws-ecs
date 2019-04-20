@@ -9,12 +9,12 @@ class ServiceStorageS3:
     def delete(self, key: str):
         pass
 
-    def put(self, file_name: str, data):
+    def put(self, key: str, data):
         self._s3_client.put_object(
             Bucket=self._config.S3_BUCKET,
-            Key=file_name,
+            Key=key,
             Body=data,
-            ContentType='image/png'
+            ContentType='image/jpeg'
         )
 
     def get_signed_url(self, key: str):

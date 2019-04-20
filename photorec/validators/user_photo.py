@@ -1,4 +1,3 @@
-import sys
 from common.errors import BadRequestError
 
 
@@ -22,7 +21,7 @@ class ValidatorUserPhoto:
     MB = 1024 * KB
 
     MIN_SIZE = 300 * KB
-    MAX_SIZE = 5 * MB + 57
+    MAX_SIZE = 5 * MB
 
     @staticmethod
     def validate_removed_photo(removed_photo):
@@ -30,11 +29,11 @@ class ValidatorUserPhoto:
             raise PhotoNotFoundError()
 
     @staticmethod
-    def validate_uploaded_photo_data(data):
-        if not data:
+    def validate_uploaded_photo_data(image):
+        if not image:
             raise UploadPhotoNoDataError()
 
-        size = sys.getsizeof(data)
+        size = image.size
         if size > ValidatorUserPhoto.MAX_SIZE:
             raise UploadPhotoDataSizeError(message="Size of photo can't be greater than 5MB")
 
