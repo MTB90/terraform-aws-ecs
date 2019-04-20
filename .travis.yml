@@ -32,7 +32,7 @@ jobs:
         - codecov
 
     - stage: deploy
-      install: make travis-env
+      install: make travis-aws
       services:
         - docker
       script:

@@ -6,4 +6,4 @@ RUN mkdir -p /app
 WORKDIR /app
 COPY . /app
 
-RUN pipenv install --system --deploy
+RUN pipenv install --system

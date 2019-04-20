@@ -78,7 +78,7 @@ travis-env:
 
 travis-aws:
 	@echo "$(GREEN)Setup travis AWS$(NC)"
-	pip install --user awscli
+	pip install awscli
 
 test:
 	@echo "$(GREEN)Running unittests$(NC)"
