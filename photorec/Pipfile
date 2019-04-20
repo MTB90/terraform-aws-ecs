@@ -11,6 +11,7 @@ requests = "*"
 python-jose = "*"
 boto3 = "*"
 pyioc = "*"
+pillow = "*"
 
 [dev-packages]
 flask-debugtoolbar = "*"
