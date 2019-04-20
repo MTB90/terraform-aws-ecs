@@ -22,3 +22,7 @@ class RepoTag(RepoBase):
             ExpressionAttributeValues={':inc': 1},
             ReturnValues="UPDATED_NEW"
         )
+
+    def all(self):
+        tags = self.list(query={'type': 'tag'})
+        return tags
