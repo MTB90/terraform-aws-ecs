@@ -72,6 +72,7 @@ _docker-tag:
 
 travis:
 	@echo "$(GREEN)Setup travis env$(NC)"
+	pip install codecov
 	pip install pipenv
 	@cd photorec; \
 		pipenv install --dev --system
@@ -79,7 +80,7 @@ travis:
 test:
 	@echo "$(GREEN)Running unittests$(NC)"
 	@cd photorec; \
-		pytest ../tests || exit 1
+		pytest ../tests --cov=./ --cov-report=xml || exit 1
 
 code-style:
 	@echo "$(GREEN)Running FLAKE8$(NC)"

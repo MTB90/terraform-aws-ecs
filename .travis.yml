@@ -1,3 +1,5 @@
+sudo: false
+
 dist: xenial
 
 # safelist
@@ -27,6 +29,8 @@ jobs:
       script:
         - make test
         - make code-style
+      after_success:
+        - codecov
 
     - stage: deploy
       script: echo Deploy

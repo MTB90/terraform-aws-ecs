@@ -18,6 +18,7 @@ flask-debugtoolbar = "*"
 pytest = "*"
 pytest-mock = "*"
 flake8 = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.7"
