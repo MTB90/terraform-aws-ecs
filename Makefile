@@ -80,7 +80,7 @@ travis:
 test:
 	@echo "$(GREEN)Running unittests$(NC)"
 	@cd photorec; \
-		pytest ../tests --cov=./ || exit 1
+		pytest ../tests --cov=./ --cov-report=xml || exit 1
 
 code-style:
 	@echo "$(GREEN)Running FLAKE8$(NC)"
