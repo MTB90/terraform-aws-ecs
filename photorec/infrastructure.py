@@ -34,3 +34,4 @@ cq.add_sub_container(validator)
 def initialization(config):
     repo.register_object('config', config)
     repo.register_object('db', create_db(config))
+    service.register_object('config', config)
