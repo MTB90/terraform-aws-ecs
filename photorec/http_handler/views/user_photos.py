@@ -30,7 +30,7 @@ def myphotos():
 
     if form.validate_on_submit():
         upload_command = cq_factory.get(UploadUserPhotoCommand)
-        upload_command.execute(nickname=user_nickname, item=form.photo.data)
+        upload_command.execute(nickname=user_nickname, data=form.photo.data)
 
     photos_query = cq_factory.get(GetUserPhotosQuery)
     photos = photos_query.execute(nickname=user_nickname)

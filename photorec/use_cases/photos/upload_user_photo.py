@@ -11,8 +11,8 @@ class UploadUserPhotoCommand(BaseCQ):
         self._image_service = service__image
         self._random_service = service__random
 
-    def execute(self, nickname: str, item):
-        photo = self._image_service.load(item)
+    def execute(self, nickname: str, data):
+        photo = self._image_service.load(data)
         self._user_photo_validator.validate_uploaded_photo_data(photo=photo)
 
         photo_key = self._save_image(photo)

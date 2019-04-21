@@ -59,7 +59,7 @@ def test_given_nickname_photo_when_upload_new_then_update_db_and_store_photo_thu
         validator__user_photo=Mock()
     )
 
-    command.execute(nickname='nickname', item=Mock())
+    command.execute(nickname='nickname', data=Mock())
 
     service_storage.put.assert_has_calls([
         call(key=images[0], data=photo.bytes()),
