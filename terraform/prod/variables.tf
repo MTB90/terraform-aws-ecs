@@ -38,12 +38,6 @@ variable "ec2_autoscaling_limits" {
   }
 }
 
-# ECS Cluster variables
-variable "ecs_docker_image_uri" {
-  description = "Docker image uri for task definition"
-  default     = "752734372808.dkr.ecr.us-west-2.amazonaws.com/photorec:prod"
-}
-
 variable "ecs_app_autoscaling_limits" {
   type = "map"
 
@@ -63,6 +57,11 @@ variable "nat_image_id" {
 variable "nat_instance_type" {
   description = "NAT instance type"
   default     = "t2.micro"
+}
+
+# ECS Cluster variables
+variable "ecs_docker_image_uri" {
+  description = "Docker image uri for task definition"
 }
 
 # Bastion instance variables
