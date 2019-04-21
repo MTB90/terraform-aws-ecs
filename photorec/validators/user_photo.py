@@ -34,4 +34,6 @@ class ValidatorUserPhoto:
 
         size = photo.size
         if size > ValidatorUserPhoto.MAX_SIZE:
-            raise UploadPhotoDataSizeError(message="Size of photo after process can't be greater than 5MB")
+            raise UploadPhotoDataSizeError(
+                message="Size of photo after process can't be greater than 5MB"
+            )
