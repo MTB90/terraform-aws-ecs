@@ -10,6 +10,7 @@ class ConfigLoad(type):
         'COGNITO_CLIENT_ID',
         'COGNITO_CLIENT_SECRET',
         'COGNITO_DOMAIN',
+        'STORAGE',
         'SECRET_KEY'
     ]
 

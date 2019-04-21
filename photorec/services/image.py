@@ -1,4 +1,3 @@
-from uuid import uuid4
 from PIL import Image
 from io import BytesIO
 from common.errors import BaseError
@@ -80,10 +79,3 @@ class ServiceImage:
 
         resize_image.paste(image, topleft)
         return DataImageJpeg(image=resize_image)
-
-    @staticmethod
-    def generate_key(prefix: str = ''):
-        name = uuid4()
-        if prefix:
-            return f"{prefix}/{name}.jpeg"
-        return f"{name}.jpeg"
