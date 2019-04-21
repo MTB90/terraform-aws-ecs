@@ -10,7 +10,7 @@ def test_given_nickname_empty_data_when_upload_photo_then_raise():
         ValidatorUserPhoto.validate_uploaded_photo_data(data)
 
 
-@pytest.mark.parametrize("data", [1024 * 1024 * 10, 100])
+@pytest.mark.parametrize("data", [1024 * 1024 * 100, 1024 * 1024 * 6])
 def test_given_nickname_data_when_upload_with_wrong_size_photo_then_raise(data):
     image = Mock()
     image.size = data
