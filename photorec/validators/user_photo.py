@@ -29,11 +29,11 @@ class ValidatorUserPhoto:
             raise PhotoNotFoundError()
 
     @staticmethod
-    def validate_uploaded_photo_data(image):
-        if not image:
+    def validate_uploaded_photo_data(photo):
+        if not photo:
             raise UploadPhotoNoDataError()
 
-        size = image.size
+        size = photo.size
         if size > ValidatorUserPhoto.MAX_SIZE:
             raise UploadPhotoDataSizeError(message="Size of photo can't be greater than 5MB")
 
