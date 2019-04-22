@@ -8,10 +8,10 @@ def test_given_empty_data_when_create_data_image_jpeg_then_raise_error():
 
 
 @pytest.mark.parametrize("image, size", [
-    ('../tests/images/image.png', (300, 300)),
-    ("../tests/images/image.jpg", (300, 300)),
-    ('../tests/images/image.png', (1200, 1200)),
-    ("../tests/images/image.jpg", (1200, 1200))
+    ('../tests/data/image.png', (300, 300)),
+    ("../tests/data/image.jpg", (300, 300)),
+    ('../tests/data/image.png', (1200, 1200)),
+    ("../tests/data/image.jpg", (1200, 1200))
 ])
 def test_given_image_when_resize_image_then_return_resized_image(image, size):
     service_image = ServiceImage()
