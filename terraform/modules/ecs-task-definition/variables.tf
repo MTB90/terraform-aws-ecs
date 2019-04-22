@@ -43,6 +43,14 @@ variable "base_url" {
   description = "Base url for web"
 }
 
+variable "database" {
+  description = "Database name"
+}
+
+variable "storage" {
+  description = "Storage access"
+}
+
 variable "timeout" {
   description = "The time period in seconds to wait for health check to success"
   default     = 15

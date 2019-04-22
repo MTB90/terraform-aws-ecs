@@ -47,12 +47,20 @@ resource "aws_ecs_task_definition" "task_definition" {
         "value": "${var.cognito_domain}"
       },
       {
+        "name": "BASE_URL",
+        "value": "${var.base_url}"
+      },
+      {
         "name": "SECRET_KEY",
         "value": "${random_string.secret_key.result}"
       },
       {
-        "name": "BASE_URL",
-        "value": "${var.base_url}"
+        "name": "DATABASE",
+        "value": "${var.database}"
+      },
+      {
+        "name": "STORAGE",
+        "value": "${var.storage}"
       }
     ],
     "portMappings": [
