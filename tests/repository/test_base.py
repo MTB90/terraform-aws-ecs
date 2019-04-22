@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import Mock, ANY, call
+from unittest.mock import Mock
 from photorec.repository.photo import RepoPhoto
 
 
