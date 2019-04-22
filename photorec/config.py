@@ -4,14 +4,15 @@ import os
 class ConfigLoad(type):
     """Meta class configuration."""
     ENV_ATTRS = [
-        'BASE_URL',
         'AWS_REGION',
-        'COGNITO_POOL_ID',
-        'COGNITO_CLIENT_ID',
-        'COGNITO_CLIENT_SECRET',
-        'COGNITO_DOMAIN',
-        'STORAGE',
-        'SECRET_KEY'
+        'AWS_COGNITO_POOL_ID',
+        'AWS_COGNITO_CLIENT_ID',
+        'AWS_COGNITO_CLIENT_SECRET',
+        'AWS_COGNITO_DOMAIN',
+        'BASE_URL',
+        'SECRET_KEY',
+        'DATABASE',
+        'STORAGE'
     ]
 
     def __new__(mcs, name, bases, attrs):

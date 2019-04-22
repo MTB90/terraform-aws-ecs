@@ -31,24 +31,24 @@ resource "aws_ecs_task_definition" "task_definition" {
         "value": "${var.region}"
       },
       {
-        "name": "SECRET_KEY",
-        "value": "${random_string.secret_key.result}"
-      },
-      {
-        "name": "COGNITO_POOL_ID",
+        "name": "AWS_COGNITO_POOL_ID",
         "value": "${var.cognito_pool_id}"
       },
       {
-        "name": "COGNITO_CLIENT_ID",
+        "name": "AWS_COGNITO_CLIENT_ID",
         "value": "${var.cognito_client_id}"
       },
       {
-        "name": "COGNITO_CLIENT_SECRET",
+        "name": "AWS_COGNITO_CLIENT_SECRET",
         "value": "${var.cognito_client_secret}"
       },
       {
-        "name": "COGNITO_DOMAIN",
+        "name": "AWS_COGNITO_DOMAIN",
         "value": "${var.cognito_domain}"
+      },
+      {
+        "name": "SECRET_KEY",
+        "value": "${random_string.secret_key.result}"
       },
       {
         "name": "BASE_URL",
