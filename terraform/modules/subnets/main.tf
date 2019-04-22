@@ -1,7 +1,7 @@
 # Local variables
 locals {
   module = "subnets"
-  name   = "${format("%s-%s-%s", var.tags["Project"] ,local.module, var.tags["Name"])}"
+  name   = "${format("%s-%s-%s", var.tags["Project"], var.tags["Name"], var.tags["Envarioment"])}"
   tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 

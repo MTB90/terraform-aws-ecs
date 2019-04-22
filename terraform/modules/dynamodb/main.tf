@@ -1,12 +1,12 @@
 # Local variables
 locals {
-  module = "dynamodb"
-  name   = "${format("%s-%s", var.tags["Project"] ,local.module)}"
-  tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
+  module   = "dynamodb"
+  database = "${format("%s-%s", var.tags["Project"], var.tags["Envarioment"])}"
+  tags     = "${merge(var.tags, map("Module", local.module, "Name", local.database))}"
 }
 
 resource "aws_dynamodb_table" "dynamodb_table_photos" {
-  name = "${format("%s-photos", local.name)}"
+  name = "${format("%s-photos", local.database)}"
   tags = "${local.tags}"
 
   billing_mode = "PAY_PER_REQUEST"
@@ -42,11 +42,11 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
 }
 
 resource "aws_dynamodb_table" "dynamodb_table_tags" {
-  name = "${format("%s-tags", local.name)}"
+  name = "${format("%s-tags", local.database)}"
   tags = "${local.tags}"
 
   billing_mode = "PAY_PER_REQUEST"
-  hash_key  = "name"
+  hash_key     = "name"
 
   attribute = [
     {
@@ -72,7 +72,7 @@ resource "aws_dynamodb_table" "dynamodb_table_tags" {
 }
 
 resource "aws_dynamodb_table" "dynamodb_table_likes" {
-  name = "${format("%s-likes", local.name)}"
+  name = "${format("%s-likes", local.database)}"
   tags = "${local.tags}"
 
   billing_mode = "PAY_PER_REQUEST"

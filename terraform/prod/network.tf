@@ -25,7 +25,7 @@ module "public_subnets" {
 }
 
 module "igw" {
-  source = "../modules\/igw"
+  source = "../modules/igw"
   tags   = "${var.tags}"
 
   vpc_id         = "${aws_vpc.vpc.id}"

@@ -10,4 +10,3 @@ variable "tags" {
     Envarioment = "dev"
   }
 }
-
