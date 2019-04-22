@@ -6,7 +6,8 @@ class RepoTag(RepoBase):
     """
     Repository for tags that encapsulate access to resources.
     """
-    def __init__(self, db):
+    def __init__(self, db, config):
+        super().__init__(db=db, config=config)
         self._tags = db.Table(f"{self._config.DATABASE}-tags")
 
     @property

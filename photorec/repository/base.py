@@ -6,7 +6,8 @@ from boto3.dynamodb.conditions import Key
 
 
 class RepoBase(ABC):
-    def __init__(self, config):
+    def __init__(self, db, config):
+        self._db = db
         self._config = config
 
     @property
