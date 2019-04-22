@@ -12,8 +12,6 @@ usage:
 	@echo "$(GREEN)Usage (commands list):$(NC)"
 	@echo "make aws-push-image (Push image to AWS ECR)"
 	@echo "make aws-update-service (Update service on AWS)"
-	@echo "make aws-tf-create (Create infrastructure on AWS)"
-	@echo "make aws-tf-destroy (Destroy infrastructure on AWS)"
 	@echo "make test (Run tests)"
 	@echo "make pipenv-install (Create production python venv)"
 	@echo "make pipenv-install-test (Create test python venv)"
@@ -31,18 +29,6 @@ _aws-login:
 	@echo "$(GREEN)Login to AWS ECR$(NC)"
 	$(eval AWS_LOGIN_COMMAND=$(shell aws ecr get-login --no-include-email))
 	$(AWS_LOGIN_COMMAND)
-
-aws-tf-create:
-	@echo "$(GREEN)Create AWS infrastructure$(NC)"
-	cd terraform; \
-		terraform init; \
-		terraform apply
-
-aws-tf-destroy:
-	@echo "$(GREEN)Clean AWS infrastructure$(NC)"
-	cd terraform; \
-		terraform init; \
-		terraform destroy
 
 pipenv-install:
 	@echo "$(GREEN)Create virutalenv and install packages$(NC)"

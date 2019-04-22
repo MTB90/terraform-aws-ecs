@@ -5,7 +5,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket = "photorec"
-    key    = "terraform-state/terraform.tfstate"
+    key    = "terraform-state/terraform-prod.tfstate"
     region = "us-west-2"
   }
 

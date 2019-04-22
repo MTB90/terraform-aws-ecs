@@ -21,7 +21,7 @@
       <table class="table table-bordered">
         <tr>
           <td rowspan="4" class="col-md-2 text-center"><img width="150" src="{{ photo.thumb_signed_url }}"/>
-            <a href="{{ url_for('myphotos.myphotos_delete', thumb=photo.thumb) }}">
+            <a href="{{ url_for('myphotos.myphotos_delete', uuid=photo.uuid) }}">
               <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> delete
             </a>
           </td>

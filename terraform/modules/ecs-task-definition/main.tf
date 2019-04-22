@@ -1,7 +1,7 @@
 # Local variables
 locals {
   module    = "ecs-task-definition"
-  name      = "${format("%s-%s", var.tags["Project"] ,local.module)}"
+  name      = "${format("%s-%s", var.tags["Project"], var.tags["Envarioment"])}"
   tags      = "${merge(var.tags, map("Module", local.module))}"
   log_group = "${format("%s/container/awslog", var.tags["Project"])}"
 }
@@ -31,28 +31,36 @@ resource "aws_ecs_task_definition" "task_definition" {
         "value": "${var.region}"
       },
       {
-        "name": "SECRET_KEY",
-        "value": "${random_string.secret_key.result}"
-      },
-      {
-        "name": "COGNITO_POOL_ID",
+        "name": "AWS_COGNITO_POOL_ID",
         "value": "${var.cognito_pool_id}"
       },
       {
-        "name": "COGNITO_CLIENT_ID",
+        "name": "AWS_COGNITO_CLIENT_ID",
         "value": "${var.cognito_client_id}"
       },
       {
-        "name": "COGNITO_CLIENT_SECRET",
+        "name": "AWS_COGNITO_CLIENT_SECRET",
         "value": "${var.cognito_client_secret}"
       },
       {
-        "name": "COGNITO_DOMAIN",
+        "name": "AWS_COGNITO_DOMAIN",
         "value": "${var.cognito_domain}"
       },
       {
         "name": "BASE_URL",
         "value": "${var.base_url}"
+      },
+      {
+        "name": "SECRET_KEY",
+        "value": "${random_string.secret_key.result}"
+      },
+      {
+        "name": "DATABASE",
+        "value": "${var.database}"
+      },
+      {
+        "name": "STORAGE",
+        "value": "${var.storage}"
       }
     ],
     "portMappings": [

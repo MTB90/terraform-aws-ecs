@@ -1,12 +1,12 @@
 # ECS resource with launch configuration, auto scaling
 module "ecs_cluster" {
-  source = "./modules/ecs-cluster"
+  source = "../modules/ecs-cluster"
   tags   = "${var.tags}"
   region = "${var.region}"
 }
 
 module "ec2_launch_configuration" {
-  source = "./modules/ec2-launch-configuration"
+  source = "../modules/ec2-launch-configuration"
   tags   = "${var.tags}"
 
   vpc_id          = "${aws_vpc.vpc.id}"
@@ -18,7 +18,7 @@ module "ec2_launch_configuration" {
 }
 
 module "ec2_autoscaling" {
-  source = "./modules/ec2-autoscaling"
+  source = "../modules/ec2-autoscaling"
   tags   = "${var.tags}"
 
   subnets                 = "${module.app_subnets.subnets}"
@@ -27,7 +27,7 @@ module "ec2_autoscaling" {
 }
 
 module "ecs_ec2_task_definition" {
-  source = "./modules/ecs-task-definition"
+  source = "../modules/ecs-task-definition"
   tags   = "${var.tags}"
 
   region           = "${var.region}"
@@ -37,6 +37,8 @@ module "ecs_ec2_task_definition" {
   docker_image_uri = "${var.ecs_docker_image_uri}"
 
   base_url              = "${format("https://%s",var.domain)}"
+  storage               = "${module.s3.storage}"
+  database              = "${module.dynamodb.database}"
   cognito_domain        = "${module.cognito_user_pool.domain}"
   cognito_pool_id       = "${module.cognito_user_pool.pool_id}"
   cognito_client_id     = "${module.cognito_user_pool.client_id}"
@@ -44,7 +46,7 @@ module "ecs_ec2_task_definition" {
 }
 
 module "ecs_ec2_service" {
-  source = "./modules/ecs-service"
+  source = "../modules/ecs-service"
   tags   = "${var.tags}"
 
   alb_arn             = "${module.alb.arn}"
@@ -56,7 +58,7 @@ module "ecs_ec2_service" {
 }
 
 module "ecs_app_autoscaling" {
-  source = "./modules/ecs-app-autoscaling"
+  source = "../modules/ecs-app-autoscaling"
   tags   = "${var.tags}"
 
   cluster_name    = "${module.ecs_cluster.name}"

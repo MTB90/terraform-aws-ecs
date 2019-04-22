@@ -15,7 +15,7 @@ resource "aws_vpc" "vpc" {
 
 # Create public subnets
 module "public_subnets" {
-  source = "./modules/subnets"
+  source = "../modules/subnets"
   tags   = "${merge(var.tags, map("Name", "public"))}"
 
   vpc_id = "${aws_vpc.vpc.id}"
@@ -25,7 +25,7 @@ module "public_subnets" {
 }
 
 module "igw" {
-  source = "./modules/igw"
+  source = "../modules/igw"
   tags   = "${var.tags}"
 
   vpc_id         = "${aws_vpc.vpc.id}"
@@ -34,7 +34,7 @@ module "igw" {
 
 # Create app subnets
 module "app_subnets" {
-  source = "./modules/subnets"
+  source = "../modules/subnets"
   tags   = "${merge(var.tags, map("Name", "app"))}"
 
   vpc_id = "${aws_vpc.vpc.id}"
@@ -45,7 +45,7 @@ module "app_subnets" {
 
 # NAT instance
 module "nat_instance" {
-  source = "./modules/nat-instance"
+  source = "../modules/nat-instance"
   tags   = "${var.tags}"
 
   vpc_id          = "${aws_vpc.vpc.id}"
@@ -58,7 +58,7 @@ module "nat_instance" {
 
 # Bastion instance
 module "bastion_instance" {
-  source = "./modules/bastion"
+  source = "../modules/bastion"
   tags   = "${var.tags}"
 
   vpc_id          = "${aws_vpc.vpc.id}"
@@ -71,7 +71,7 @@ module "bastion_instance" {
 
 # ALB
 module "alb" {
-  source = "./modules/alb"
+  source = "../modules/alb"
   tags   = "${var.tags}"
 
   vpc_id          = "${aws_vpc.vpc.id}"
@@ -81,7 +81,7 @@ module "alb" {
 
 # Hosted zones
 module "hosted_zones" {
-  source = "./modules/hosted-zones"
+  source = "../modules/hosted-zones"
   tags   = "${var.tags}"
 
   domian        = "${var.domain}"
