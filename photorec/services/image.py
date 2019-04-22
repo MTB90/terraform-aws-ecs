@@ -4,7 +4,8 @@ from common.errors import BaseError
 
 
 class UnableToOpenImageError(BaseError):
-    pass
+    def __init__(self, code=400, message=''):
+        super().__init__(code=code, message=message)
 
 
 class DataImageJpeg:
@@ -12,7 +13,7 @@ class DataImageJpeg:
         if image is None:
             try:
                 self._image = Image.open(data)
-            except IOError:
+            except (IOError, AttributeError):
                 raise UnableToOpenImageError(message='Unable to open image')
         else:
             self._image = image
@@ -37,9 +38,6 @@ class DataImageJpeg:
 
 class ServiceImage:
     EXIF_ORIENTATION = 274
-
-    def __init__(self, config):
-        self._config = config
 
     @staticmethod
     def load(data):
