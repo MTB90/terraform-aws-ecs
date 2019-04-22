@@ -37,6 +37,8 @@ module "ecs_ec2_task_definition" {
   docker_image_uri = "${var.ecs_docker_image_uri}"
 
   base_url              = "${format("https://%s",var.domain)}"
+  storage               = "${module.s3.storage}"
+  database              = "${module.dynamodb.database}"
   cognito_domain        = "${module.cognito_user_pool.domain}"
   cognito_pool_id       = "${module.cognito_user_pool.pool_id}"
   cognito_client_id     = "${module.cognito_user_pool.client_id}"
