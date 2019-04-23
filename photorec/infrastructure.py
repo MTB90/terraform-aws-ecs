@@ -9,7 +9,7 @@ from services.random import ServiceRandom
 from services.storage import ServiceStorageS3
 
 from validators.nickname import ValidatorNickname
-from validators.user_photo import ValidatorUserPhoto
+from validators.photo import ValidatorPhoto
 
 from database import create_db
 
@@ -27,7 +27,7 @@ service.add_sub_container(repo)
 
 validator = NamespacedContainer('validator')
 validator.register_callable_with_deps('nickname', ValidatorNickname)
-validator.register_callable_with_deps('user_photo', ValidatorUserPhoto)
+validator.register_callable_with_deps('photo', ValidatorPhoto)
 validator.add_sub_container(repo)
 
 cq = NamespacedContainer('cq')
