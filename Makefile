@@ -19,7 +19,7 @@ usage:
 
 aws-push-image: docker-build _docker-tag _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
-	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:latest
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:$(ENV)
 
 aws-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
@@ -27,7 +27,7 @@ aws-update-service:
 
 _aws-login:
 	@echo "$(GREEN)Login to AWS ECR$(NC)"
-	$(eval AWS_LOGIN_COMMAND=$(shell aws ecr get-login --no-include-email))
+	$(eval AWS_LOGIN_COMMAND=$(shell aws ecr get-login --region $(AWS_REGION) --no-include-email))
 	$(AWS_LOGIN_COMMAND)
 
 pipenv-install:
@@ -52,8 +52,7 @@ docker-build:
 
 _docker-tag:
 	@echo "$(GREEN)TAG docker image$(NC)"
-	- docker rmi $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:latest
-	docker tag photorec:latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:latest
+	docker tag photorec:latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:$(ENV)
 
 travis-env:
 	@echo "$(GREEN)Setup travis env$(NC)"
@@ -65,12 +64,10 @@ travis-env:
 travis-aws:
 	@echo "$(GREEN)Setup travis AWS$(NC)"
 	pip install awscli
-
-travis-deploy:
-	export PATH=$(PATH):$(HOME)/.local/bin
-	eval $(aws ecr get-login --region $(AWS_REGION) --no-include-email)
-	docker tag photorec:latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION)amazonaws.com/photorec:$(ENV)
-	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:$(ENV)
+	mkdir -p ~/.aws
+	echo [default] > ~/.aws/credentials
+	echo aws_access_key_id = ${AWS_ACCESS_KEY_ID} >> ~/.aws/credentials
+	echo aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY} >> ~/.aws/credentials
 
 test:
 	@echo "$(GREEN)Running unittests$(NC)"
