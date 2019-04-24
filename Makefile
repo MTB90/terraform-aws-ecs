@@ -66,6 +66,12 @@ travis-aws:
 	@echo "$(GREEN)Setup travis AWS$(NC)"
 	pip install awscli
 
+travis-deploy:
+	export PATH=$(PATH):$(HOME)/.local/bin
+	eval $(aws ecr get-login --region $(AWS_REGION) --no-include-email)
+	docker tag photorec:latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION)amazonaws.com/photorec:$(ENV)
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:$(ENV)
+
 test:
 	@echo "$(GREEN)Running unittests$(NC)"
 	@cd photorec; \

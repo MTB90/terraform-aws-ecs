@@ -41,10 +41,7 @@ jobs:
         - docker
       script:
         - make docker-build
-        - export PATH=$PATH:$HOME/.local/bin
-        - eval $(aws ecr get-login --region $AWS_REGION --no-include-email)
-        - docker tag photorec:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/photorec:latest
-        - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/photorec:latest
+        - make ENV=dev travis-deploy
 
     - stage: production
       install: make travis-aws
@@ -52,7 +49,4 @@ jobs:
         - docker
       script:
         - make docker-build
-        - export PATH=$PATH:$HOME/.local/bin
-        - eval $(aws ecr get-login --region $AWS_REGION --no-include-email)
-        - docker tag photorec:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/photorec:prod
-        - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/photorec:prod
+        - make ENV=prod travis-deploy
