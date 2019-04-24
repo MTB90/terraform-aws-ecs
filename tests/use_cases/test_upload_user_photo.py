@@ -56,7 +56,7 @@ def test_given_nickname_photo_when_upload_new_then_update_db_and_store_photo_thu
         service__storage=service_storage,
         service__image=service_image,
         service__random=service_random,
-        validator__user_photo=Mock()
+        validator__photo=Mock()
     )
 
     command.execute(nickname='nickname', data=Mock())
