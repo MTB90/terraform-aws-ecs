@@ -4,8 +4,8 @@ from unittest.mock import create_autospec, Mock, call
 from photorec.repository.photo import RepoPhoto
 from photorec.services.storage import ServiceStorageS3
 from photorec.validators.nickname import ValidatorNickname, NicknameError
-from photorec.validators.user_photo import ValidatorUserPhoto, PhotoNotFoundError
-from photorec.use_cases.photos.delete_user_photo import DeleteUserPhotoCommand
+from photorec.validators.photo import ValidatorPhoto, PhotoNotFoundError
+from photorec.use_cases.photos.delete_photo import DeletePhotoCommand
 
 
 @pytest.fixture
@@ -24,11 +24,11 @@ def test_given_no_nickname_when_delete_photo_then_error_nickname_not_defined(
     validator = create_autospec(ValidatorNickname)
     validator.validate.side_effect = NicknameError()
 
-    command = DeleteUserPhotoCommand(
+    command = DeletePhotoCommand(
         repo__photo=repo_photo,
         service__storage=service_storage,
         validator__nickname=validator,
-        validator__user_photo=Mock()
+        validator__photo=Mock()
     )
     with pytest.raises(NicknameError):
         command.execute(nickname=Mock(), uuid=Mock())
@@ -41,11 +41,11 @@ def test_given_nickname_uuid_when_delete_not_existing_photo_then_raise_and_no_ch
     uuid = 'd48f920c-3994-4ac7-9400-17055854f645'
     nickname = 'nickname'
 
-    command = DeleteUserPhotoCommand(
+    command = DeletePhotoCommand(
         repo__photo=repo_photo,
         service__storage=service_storage,
         validator__nickname=Mock(),
-        validator__user_photo=ValidatorUserPhoto()
+        validator__photo=ValidatorPhoto()
     )
 
     with pytest.raises(PhotoNotFoundError):
@@ -71,11 +71,11 @@ def test_given_nickname_uuid_when_delete_existing_photo_then_delete(
     uuid = 'd48f920c-3994-4ac7-9400-17055854f645'
     nickname = 'nickname'
 
-    command = DeleteUserPhotoCommand(
+    command = DeletePhotoCommand(
         repo__photo=repo_photo,
         service__storage=service_storage,
         validator__nickname=Mock(),
-        validator__user_photo=Mock()
+        validator__photo=Mock()
     )
     command.execute(nickname=nickname, uuid=uuid)
 

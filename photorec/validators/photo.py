@@ -16,7 +16,7 @@ class PhotoNotFoundError(BadRequestError):
         super().__init__(code=code, message=message)
 
 
-class ValidatorUserPhoto:
+class ValidatorPhoto:
     KB = 1024
     MB = 1024 * KB
 
@@ -33,7 +33,7 @@ class ValidatorUserPhoto:
             raise UploadPhotoNoDataError()
 
         size = photo.size
-        if size > ValidatorUserPhoto.MAX_SIZE:
+        if size > ValidatorPhoto.MAX_SIZE:
             raise UploadPhotoDataSizeError(
                 message="Size of photo after process can't be greater than 5MB"
             )
