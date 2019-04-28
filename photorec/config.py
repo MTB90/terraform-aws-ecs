@@ -32,6 +32,7 @@ class Config(metaclass=ConfigLoad):
     DEFAULT_ENV = None
     HOST = "0.0.0.0"
     PORT = "8080"
+    AWS_ENDPOINTS = {}
 
 
 class ProdConfig(Config):
@@ -40,11 +41,20 @@ class ProdConfig(Config):
     DEBUG = False
 
 
-class DevConfig(Config):
-    """Development configuration."""
+class TestConfig(Config):
+    """Test configuration."""
+    ENV = 'test'
+    DEFAULT_ENV = 'photorec-dev'
+    AWS_ENDPOINTS = {
+        's3': "http://127.0.0.1:4572",
+        'dynamodb': "http://127.0.0.1:4569"
+    }
+
+
+class DevConfig(TestConfig):
+    """Dev configuration."""
     ENV = 'dev'
     DEBUG = True
-    DEFAULT_ENV = 'dev'
 
 
 def get_cofnig():
