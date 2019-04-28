@@ -41,15 +41,19 @@ class ProdConfig(Config):
     DEBUG = False
 
 
-class DevConfig(Config):
-    """Development configuration."""
-    ENV = 'dev'
-    DEBUG = True
-    DEFAULT_ENV = 'dev'
+class TestConfig(Config):
+    """Test configuration."""
+    ENV = 'test'
+    DEFAULT_ENV = 'photorec-dev'
     AWS_ENDPOINTS = {
         's3': "http://localhost:4572",
         'dynamodb': "http://localhost:4569"
     }
+
+
+class DevConfig(TestConfig):
+    """Test configuration."""
+    DEBUG = True
 
 
 def get_cofnig():

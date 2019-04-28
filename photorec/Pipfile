@@ -19,6 +19,7 @@ pytest = "*"
 pytest-mock = "*"
 flake8 = "*"
 pytest-cov = "*"
+pytest-env = "*"
 
 [requires]
 python_version = "3.7"

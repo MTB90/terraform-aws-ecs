@@ -13,18 +13,22 @@ class ServiceStorageS3:
         )
 
     def delete(self, key: str):
-        self._s3_client.delete_object(
+        response = self._s3_client.delete_object(
             Bucket=self._config.STORAGE,
             Key=key,
         )
 
+        return response['ResponseMetadata']['HTTPStatusCode']
+
     def put(self, key: str, data):
-        self._s3_client.put_object(
+        response = self._s3_client.put_object(
             Bucket=self._config.STORAGE,
             Key=key,
             Body=data,
             ContentType='image/jpeg'
         )
+
+        return response['ResponseMetadata']['HTTPStatusCode']
 
     def generate_key(self):
         uuid4 = self._random_service.generate_uuid4()
