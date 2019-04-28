@@ -17,6 +17,7 @@ usage:
 	@echo "make pipenv-install-test (Create test python venv)"
 	@echo "make docker-build (Build docker image)"
 
+########################### AWS DEPLOYMENT ##########################
 aws-push-image: docker-build _docker-tag _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
 	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:$(ENV)
@@ -30,18 +31,6 @@ _aws-login:
 	$(eval AWS_LOGIN_COMMAND=$(shell aws ecr get-login --region $(AWS_REGION) --no-include-email))
 	$(AWS_LOGIN_COMMAND)
 
-pipenv-install:
-	@echo "$(GREEN)Create virutalenv and install packages$(NC)"
-	@cd photorec; \
-		pipenv --rm;\
-		pipenv install
-
-pipenv-install-test:
-	@echo "$(GREEN)Create dev virutalenv and install packages$(NC)"
-	@cd photorec; \
-		pipenv --rm;\
-		pipenv install --dev\
-
 docker-build:
 	@echo "$(GREEN)Build docker image$(NC)"
 	$(eval IMAGES=$(shell docker images -a | grep -e photorec.*latest | awk '{print $$3}'))
@@ -54,6 +43,22 @@ _docker-tag:
 	@echo "$(GREEN)TAG docker image$(NC)"
 	docker tag photorec:latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/photorec:$(ENV)
 
+
+######################## PIPENV ENVIRONMENT ########################
+pipenv-install:
+	@echo "$(GREEN)Create virutalenv and install packages$(NC)"
+	@cd photorec; \
+		pipenv --rm;\
+		pipenv install
+
+pipenv-install-test:
+	@echo "$(GREEN)Create dev virutalenv and install packages$(NC)"
+	@cd photorec; \
+		pipenv --rm;\
+		pipenv install --dev\
+
+
+######################## TRAVIS ENVIRONMENT ########################
 travis-env:
 	@echo "$(GREEN)Setup travis env$(NC)"
 	pip install codecov
@@ -69,6 +74,8 @@ travis-aws:
 	echo aws_access_key_id = ${AWS_ACCESS_KEY_ID} >> ~/.aws/credentials
 	echo aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY} >> ~/.aws/credentials
 
+
+############################## TESTING #############################
 test:
 	@echo "$(GREEN)Running unittests$(NC)"
 	@cd photorec; \
