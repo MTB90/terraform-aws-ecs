@@ -8,7 +8,6 @@ services:
       - "4567-4584:4567-4584"
       - "9080:8080"
     environment:
-      - DOCKER_HOST=unix:///var/run/docker.sock
       - SERVICES=s3,dynamodb
       - DEFAULT_REGION=us-west-2
       - DEBUG=1

@@ -91,7 +91,7 @@ localstack-env:
 	cd docker; \
 		docker-compose -f docker-compose-dev.yml up -d
 
-	sleep 3
+	sleep 5
 
 	@echo "$(GREEN)Create AWS infrastructure on localstack$(NC)"
 

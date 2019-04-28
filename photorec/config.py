@@ -46,13 +46,14 @@ class TestConfig(Config):
     ENV = 'test'
     DEFAULT_ENV = 'photorec-dev'
     AWS_ENDPOINTS = {
-        's3': "http://localhost:4572",
-        'dynamodb': "http://localhost:4569"
+        's3': "http://127.0.0.1:4572",
+        'dynamodb': "http://127.0.0.1:4569"
     }
 
 
 class DevConfig(TestConfig):
-    """Test configuration."""
+    """Dev configuration."""
+    ENV = 'dev'
     DEBUG = True
 
 

@@ -32,7 +32,7 @@ def test_when_add_new_photo_then_return_200(service_storage):
     with open("../tests/data/image.png", "rb") as file:
         service_image = ServiceImage()
         image = service_image.load(file)
-        
+
         image_key = service_storage.generate_key()
         response = service_storage.put(key=image_key, data=image.bytes())
         assert response == 200
