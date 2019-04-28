@@ -32,7 +32,7 @@ class Config(metaclass=ConfigLoad):
     DEFAULT_ENV = None
     HOST = "0.0.0.0"
     PORT = "8080"
-    ENDPOINTS = {}
+    AWS_ENDPOINTS = {}
 
 
 class ProdConfig(Config):
@@ -46,7 +46,7 @@ class DevConfig(Config):
     ENV = 'dev'
     DEBUG = True
     DEFAULT_ENV = 'dev'
-    ENDPOINTS = {
+    AWS_ENDPOINTS = {
         's3': "http://localhost:4572",
         'dynamodb': "http://localhost:4569"
     }
