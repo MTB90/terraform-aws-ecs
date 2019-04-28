@@ -40,7 +40,7 @@ jobs:
       services:
         - docker
       script:
-        - make ENV=dev aws-push-image
+        - make ENV=latest aws-push-image
 
     - stage: production
       install: make travis-aws
