@@ -29,6 +29,8 @@ jobs:
   include:
     - stage: test
       install: make travis-env
+      services:
+        - docker
       script:
         - make test
         - make code-style
