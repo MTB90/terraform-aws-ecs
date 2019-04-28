@@ -3,9 +3,14 @@ import boto3
 
 class ServiceStorageS3:
     def __init__(self, config, service__random):
+        self._service_name = 's3'
         self._config = config
         self._random_service = service__random
-        self._s3_client = boto3.client('s3')
+
+        self._s3_client = boto3.client(
+            service_name=self._service_name,
+            endpoint_url=config.AWS_ENDPOINTS.get(self._service_name)
+        )
 
     def delete(self, key: str):
         self._s3_client.delete_object(
