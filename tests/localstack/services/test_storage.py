@@ -29,7 +29,7 @@ def test_when_remove_not_existing_photo_then_return_204(service_storage):
 
 
 def test_when_add_new_photo_then_return_200(service_storage):
-    with open("../tests/data/image.png", "rb") as file:
+    with open("../tests/fixtures/image.png", "rb") as file:
         service_image = ServiceImage()
         image = service_image.load(file)
 

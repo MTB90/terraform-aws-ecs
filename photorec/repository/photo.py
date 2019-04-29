@@ -16,4 +16,4 @@ class RepoPhoto(RepoBase):
 
     def add(self, item: Dict):
         item['likes'] = 0
-        return self.table.put_item(Item=item)
+        return super().add(item=item)

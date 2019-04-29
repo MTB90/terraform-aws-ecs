@@ -20,7 +20,8 @@ class RepoBase(ABC):
 
         :param item: Item with all required fields
         """
-        return self.table.put_item(Item=item)
+        response = self.table.put_item(Item=item)
+        return response['ResponseMetadata']['HTTPStatusCode']
 
     def get(self, key: Dict) -> Dict:
         """Get item from repository
@@ -37,7 +38,8 @@ class RepoBase(ABC):
 
         :param key: Primary key for item
         """
-        return self.table.delete_item(Key=key)
+        response = self.table.delete_item(Key=key)
+        return response['ResponseMetadata']['HTTPStatusCode']
 
     def list(self, query: Dict = None, filters: Dict = None) -> List[Dict]:
         """List all items that meet query and filters conditions
