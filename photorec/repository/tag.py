@@ -17,13 +17,13 @@ class RepoTag(RepoBase):
     def add(self, item: Dict):
         item['type'] = 'tag'
 
-        return self.table.update_item(
+        response = self.table.update_item(
             Key={'name': item['name']},
             UpdateExpression='ADD score :inc',
             ExpressionAttributeValues={':inc': 1},
             ReturnValues="UPDATED_NEW"
         )
+        return response['ResponseMetadata']['HTTPStatusCode']
 
     def all(self):
-        tags = self.list(query={'type': 'tag'})
-        return tags
+        return self.list(query={'type': 'tag'})
