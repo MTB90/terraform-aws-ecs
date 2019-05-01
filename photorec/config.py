@@ -41,24 +41,30 @@ class ProdConfig(Config):
     DEBUG = False
 
 
-class TestConfig(Config):
+class LocalConfig(Config):
     """Test configuration."""
-    ENV = 'test'
-    DEFAULT_ENV = 'photorec-dev'
+    ENV = 'local'
+    DEFAULT_ENV = 'photorec-local'
     AWS_ENDPOINTS = {
         's3': "http://127.0.0.1:4572",
         'dynamodb': "http://127.0.0.1:4569"
     }
 
 
-class DevConfig(TestConfig):
+class DevConfig(LocalConfig):
     """Dev configuration."""
     ENV = 'dev'
     DEBUG = True
 
 
 def get_cofnig():
+    local = os.getenv("LOCAL", False)
     debug = os.getenv('DEBUG', False)
+
+    if local:
+        return LocalConfig
+
     if debug:
         return DevConfig
+
     return ProdConfig

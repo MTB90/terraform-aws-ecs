@@ -89,13 +89,13 @@ localstack-env:
 	@if [ -z "$(CONTAINER)" ]; then echo "No container to stop"; else docker stop $(CONTAINER); fi
 
 	cd docker; \
-		docker-compose -f docker-compose-dev.yml up -d
+		docker-compose -f docker-compose-local.yml up -d
 
 	sleep 5
 
 	@echo "$(GREEN)Create AWS infrastructure on localstack$(NC)"
 
-	@cd terraform/dev; \
+	@cd terraform/local; \
 		rm terraform.tfstate || true; \
 		terraform init; \
 		terraform apply -auto-approve

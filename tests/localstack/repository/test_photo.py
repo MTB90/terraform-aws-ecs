@@ -1,16 +1,16 @@
 import pytest
-from photorec.config import TestConfig
+from photorec.config import LocalConfig
 from photorec.database import create_db
 from photorec.repository.photo import RepoPhoto
 
 
 @pytest.fixture()
 def repo_photo():
-    db = create_db(config=TestConfig)
+    db = create_db(config=LocalConfig)
 
     return RepoPhoto(
         db=db,
-        config=TestConfig
+        config=LocalConfig
     )
 
 
