@@ -7,6 +7,6 @@ variable "tags" {
 
   default = {
     Project     = "photorec"
-    Envarioment = "dev"
+    Envarioment = "local"
   }
 }
