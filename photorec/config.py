@@ -42,7 +42,7 @@ class ProdConfig(Config):
 
 class LocalConfig(Config):
     """Test configuration."""
-    DEFAULT_ENV = 'local'
+    DEFAULT_ENV = 'photorec-local'
     AWS_ENDPOINTS = {
         's3': "http://127.0.0.1:4572",
         'dynamodb': "http://127.0.0.1:4569"
@@ -51,7 +51,7 @@ class LocalConfig(Config):
 
 class DevConfig(LocalConfig):
     """Dev configuration."""
-    DEFAULT_ENV = 'dev'
+    DEFAULT_ENV = 'photorec-local'
     DEBUG = True
 
 
