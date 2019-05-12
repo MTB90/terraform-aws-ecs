@@ -18,7 +18,7 @@ class ConfigLoad(type):
     def __new__(mcs, name, bases, attrs):
         default_value = attrs.get('DEFAULT_ENV')
         env_attrs = {}
-    
+
         for attr in mcs.ENV_ATTRS:
             env_attrs[attr] = os.getenv(attr, default_value)
         attrs.update(env_attrs)
