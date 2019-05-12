@@ -6,14 +6,22 @@ from boto3.dynamodb.conditions import Key
 
 
 class RepoBase(ABC):
-    def __init__(self, db, config):
+    def __init__(self, db, config, secondary_index):
         self._db = db
         self._config = config
+        self._secondary_index = secondary_index
 
     @property
     @abstractmethod
     def table(self):
         """Get table for repository"""
+
+    def _get_index(self, query):
+        if query is not None:
+            for key in self._secondary_index.keys():
+                if key in query:
+                    return self._secondary_index[key]
+        return None
 
     def add(self, item: Dict):
         """Add new item to repository
@@ -42,12 +50,16 @@ class RepoBase(ABC):
         return response['ResponseMetadata']['HTTPStatusCode']
 
     def list(self, query: Dict = None, filters: Dict = None) -> List[Dict]:
-        """List all items that meet query and filters conditions
+        """List all items that meet query and filters conditions using index
 
         :param query: Query parameters
         :param filters: Additional parameters for filter list
         """
         params = {}
+
+        index = self._get_index(query)
+        if index is not None:
+            params['IndexName'] = index
 
         if query is not None:
             params['KeyConditionExpression'] = Expression(query)
