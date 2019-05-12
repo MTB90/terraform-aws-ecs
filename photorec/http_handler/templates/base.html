@@ -19,40 +19,34 @@
 
     <div class="container">
 
-      <!-- Static navbar -->
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Photorec</a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li><a href="/myphotos">My photos</a>
-            </ul>
-            <ul class="nav navbar-nav">
-              <li><a href="/top">Top 100</a>
-            </ul>
-            <ul class="nav navbar-nav">
-              <li><a href="/tags">Tags</a>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Photorec</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbars">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/myphotos">My photos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/tags">Tags</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/top">Top</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
               {% if current_user.is_authenticated %}
               <li><p class="navbar-text">Hello, {{current_user.nickname}}!</p></li>
-              <li><a href="{{ url_for('auth.logout') }}">log out</a>
+              <li><a class="nav-link" href="{{ url_for('auth.logout') }}">log out</a>
               {% else %}
-              <li><a href="{{ url_for('auth.login') }}">log in / sign up</a>
+              <li><a class="nav-link" href="{{ url_for('auth.login') }}">log in / sign up</a>
               {% endif %}
             </ul>
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
+        </div>
       </nav>
-
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
         <p>
@@ -70,3 +64,5 @@
     <script src="/static/js/bootstrap.min.js"></script>
   </body>
 </html>
+
+
