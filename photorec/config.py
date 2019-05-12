@@ -16,13 +16,12 @@ class ConfigLoad(type):
     ]
 
     def __new__(mcs, name, bases, attrs):
-        if 'DEFAULT_ENV' in attrs:
-            defualt_env = attrs['DEFAULT_ENV']
-            env_attrs = {}
+        default_value = attrs.get('DEFAULT_ENV')
+        env_attrs = {}
 
-            for attr in mcs.ENV_ATTRS:
-                env_attrs[attr] = os.getenv(attr, defualt_env)
-            attrs.update(env_attrs)
+        for attr in mcs.ENV_ATTRS:
+            env_attrs[attr] = os.getenv(attr, default_value)
+        attrs.update(env_attrs)
 
         return super().__new__(mcs, name, bases, attrs)
 
@@ -43,7 +42,6 @@ class ProdConfig(Config):
 
 class LocalConfig(Config):
     """Test configuration."""
-    ENV = 'local'
     DEFAULT_ENV = 'photorec-local'
     AWS_ENDPOINTS = {
         's3': "http://127.0.0.1:4572",
@@ -53,18 +51,15 @@ class LocalConfig(Config):
 
 class DevConfig(LocalConfig):
     """Dev configuration."""
-    ENV = 'dev'
+    DEFAULT_ENV = 'photorec-local'
     DEBUG = True
 
 
-def get_cofnig():
-    local = os.getenv("LOCAL", False)
-    debug = os.getenv('DEBUG', False)
-
-    if local:
+def get_config():
+    if os.getenv("LOCAL", False):
         return LocalConfig
 
-    if debug:
+    if os.getenv('DEBUG', False):
         return DevConfig
 
     return ProdConfig
