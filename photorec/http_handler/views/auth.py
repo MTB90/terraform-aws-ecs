@@ -52,12 +52,10 @@ def login():
     """ Login route """
     # http://docs.aws.amazon.com/cognito/latest/developerguide/login-endpoint.html
     session['csrf_state'] = os.urandom(8).hex()
-    log.error(blueprint.config)
     url = f"https://{blueprint.config['AWS_COGNITO_DOMAIN']}/login?response_type=code&" \
           f"client_id={blueprint.config['AWS_COGNITO_CLIENT_ID']}&" \
           f"state={session['csrf_state']}&" \
           f"redirect_uri={blueprint.config['BASE_URL']}/callback"
-    log.error(url)
     return redirect(url)
 
 
