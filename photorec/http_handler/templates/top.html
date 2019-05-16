@@ -1,10 +1,42 @@
 {% extends "base.html" %}
 
-{% block stylesheet %}
-{% endblock %}
-
 {% block content %}
-{% endblock %}
+  <div menu-list>
+    <a href="/top" style="text-decoration:none;">
+      <span class="badge badge-success">All</span>
+    </a>
 
-{% block script %}
+    {% for tag in tags %}
+      <a href="/top" style="text-decoration:none;">
+        <span class="badge badge-info">{{tag}}</span>
+      </a>
+    {% endfor %}
+  </div>
+
+    <div class="album py-5">
+      <div class="container">
+        <div class="row">
+
+          {% for photo in photos %}
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <img class="card-img-top" src="{{ photo.thumb_signed_url }}">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary">
+                         <a href="{{ photo.photo_signed_url }}" style="text-decoration:none;">View</a>
+                      </button>
+                    </div>
+                    <small class="text-muted">TAG: {{ photo.tag }}</small>
+                    <small class="text-muted">Likes: {{ photo.likes }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
 {% endblock %}
