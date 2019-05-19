@@ -1,7 +1,7 @@
 # Local variables
 locals {
   module = "ec2-launch-config"
-  name   = "${format("%s-%s", var.tags["Project"], var.tags["Envarioment"])}"
+  name   = "${format("%s-%s-%s", var.tags["Project"], var.tags["Envarioment"], "app")}"
   tags   = "${merge(var.tags, map("Module", local.module))}"
 }
 
@@ -19,7 +19,7 @@ resource "aws_launch_configuration" "config" {
 }
 
 resource "aws_security_group" "config_sg" {
-  name = "${format("%s-conifg-sg", local.name)}"
+  name = "${format("%s-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
 
   # Inbound ALB
@@ -62,10 +62,10 @@ resource "aws_iam_policy" "container_instance_policy" {
   path        = "/"
   description = "Policy for the Amazon EC2 Role for Amazon EC2 Container instance."
 
-  policy = "${data.template_file.example.rendered}"
+  policy = "${data.template_file.template_instance_role.rendered}"
 }
 
-data "template_file" "example" {
+data "template_file" "template_instance_role" {
   template = "${file("${path.module}/policies/container-instance-role.json.tpl")}"
 
   vars {

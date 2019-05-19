@@ -1,7 +1,7 @@
 # Local variables
 locals {
   module = "bastion"
-  name   = "${format("%s-%s", var.tags["Project"], var.tags["Envarioment"])}"
+  name   = "${format("%s-%s-%s", var.tags["Project"], var.tags["Envarioment"], local.module)}"
   tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 
@@ -19,7 +19,7 @@ resource "aws_instance" "bastion_ec2" {
 }
 
 resource "aws_security_group" "bastion_sg" {
-  name = "${format("%s-bastion-sg", local.name)}"
+  name = "${format("%s-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
 
   vpc_id = "${var.vpc_id}"
