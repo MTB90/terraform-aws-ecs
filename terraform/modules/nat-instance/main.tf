@@ -24,7 +24,7 @@ resource "aws_route" "nat_route" {
 }
 
 resource "aws_security_group" "nat_sg" {
-  name = "${format("%s-sg", local.name)}"
+  name = "${format("%s-nat-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
 
   vpc_id = "${var.vpc_id}"

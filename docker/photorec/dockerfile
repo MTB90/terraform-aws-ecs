@@ -7,8 +7,8 @@ COPY . /app
 
 RUN apk add --no-cache jpeg-dev zlib-dev \
     && apk add --no-cache --virtual .build-deps build-base linux-headers \
+    && apk --no-cache add curl \
     && pip3 install pip --upgrade \
     && pip install pipenv \
     && pipenv install --system --deploy \
     && apk del .build-deps
-

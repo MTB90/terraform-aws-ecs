@@ -15,6 +15,7 @@ module "ec2_launch_configuration" {
   user_data       = "${module.ecs_cluster.user_data}"
   sq_inbound_rule = "${module.alb.sg_id}"
   key_name        = "${var.bastion_key_name}"
+  storage         = "${module.s3.storage}"
 }
 
 module "ec2_autoscaling" {
