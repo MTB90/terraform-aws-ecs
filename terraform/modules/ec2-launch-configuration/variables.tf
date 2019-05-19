@@ -23,6 +23,10 @@ variable "sq_inbound_rule" {
   description = "Source security group inbound rule"
 }
 
+variable "storage" {
+  description = "Storage access"
+}
+
 variable "key_name" {
   description = "Key name for EC2 key pair"
 }

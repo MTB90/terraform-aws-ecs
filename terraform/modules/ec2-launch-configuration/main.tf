@@ -62,5 +62,13 @@ resource "aws_iam_policy" "container_instance_policy" {
   path        = "/"
   description = "Policy for the Amazon EC2 Role for Amazon EC2 Container instance."
 
-  policy = "${file("${path.module}/policies/container-instance-role.json")}"
+  policy = "${data.template_file.example.rendered}"
+}
+
+data "template_file" "example" {
+  template = "${file("${path.module}/policies/container-instance-role.json.tpl")}"
+
+  vars {
+    storage = "${var.storage}"
+  }
 }
