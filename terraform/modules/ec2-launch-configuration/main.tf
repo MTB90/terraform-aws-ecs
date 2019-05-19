@@ -19,7 +19,7 @@ resource "aws_launch_configuration" "config" {
 }
 
 resource "aws_security_group" "config_sg" {
-  name = "${format("%s-sg", local.name)}"
+  name = "${format("%s-conifg-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
 
   # Inbound ALB

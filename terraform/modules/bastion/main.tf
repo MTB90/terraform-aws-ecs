@@ -19,7 +19,7 @@ resource "aws_instance" "bastion_ec2" {
 }
 
 resource "aws_security_group" "bastion_sg" {
-  name = "${format("%s-sg", local.name)}"
+  name = "${format("%s-bastion-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
 
   vpc_id = "${var.vpc_id}"
