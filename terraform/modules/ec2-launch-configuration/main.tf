@@ -11,8 +11,7 @@ resource "aws_launch_configuration" "config" {
 
   image_id      = var.image_id
   instance_type = var.instance_type
-  security_groups = [
-  aws_security_group.config_sg.id]
+  security_groups = [aws_security_group.config_sg.id]
   iam_instance_profile        = aws_iam_instance_profile.instance_profile.name
   user_data                   = var.user_data
   key_name                    = var.key_name
@@ -28,8 +27,7 @@ resource "aws_security_group" "config_sg" {
     protocol  = "-1"
     from_port = 0
     to_port   = 0
-    security_groups = [
-    var.sq_inbound_rule]
+    security_groups = [var.sq_inbound_rule]
   }
 
   # Outbound

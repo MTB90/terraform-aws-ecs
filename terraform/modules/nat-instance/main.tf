@@ -42,8 +42,7 @@ resource "aws_security_group" "nat_sg" {
     protocol  = "TCP"
     from_port = 443
     to_port   = 443
-    security_groups = [
-    var.sq_inbound_rule]
+    security_groups = [var.sq_inbound_rule]
   }
 
   # Outbound HTTP
