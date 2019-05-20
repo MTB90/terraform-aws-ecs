@@ -1,7 +1,7 @@
 # Local variables
 locals {
   module = "ec2-launch-config"
-  name   = "${format("%s-%s-%s", var.tags["Project"], var.tags["Envarioment"], "app")}"
+  name   = "${format("%s-%s-%s", var.tags["Project"], var.tags["Envarioment"], local.module)}"
   tags   = "${merge(var.tags, map("Module", local.module))}"
 }
 

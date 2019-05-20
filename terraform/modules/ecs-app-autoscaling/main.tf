@@ -1,7 +1,7 @@
 # Local variables
 locals {
   module      = "app-autoscaling"
-  name        = "${format("%s-%s", var.tags["Project"], var.tags["Envarioment"])}"
+  name        = "${format("%s-%s-%s", var.tags["Project"], var.tags["Envarioment"], local.module)}"
   tags        = "${merge(var.tags, map("Module", local.module))}"
   resource_id = "${format("service/%s/%s", var.cluster_name ,var.service_name)}"
 }

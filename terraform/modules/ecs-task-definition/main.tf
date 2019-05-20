@@ -1,7 +1,7 @@
 # Local variables
 locals {
   module    = "ecs-task-definition"
-  name      = "${format("%s-%s", var.tags["Project"], var.tags["Envarioment"])}"
+  name      = "${format("%s-%s-%s", var.tags["Project"], var.tags["Envarioment"], local.module)}"
   tags      = "${merge(var.tags, map("Module", local.module))}"
   log_group = "${format("%s/container/awslog", var.tags["Project"])}"
 }

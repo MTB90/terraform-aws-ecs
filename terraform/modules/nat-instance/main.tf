@@ -1,7 +1,7 @@
 # Local variables
 locals {
-  module = "nat-instance"
-  name   = "${format("%s-%s", var.tags["Project"], var.tags["Envarioment"])}"
+  module = "nat"
+  name   = "${format("%s-%s-%s", var.tags["Project"], var.tags["Envarioment"], local.module)}"
   tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
 }
 
@@ -24,7 +24,7 @@ resource "aws_route" "nat_route" {
 }
 
 resource "aws_security_group" "nat_sg" {
-  name = "${format("%s-nat-sg", local.name)}"
+  name = "${format("%s-sg", local.name)}"
   tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
 
   vpc_id = "${var.vpc_id}"
