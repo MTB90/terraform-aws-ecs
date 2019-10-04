@@ -34,5 +34,6 @@ resource "aws_appautoscaling_policy" "ecs_app_policy" {
     scale_out_cooldown = 300
   }
 
-  depends_on = ["aws_appautoscaling_target.ecs_app_target"]
+  depends_on = [
+  "aws_appautoscaling_target.ecs_app_target"]
 }
