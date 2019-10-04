@@ -1,5 +1,5 @@
 variable "region" {
-  default = "us-west-2"
+  default = "eu-west-1"
 }
 
 variable "tags" {
@@ -25,7 +25,7 @@ variable "ec2_launch_config_instance_type" {
 
 variable "ec2_launch_config_image_id" {
   description = "AMI image for EC2"
-  default     = "ami-0302f3ec240b9d23c"
+  default     = "ami-0d7db0e3ec32793ae"
 }
 
 variable "ec2_autoscaling_limits" {
@@ -51,7 +51,7 @@ variable "ecs_app_autoscaling_limits" {
 # NAT-instance variables
 variable "nat_image_id" {
   description = "AMI image for NAT instance"
-  default     = "ami-40d1f038"
+  default     = "ami-0236d0cbbbe64730c"
 }
 
 variable "nat_instance_type" {
@@ -67,7 +67,7 @@ variable "ecs_docker_image_uri" {
 # Bastion instance variables
 variable "bastion_image_id" {
   description = "AMI image for bastion instance"
-  default     = "ami-032509850cf9ee54e"
+  default     = "ami-0ce71448843cb18a1"
 }
 
 variable "bastion_instance_type" {

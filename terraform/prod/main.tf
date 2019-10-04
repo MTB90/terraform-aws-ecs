@@ -6,8 +6,8 @@ terraform {
   backend "s3" {
     bucket = "photorec"
     key    = "terraform-state/terraform-prod.tfstate"
-    region = "us-west-2"
+    region = "eu-west-1"
   }
 
-  required_version = "~>0.11.0"
+  required_version = "~>0.12.9"
 }
