@@ -14,24 +14,22 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
   hash_key  = "nickname"
   range_key = "uuid"
 
-  attribute = [
-    {
-      name = "nickname"
-      type = "S"
-    },
-    {
-      name = "uuid"
-      type = "S"
-    },
-    {
-      name = "tag"
-      type = "S"
-    },
-    {
-      name = "likes"
-      type = "N"
-    },
-  ]
+  attribute {
+    name = "nickname"
+    type = "S"
+  }
+  attribute {
+    name = "uuid"
+    type = "S"
+  }
+  attribute {
+    name = "tag"
+    type = "S"
+  }
+  attribute {
+    name = "likes"
+    type = "N"
+  }
 
   global_secondary_index {
     name            = "photo-tags"
@@ -48,20 +46,18 @@ resource "aws_dynamodb_table" "dynamodb_table_tags" {
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "name"
 
-  attribute = [
-    {
+  attribute {
       name = "name"
       type = "S"
-    },
-    {
+  }
+  attribute {
       name = "type"
       type = "S"
-    },
-    {
+  }
+  attribute {
       name = "score"
       type = "N"
-    },
-  ]
+  }
 
   global_secondary_index {
     name            = "tags-score"
@@ -80,14 +76,12 @@ resource "aws_dynamodb_table" "dynamodb_table_likes" {
   hash_key  = "thumb"
   range_key = "submitter"
 
-  attribute = [
-    {
-      name = "submitter"
-      type = "S"
-    },
-    {
-      name = "thumb"
-      type = "S"
-    },
-  ]
+  attribute {
+    name = "submitter"
+    type = "S"
+  }
+  attribute {
+    name = "thumb"
+    type = "S"
+  }
 }
