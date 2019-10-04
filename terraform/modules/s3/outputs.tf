@@ -1,3 +1,3 @@
 output "storage" {
-  value = "${local.name}"
+  value = local.name
 }

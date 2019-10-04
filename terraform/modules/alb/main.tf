@@ -1,35 +1,37 @@
 # Local variables
 locals {
   module = "alb"
-  name   = "${format("%s-%s", var.tags["Project"], var.tags["Envarioment"])}"
-  tags   = "${merge(var.tags, map("Module", local.module, "Name", local.name))}"
+  name   = format("%s-%s", var.tags["Project"], var.tags["Envarioment"])
+  tags   = merge(var.tags, map("Module", local.module, "Name", local.name))
 }
 
 # Resources
 resource "aws_alb" "alb" {
-  name = "${local.name}"
-  tags = "${local.tags}"
+  name = local.name
+  tags = local.tags
 
-  internal        = false
-  security_groups = ["${aws_security_group.alb_sg.id}"]
-  subnets         = ["${var.subnets}"]
+  internal = false
+  security_groups = [
+  aws_security_group.alb_sg.id]
+  subnets = [
+  var.subnets]
 }
 
 resource "aws_alb_listener" "alb_listener_https" {
-  load_balancer_arn = "${aws_alb.alb.arn}"
+  load_balancer_arn = aws_alb.alb.arn
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = "${var.certificate_arn}"
+  certificate_arn   = var.certificate_arn
 
-  "default_action" {
+  default_action {
     type             = "forward"
-    target_group_arn = "${aws_alb_target_group.alb_tg.arn}"
+    target_group_arn = aws_alb_target_group.alb_tg.arn
   }
 }
 
 resource "aws_alb_listener" "alb_listener_http" {
-  load_balancer_arn = "${aws_alb.alb.arn}"
+  load_balancer_arn = aws_alb.alb.arn
   port              = 80
   protocol          = "HTTP"
 
@@ -45,8 +47,8 @@ resource "aws_alb_listener" "alb_listener_http" {
 }
 
 resource "aws_security_group" "alb_sg" {
-  name = "${format("%s-alb-sg", local.name)}"
-  tags = "${merge(var.tags, map("Name", format("%s-sg", local.name)))}"
+  name = format("%s-alb-sg", local.name)
+  tags = merge(var.tags, map("Name", format("%s-sg", local.name)))
 
   # Inbound HTTPS
   ingress {
@@ -95,16 +97,16 @@ resource "aws_security_group" "alb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  vpc_id = "${var.vpc_id}"
+  vpc_id = var.vpc_id
 }
 
 resource "aws_alb_target_group" "alb_tg" {
-  tags = "${local.tags}"
+  tags = local.tags
 
   port        = 80
   protocol    = "HTTP"
   target_type = "instance"
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = var.vpc_id
 
   lifecycle {
     create_before_destroy = true

@@ -1,13 +1,13 @@
 # Local variables
 locals {
   module   = "dynamodb"
-  database = "${format("%s-%s", var.tags["Project"], var.tags["Envarioment"])}"
-  tags     = "${merge(var.tags, map("Module", local.module, "Name", local.database))}"
+  database = format("%s-%s", var.tags["Project"], var.tags["Envarioment"])
+  tags     = merge(var.tags, map("Module", local.module, "Name", local.database))
 }
 
 resource "aws_dynamodb_table" "dynamodb_table_photos" {
-  name = "${format("%s-photos", local.database)}"
-  tags = "${local.tags}"
+  name = format("%s-photos", local.database)
+  tags = local.tags
 
   billing_mode = "PAY_PER_REQUEST"
 
@@ -40,23 +40,23 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
 }
 
 resource "aws_dynamodb_table" "dynamodb_table_tags" {
-  name = "${format("%s-tags", local.database)}"
-  tags = "${local.tags}"
+  name = format("%s-tags", local.database)
+  tags = local.tags
 
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "name"
 
   attribute {
-      name = "name"
-      type = "S"
+    name = "name"
+    type = "S"
   }
   attribute {
-      name = "type"
-      type = "S"
+    name = "type"
+    type = "S"
   }
   attribute {
-      name = "score"
-      type = "N"
+    name = "score"
+    type = "N"
   }
 
   global_secondary_index {
@@ -68,8 +68,8 @@ resource "aws_dynamodb_table" "dynamodb_table_tags" {
 }
 
 resource "aws_dynamodb_table" "dynamodb_table_likes" {
-  name = "${format("%s-likes", local.database)}"
-  tags = "${local.tags}"
+  name = format("%s-likes", local.database)
+  tags = local.tags
 
   billing_mode = "PAY_PER_REQUEST"
 
