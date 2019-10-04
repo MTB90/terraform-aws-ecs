@@ -68,7 +68,7 @@ resource "aws_iam_policy" "container_instance_policy" {
 data "template_file" "template_instance_role" {
   template = file("${path.module}/policies/container-instance-role.json.tpl")
 
-  vars {
+  vars = {
     storage = var.storage
   }
 }

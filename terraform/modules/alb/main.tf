@@ -11,10 +11,8 @@ resource "aws_alb" "alb" {
   tags = local.tags
 
   internal = false
-  security_groups = [
-  aws_security_group.alb_sg.id]
-  subnets = [
-  var.subnets]
+  security_groups = [aws_security_group.alb_sg.id]
+  subnets = var.subnets
 }
 
 resource "aws_alb_listener" "alb_listener_https" {

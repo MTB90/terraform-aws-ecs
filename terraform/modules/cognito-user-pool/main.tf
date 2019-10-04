@@ -9,8 +9,7 @@ resource "aws_cognito_user_pool" "user_pool" {
   name = local.name
   tags = local.tags
 
-  username_attributes = [
-  "email"]
+  username_attributes = ["email"]
 
   schema {
     name                = "nickname"
@@ -21,7 +20,7 @@ resource "aws_cognito_user_pool" "user_pool" {
 
   auto_verified_attributes = ["email"]
 
-  verification_message_template = {
+  verification_message_template {
     default_email_option = "CONFIRM_WITH_LINK"
   }
 }

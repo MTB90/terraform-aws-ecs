@@ -47,7 +47,3 @@ Destroy environment:
 ```bash
 $ make tf-destroy
 ```
- 
- ### Development web site configuration
- 1) Setup database
- 
