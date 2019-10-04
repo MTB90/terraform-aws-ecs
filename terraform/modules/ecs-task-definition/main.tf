@@ -1,14 +1,14 @@
 # Local variables
 locals {
   module    = "ecs-task-definition"
-  name      = "${format("%s-%s", var.tags["Project"], var.tags["Envarioment"])}"
-  tags      = "${merge(var.tags, map("Module", local.module))}"
-  log_group = "${format("%s/container/awslog", var.tags["Project"])}"
+  name      = format("%s-%s-%s", var.tags["Project"], var.tags["Envarioment"], local.module)
+  tags      = merge(var.tags, map("Module", local.module))
+  log_group = format("%s/container/awslog", var.tags["Project"])
 }
 
 # Resources
 resource "aws_ecs_task_definition" "task_definition" {
-  family       = "${local.name}"
+  family       = local.name
   network_mode = "bridge"
 
   container_definitions = <<DEF
@@ -99,6 +99,6 @@ resource "random_string" "secret_key" {
 }
 
 resource "aws_cloudwatch_log_group" "container_log_group" {
-  name = "${local.log_group}"
-  tags = "${var.tags}"
+  name = local.log_group
+  tags = var.tags
 }

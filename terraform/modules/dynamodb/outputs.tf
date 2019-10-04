@@ -1,3 +1,3 @@
 output "database" {
-  value = "${local.database}"
+  value = local.database
 }
