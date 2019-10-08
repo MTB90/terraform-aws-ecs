@@ -6,3 +6,7 @@ variable "tags" {
 variable "domain" {
   description = "Domain name"
 }
+
+variable "region" {
+  description = "A region to send log data"
+}
