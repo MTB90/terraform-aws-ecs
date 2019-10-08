@@ -1,5 +1,5 @@
 output "arn" {
-  value = aws_alb.alb.arn
+  value = aws_lb.alb.arn
 }
 
 output "sg_id" {
@@ -11,9 +11,9 @@ output "tg_arn" {
 }
 
 output "dns_name" {
-  value = aws_alb.alb.dns_name
+  value = aws_lb.alb.dns_name
 }
 
 output "zone_id" {
-  value = aws_alb.alb.zone_id
+  value = aws_lb.alb.zone_id
 }

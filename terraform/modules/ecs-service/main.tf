@@ -33,7 +33,7 @@ resource "aws_ecs_service" "ecs_service" {
 }
 
 resource "null_resource" "alb_exists" {
-  triggers {
+  triggers = {
     alb_name = var.alb_arn
   }
 }

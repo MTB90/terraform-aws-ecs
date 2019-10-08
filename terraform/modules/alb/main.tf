@@ -6,19 +6,17 @@ locals {
 }
 
 # Resources
-resource "aws_alb" "alb" {
+resource "aws_lb" "alb" {
   name = local.name
   tags = local.tags
 
   internal = false
-  security_groups = [
-  aws_security_group.alb_sg.id]
-  subnets = [
-  var.subnets]
+  security_groups = [aws_security_group.alb_sg.id]
+  subnets = var.subnets
 }
 
 resource "aws_alb_listener" "alb_listener_https" {
-  load_balancer_arn = aws_alb.alb.arn
+  load_balancer_arn = aws_lb.alb.arn
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
@@ -31,7 +29,7 @@ resource "aws_alb_listener" "alb_listener_https" {
 }
 
 resource "aws_alb_listener" "alb_listener_http" {
-  load_balancer_arn = aws_alb.alb.arn
+  load_balancer_arn = aws_lb.alb.arn
   port              = 80
   protocol          = "HTTP"
 
