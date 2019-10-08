@@ -18,32 +18,36 @@ List of used AWS components:
 
 ### AWS web site configuration
 
-1) AWS:
-	- certificate for your domain name
-	- EC2 key
-	- ECR repository named photorec
+* AWS:
+	- create certificate for your domain name
+	- EC2 key for bastion
+	- create ECR repository
 
-2) Update file envfile with your variables: AWS_PROFILE, AWS_ACCOUNT_ID, REGION
-3) Update file terraform/main.tf for tfstate location
-4) Update file terraform/variables.tf: 
-	- bastion_sq_inbaound_rule: with your ip e.g 190.32.43.2/32
-	- bastion_key_name: name of ec2 key
-	- domain: your domain name for which you request certificate
-	- certificate_arn: provide cert arn
-	- cname_records: CNAME record to the DNS configuration for your domain
-5) Deployment:
-
-Setup environment:
+* Update file envfile with your variables: AWS_PROFILE, AWS_ACCOUNT_ID, AWS_REGION, AWS_ECR
+* Update file terraform files:
+    - Update main.tf for tfstate location
+    - Update file terraform/variables.tf: 
+        - bastion_sq_inbaound_rule: with your ip e.g 190.32.43.2/32
+        - bastion_key_name: name of ec2 key
+        - domain: your domain name for which you request certificate
+        - certificate_arn: provide cert arn
+        - cname_records: CNAME record to the DNS configuration for your domain
+### Run tests:
 ```bash
-$ make ecr-push-image
-$ make tf-create 
+$ make test
 ```
-Create new image and update service:
+### Deployment:
+
+Push image:
 ```bash
-$ make ecr-push-image
-$ make ecr-update-service
+$ make aws-docker-image
+$ make ENV=<enviroment> aws-push-image
 ``` 
-Destroy environment:
+Create AWS environment:
 ```bash
-$ make tf-destroy
+$ terraform apply
+```
+Destroy AWS environment:
+```bash
+$ terraform destroy
 ```
