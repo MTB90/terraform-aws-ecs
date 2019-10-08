@@ -2,12 +2,6 @@ sudo: required
 
 dist: xenial
 
-# safelist
-branches:
-  only:
-  - master
-  - develop
-
 language: python
 python:
   - "3.7"
@@ -19,9 +13,8 @@ env:
 
 stages:
   - name: test
-    if: branch = master
   - name: develop
-    if: branch = master AND type = pull_request
+    if: branch = develop AND type = push
   - name: production
     if: branch = master AND type = push
 
