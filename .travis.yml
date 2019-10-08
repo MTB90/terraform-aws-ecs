@@ -13,6 +13,7 @@ env:
 
 stages:
   - name: test
+    if: type = push
   - name: develop
     if: branch = develop AND type = push
   - name: production
