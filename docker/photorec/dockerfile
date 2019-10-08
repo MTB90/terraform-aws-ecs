@@ -10,6 +10,4 @@ RUN export PIP_NO_CACHE_DIR=false \
     && apk add --no-cache --virtual .build-deps build-base linux-headers \
     && pip install pipenv \
     && pipenv install --system --deploy \
-    && find /usr/local -type d -a -name __pycache__ -o -name test -o -name tests -exec rm -rf {} + \
-    && find /usr/local -type f -a -name *.pyc -o -name *.pyo -exec rm -rf {} + \
     && apk del .build-deps
