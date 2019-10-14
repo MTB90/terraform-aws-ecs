@@ -115,3 +115,6 @@ venv.bak/
 # Terraform
 *.tfstate
 *.tfstate.backup
+
+# Terragrunt
+.terragrunt-cache/
