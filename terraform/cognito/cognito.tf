@@ -1,13 +1,11 @@
-# Local variables
 locals {
-  module = "cognito-user-pool"
-  name   = format("%s-%s", var.tags["Project"], var.tags["Envarioment"])
-  tags   = merge(var.tags, map("Module", local.module, "Name", local.name))
+  name = format("%s-%s", var.aws_project_name, var.aws_environment_type)
+  tags = merge(map("Project", var.aws_project_name, "Environment", var.aws_environment_type))
 }
 
 resource "aws_cognito_user_pool" "user_pool" {
-  name = local.name
-  tags = local.tags
+  name = format("%s-user-pool", local.name)
+  tags = merge(local.tags, map("Name", format("%s-user-pool", local.name)))
 
   username_attributes = ["email"]
 
@@ -26,7 +24,7 @@ resource "aws_cognito_user_pool" "user_pool" {
 }
 
 resource "aws_cognito_user_pool_client" "user_pool_client" {
-  name = format("%s-client", local.name)
+  name = format("%s-user-pool-client", local.name)
 
   user_pool_id                 = aws_cognito_user_pool.user_pool.id
   supported_identity_providers = ["COGNITO"]
@@ -36,11 +34,11 @@ resource "aws_cognito_user_pool_client" "user_pool_client" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_flows_user_pool_client = true
 
-  callback_urls = [format("https://%s/callback", var.domain)]
-  logout_urls   = [format("https://%s/", var.domain)]
+  callback_urls = [format("https://%s/callback", var.domian_name)]
+  logout_urls   = [format("https://%s/", var.domian_name)]
 }
 
 resource "aws_cognito_user_pool_domain" "user_pool_domian" {
-  domain       = local.tags["Project"]
+  domain       = var.aws_project_name
   user_pool_id = aws_cognito_user_pool.user_pool.id
 }

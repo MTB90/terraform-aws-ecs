@@ -1,3 +1,8 @@
+variable "domian_name" {
+  description = "The domian name for app"
+  type        = string
+}
+
 variable "aws_project_name" {
   description = "The project name for resource"
   type        = string
