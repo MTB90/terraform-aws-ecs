@@ -3,7 +3,7 @@ variable "tags" {
   default     = {}
 }
 
-variable "domian" {
+variable "domian_name" {
   description = "Domian name"
 }
 
@@ -15,8 +15,17 @@ variable "alb_dns_name" {
   description = "The DNS name for alb"
 }
 
-variable "cname_records" {
-  description = "CNAME records for hosted zones"
-  default     = []
-  type        = "list"
+variable "record_type" {
+  description = "Record type"
+  type        = string
+}
+
+variable "record_name" {
+  description = "Record name"
+  type        = string
+}
+
+variable "record_value" {
+  description = "Record value"
+  type        = string
 }

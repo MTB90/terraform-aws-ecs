@@ -1,14 +1,7 @@
-# Local variables
-locals {
-  module = "alb"
-  name   = format("%s-%s", var.tags["Project"], var.tags["Envarioment"])
-  tags   = merge(var.tags, map("Module", local.module, "Name", local.name))
-}
-
 # Resources
 resource "aws_lb" "alb" {
-  name = local.name
-  tags = local.tags
+  name = format("%s-alb", var.tags["Name"])
+  tags = var.tags
 
   internal = false
   security_groups = [aws_security_group.alb_sg.id]
@@ -45,8 +38,8 @@ resource "aws_alb_listener" "alb_listener_http" {
 }
 
 resource "aws_security_group" "alb_sg" {
-  name = format("%s-alb-sg", local.name)
-  tags = merge(var.tags, map("Name", format("%s-sg", local.name)))
+  name = format("%s-alb-sg", var.tags["Name"])
+  tags = var.tags
 
   # Inbound HTTPS
   ingress {
@@ -99,7 +92,8 @@ resource "aws_security_group" "alb_sg" {
 }
 
 resource "aws_alb_target_group" "alb_tg" {
-  tags = local.tags
+  name = format("%s-alb-tg", var.tags["Name"])
+  tags = var.tags
 
   port        = 80
   protocol    = "HTTP"

@@ -1,13 +1,6 @@
-# Local variables
-locals {
-  module = "bastion"
-  name   = format("%s-%s-%s", var.tags["Project"], var.tags["Envarioment"], local.module)
-  tags   = merge(var.tags, map("Module", local.module, "Name", local.name))
-}
-
 # Resources
 resource "aws_instance" "bastion_ec2" {
-  tags = local.tags
+  tags = var.tags
 
   ami                         = var.image_id
   instance_type               = var.instance_type
@@ -19,8 +12,8 @@ resource "aws_instance" "bastion_ec2" {
 }
 
 resource "aws_security_group" "bastion_sg" {
-  name = format("%s-sg", local.name)
-  tags = merge(var.tags, map("Name", format("%s-sg", local.name)))
+  name = format("%s-sg", var.tags["Name"])
+  tags = merge(var.tags, map("Name", format("%s-sg", var.tags["Name"])))
 
   vpc_id = var.vpc_id
 

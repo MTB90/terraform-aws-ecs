@@ -1,13 +1,6 @@
-# Local variables
-locals {
-  module = "subnets"
-  name   = format("%s-%s-%s", var.tags["Project"], var.tags["Name"], var.tags["Envarioment"])
-  tags   = merge(var.tags, map("Module", local.module, "Name", local.name))
-}
-
 # Resources
 resource "aws_subnet" "subnet" {
-  tags = local.tags
+  tags = var.tags
 
   vpc_id                  = var.vpc_id
   cidr_block              = cidrsubnet(var.cidr, 8, var.shift + count.index)
@@ -17,7 +10,7 @@ resource "aws_subnet" "subnet" {
 }
 
 resource "aws_route_table" "route_table" {
-  tags   = local.tags
+  tags   = var.tags
   vpc_id = var.vpc_id
 }
 
