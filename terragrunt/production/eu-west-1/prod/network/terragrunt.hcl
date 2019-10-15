@@ -1,5 +1,5 @@
 terraform {
-  source = "../../../../../terraform/network-2-layer/"
+  source = "../../../../../terraform/network/"
 }
 
 include {
