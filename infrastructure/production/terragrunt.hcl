@@ -15,9 +15,6 @@ inputs = {
   aws_project_name          = "photorec"
   aws_environment_type      = "prod"
 
-  aws_admin_inbound_rule  = "0.0.0.0/0"
-  aws_admin_key_pair_name = "bastion"
-
   tfstate_global_bucket        = "photorec-infrastracture"
   tfstate_global_bucket_region = "eu-west-1"
 }

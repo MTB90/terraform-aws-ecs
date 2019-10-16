@@ -53,14 +53,14 @@ module "bastion_instance" {
   subnet_id       = module.public_subnets.subnets[0]
   image_id        = var.aws_bastion_ami
   instance_type   = var.aws_bastion_instance_type
-  sq_inbound_rule = var.aws_admin_inbound_rule
-  key_name        = var.aws_admin_key_pair_name
+  sq_inbound_rule = var.aws_bastion_inbound_rule
+  key_name        = var.aws_bastion_key_pair_name
 }
 
 # Application load balancer
 module "alb" {
   source = "./alb"
-  tags   = merge(local.tags, map("Name", format("%s-bastion", local.name)))
+  tags   = merge(local.tags, map("Name", format("%s-alb", local.name)))
 
   vpc_id          = aws_vpc.vpc.id
   subnets         = module.public_subnets.subnets

@@ -13,6 +13,43 @@ variable "aws_region" {
   type        = string
 }
 
+variable "aws_ecs_cluster_ami" {
+  description = "AMI for ecs machine"
+  type        = string
+}
+
+variable "aws_ecs_cluster_instance_type" {
+  description = "Instance type for ecs machine (e.g. t2.micro)"
+  type        = string
+}
+
+variable "aws_nat_ami" {
+  description = "AMI for NAT machine"
+  type        = string
+}
+
+variable "aws_nat_instance_type" {
+  description = "Instance type for NAT machine (e.g. t2.micro)"
+  type        = string
+}
+
+variable "aws_ecs_ec2_min" {
+  description = "Autoscaling policy min ecs ec2 machines"
+}
+
+variable "aws_ecs_ec2_max" {
+  description = "Autoscaling policy max ecs ec2 machines"
+}
+
+variable "aws_ecs_ec2_desired" {
+  description = "Autoscaling policy desired ecs ec2 machines"
+}
+
+variable "aws_ecs_ec2_key_pair_name" {
+  description = "Admin key pair name for ecs machines"
+  type        = string
+}
+
 variable "tfstate_global_bucket" {
     type = string
 }

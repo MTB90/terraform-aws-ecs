@@ -10,15 +10,6 @@ terraform {
   required_version = ">= 0.12.0"
 }
 
-data "terraform_remote_state" "cognito" {
-  backend = "s3"
-  config = {
-    region = var.tfstate_global_bucket_region
-    bucket = var.tfstate_global_bucket
-    key = format("%s/%s/cognito/terraform.tfstate", var.aws_region, var.aws_environment_type)
-  }
-}
-
 data "terraform_remote_state" "network" {
   backend = "s3"
   config = {

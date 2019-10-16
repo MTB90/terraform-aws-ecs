@@ -33,13 +33,13 @@ variable "aws_bastion_instance_type" {
   type        = string
 }
 
-variable "aws_admin_inbound_rule" {
-  description = "Admin indbound for bastion machine"
+variable "aws_bastion_inbound_rule" {
+  description = "Bastion indbound for bastion machine"
   type        = string
 }
 
-variable "aws_admin_key_pair_name" {
-  description = "Admin key pair name for bastion machine"
+variable "aws_bastion_key_pair_name" {
+  description = "Bastion key pair name for bastion machine"
   type        = string
 }
 

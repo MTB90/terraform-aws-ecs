@@ -38,7 +38,7 @@ resource "aws_alb_listener" "alb_listener_http" {
 }
 
 resource "aws_security_group" "alb_sg" {
-  name = format("%s-alb-sg", var.tags["Name"])
+  name = format("%s-sg", var.tags["Name"])
   tags = var.tags
 
   # Inbound HTTPS

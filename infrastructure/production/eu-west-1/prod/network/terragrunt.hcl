@@ -12,4 +12,7 @@ inputs = {
 
   aws_bastion_ami           =  "ami-0ce71448843cb18a1"
   aws_bastion_instance_type = "t2.micro"
+
+  aws_bastion_inbound_rule  = "0.0.0.0/0"
+  aws_bastion_key_pair_name = "bastion"
 }
