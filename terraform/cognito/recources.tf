@@ -16,8 +16,8 @@ resource "aws_cognito_user_pool" "user_pool" {
     mutable             = false
 
     string_attribute_constraints {
-      min_length = 7
-      max_length = 256
+      min_length = 3
+      max_length = 64
     }
   }
 

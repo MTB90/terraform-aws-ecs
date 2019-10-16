@@ -1,5 +1,5 @@
 terraform {
-  source = "../../../../../terraform/ecs/"
+  source = "../../../../../terraform/ecs-cluster/"
 }
 
 include {

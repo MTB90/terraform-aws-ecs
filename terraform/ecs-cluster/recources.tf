@@ -5,7 +5,7 @@ locals {
 
 
 module "ecs_cluster" {
-  source = "./ecs-cluster"
+  source = "./cluster"
   tags   = merge(local.tags, map("Name", format("%s-ecs-cluster", local.name)))
   region = var.aws_region
 }
