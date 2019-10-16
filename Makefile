@@ -95,7 +95,7 @@ localstack-env:
 
 	@echo "$(GREEN)Create AWS infrastructure on localstack$(NC)"
 
-	@cd terraform/local; \
+	@cd infrastructure/localstack; \
 		rm terraform.tfstate || true; \
 		terraform init; \
 		terraform apply -auto-approve
