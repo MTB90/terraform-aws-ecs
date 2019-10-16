@@ -20,7 +20,7 @@ usage:
 ########################### AWS DEPLOYMENT ##########################
 aws-push-image: app-docker-build _app-docker-tag _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
-	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR):$(ENV)
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR):latest
 
 aws-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
@@ -41,7 +41,7 @@ app-docker-build:
 
 _app-docker-tag:
 	@echo "$(GREEN)TAG docker image$(NC)"
-	docker tag photorec:latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR):$(ENV)
+	docker tag photorec:latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR):latest
 
 
 ######################## PIPENV ENVIRONMENT ########################
