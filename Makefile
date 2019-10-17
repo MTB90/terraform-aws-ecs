@@ -20,11 +20,11 @@ usage:
 ########################### AWS DEPLOYMENT ##########################
 aws-push-image: app-docker-build _app-docker-tag _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
-	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR):$(ENV)
+	docker push $(AWS_ECR):latest
 
 aws-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
-	aws ecs update-service --cluster photorec-ecs-cluster-cluster --service photorec-ecs-service --force-new-deployment
+	aws ecs update-service --cluster $(AWS_ECS_CLUSTER) --service $(AWS_ECS_SERVICE) --force-new-deployment
 
 _aws-login:
 	@echo "$(GREEN)Login to AWS ECR$(NC)"
@@ -41,7 +41,7 @@ app-docker-build:
 
 _app-docker-tag:
 	@echo "$(GREEN)TAG docker image$(NC)"
-	docker tag photorec:latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR):$(ENV)
+	docker tag photorec:latest $(AWS_ECR):latest
 
 
 ######################## PIPENV ENVIRONMENT ########################
@@ -95,7 +95,7 @@ localstack-env:
 
 	@echo "$(GREEN)Create AWS infrastructure on localstack$(NC)"
 
-	@cd terraform/local; \
+	@cd infrastructure/localstack; \
 		rm terraform.tfstate || true; \
 		terraform init; \
 		terraform apply -auto-approve

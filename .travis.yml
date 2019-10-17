@@ -41,11 +41,11 @@ jobs:
       services:
         - docker
       script:
-        - make ENV=latest aws-push-image
+        - make aws-push-image
 
     - stage: production
       install: make travis-aws
       services:
         - docker
       script:
-        - make ENV=prod aws-push-image
+        - make aws-update-service
