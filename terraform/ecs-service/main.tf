@@ -28,11 +28,29 @@ data "terraform_remote_state" "storage" {
   }
 }
 
+data "terraform_remote_state" "network" {
+  backend = "s3"
+  config = {
+    region = var.tfstate_global_bucket_region
+    bucket = var.tfstate_global_bucket
+    key = format("%s/%s/network/terraform.tfstate", var.aws_region, var.aws_environment_type)
+  }
+}
+
 data "terraform_remote_state" "cognito" {
   backend = "s3"
   config = {
     region = var.tfstate_global_bucket_region
     bucket = var.tfstate_global_bucket
     key = format("%s/%s/cognito/terraform.tfstate", var.aws_region, var.aws_environment_type)
+  }
+}
+
+data "terraform_remote_state" "ecs-cluster" {
+  backend = "s3"
+  config = {
+    region = var.tfstate_global_bucket_region
+    bucket = var.tfstate_global_bucket
+    key = format("%s/%s/ecs-cluster/terraform.tfstate", var.aws_region, var.aws_environment_type)
   }
 }

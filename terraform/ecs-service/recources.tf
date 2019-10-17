@@ -1,6 +1,11 @@
 locals {
   name  = format("%s-%s", var.aws_project_name, var.aws_environment_type)
   tags  = merge(map("Project", var.aws_project_name, "Environment", var.aws_environment_type))
+  aws_ecs_container_limits = map(
+    "min", var.aws_ecs_container_min,
+    "max", var.aws_ecs_container_max,
+    "desired", var.aws_ecs_container_desired
+  )
 }
 
 module "ecs_ec2_task_definition" {
@@ -21,4 +26,25 @@ module "ecs_ec2_task_definition" {
   cognito_pool_id       = data.terraform_remote_state.cognito.outputs.pool_id
   cognito_client_id     = data.terraform_remote_state.cognito.outputs.client_id
   cognito_client_secret = data.terraform_remote_state.cognito.outputs.client_secret
+}
+
+module "ecs_ec2_service" {
+  source = "./service"
+  tags   = merge(local.tags, map("Name", format("%s-ecs-service", local.name)))
+
+  alb_arn             = data.terraform_remote_state.network.outputs.alb_arn
+  tg_arn              = data.terraform_remote_state.network.outputs.alb_tg_arn
+  cluster_id          = data.terraform_remote_state.ecs-cluster.outputs.cluster_id
+  capacity_limits     = local.aws_ecs_container_limits
+  task_definition_arn = module.ecs_ec2_task_definition.arn
+  container_name      = module.ecs_ec2_task_definition.container_name
+}
+
+module "ecs_app_autoscaling" {
+  source = "./app-autoscaling"
+  tags   = merge(local.tags, map("Name", format("%s-ecs-app-autoscaling", local.name)))
+
+  cluster_name    = data.terraform_remote_state.ecs-cluster.outputs.cluster_name
+  service_name    = module.ecs_ec2_service.name
+  capacity_limits = local.aws_ecs_container_limits
 }

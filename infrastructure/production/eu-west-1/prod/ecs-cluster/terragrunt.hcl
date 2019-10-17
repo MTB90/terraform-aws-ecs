@@ -7,12 +7,12 @@ include {
 }
 
 inputs = {
-  aws_region                = "eu-west-1"
+  aws_region = "eu-west-1"
 
   aws_nat_ami                   = "ami-0236d0cbbbe64730c"
   aws_nat_instance_type         = "t2.micro"
 
-  aws_ecs_cluster_ami           =  "ami-0ce71448843cb18a1"
+  aws_ecs_cluster_ami           = "ami-0963349a5568210b8"
   aws_ecs_cluster_instance_type = "t2.micro"
   aws_ecs_ec2_key_pair_name     = "ecs-ec2"
 

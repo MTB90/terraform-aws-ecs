@@ -1,5 +1,5 @@
 output "aws_ecr_arn" {
-  value = aws_ecr_repository.aws_ecr_repo.arn
+  value = aws_ecr_repository.aws_ecr_repo.repository_url
 }
 
 output "aws_cert_arn" {

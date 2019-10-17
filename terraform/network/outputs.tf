@@ -2,6 +2,14 @@ output "vpc_id" {
   value = aws_vpc.vpc.id
 }
 
+output "alb_arn" {
+  value = module.alb.arn
+}
+
+output "alb_tg_arn" {
+  value = module.alb.tg_arn
+}
+
 output "alb_sg_id" {
   value = module.alb.sg_id
 }
