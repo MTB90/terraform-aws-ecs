@@ -48,4 +48,4 @@ jobs:
       services:
         - docker
       script:
-        - make aws-push-image
+        - make aws-update-service
