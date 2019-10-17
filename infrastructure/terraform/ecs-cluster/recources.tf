@@ -4,19 +4,33 @@ locals {
   aws_ecs_ec2_limits = map("min", var.aws_ecs_ec2_min, "max", var.aws_ecs_ec2_max, "desired", var.aws_ecs_ec2_desired)
 }
 
-
 module "ecs_cluster" {
   source = "./cluster"
   tags   = merge(local.tags, map("Name", format("%s-ecs-cluster", local.name)))
   region = var.aws_region
 }
 
+# Bastion instance
+module "bastion_instance" {
+  source = "./bastion-instance"
+  tags   = merge(local.tags, map("Name", format("%s-bastion", local.name)))
+
+  vpc_id          = data.terraform_remote_state.network.outputs.vpc_id
+  subnet_id       = data.terraform_remote_state.network.outputs.public_subnets[0]
+  image_id        = var.aws_bastion_ami
+  instance_type   = var.aws_bastion_instance_type
+  sq_inbound_rule = var.aws_bastion_inbound_rule
+  key_name        = var.aws_bastion_key_pair_name
+}
+
+
 module "launch_configuration" {
   source = "./launch-configuration"
   tags   = merge(local.tags, map("Name", format("%s-ec2-launch-conf", local.name)))
 
   vpc_id          = data.terraform_remote_state.network.outputs.vpc_id
-  sq_inbound_rule = data.terraform_remote_state.network.outputs.alb_sg_id
+  alb_sg_id       = data.terraform_remote_state.network.outputs.alb_sg_id
+  bastion_sg_id   = module.bastion_instance.sg_id
   file_storage    = data.terraform_remote_state.storage.outputs.file_storage
 
   ami             = var.aws_ecs_cluster_ami

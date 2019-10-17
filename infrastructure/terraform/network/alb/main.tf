@@ -1,6 +1,6 @@
 # Resources
 resource "aws_lb" "alb" {
-  name = format("%s-alb", var.tags["Name"])
+  name = var.tags["Name"]
   tags = var.tags
 
   internal = false
@@ -92,7 +92,7 @@ resource "aws_security_group" "alb_sg" {
 }
 
 resource "aws_alb_target_group" "alb_tg" {
-  name = format("%s-alb-tg", var.tags["Name"])
+  name = format("%s-tg", var.tags["Name"])
   tags = var.tags
 
   port        = 80
