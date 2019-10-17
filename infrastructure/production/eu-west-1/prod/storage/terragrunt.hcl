@@ -1,5 +1,5 @@
 terraform {
-  source = "../../../../../terraform/storage/"
+  source = "../../../../terraform/storage/"
 }
 
 include {

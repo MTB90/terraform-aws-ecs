@@ -22,12 +22,12 @@ locals {
 
 # Dynamodb
 module "dynamodb" {
-  source = "../../terraform/storage/dynamodb"
+  source = "../terraform/storage/dynamodb"
   tags   =  merge(local.tags, map("Name", local.name))
 }
 
 # S3
 module "s3" {
-  source = "../../terraform/storage/s3"
+  source = "../terraform/storage/s3"
   tags   = merge(local.tags, map("Name", local.name))
 }
