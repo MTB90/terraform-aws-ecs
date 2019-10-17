@@ -20,7 +20,15 @@ resource "aws_security_group" "config_sg" {
     protocol  = "-1"
     from_port = 0
     to_port   = 0
-    security_groups = [var.sq_inbound_rule]
+    security_groups = [var.alb_sg_id]
+  }
+
+  # Inbound Bastion
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    security_groups = [var.bastion_sg_id]
   }
 
   # Outbound

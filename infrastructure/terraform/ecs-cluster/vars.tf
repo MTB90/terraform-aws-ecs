@@ -50,6 +50,27 @@ variable "aws_ecs_ec2_key_pair_name" {
   type        = string
 }
 
+
+variable "aws_bastion_ami" {
+  description = "AMI for bastion machine"
+  type        = string
+}
+
+variable "aws_bastion_instance_type" {
+  description = "Instance type for bastion machine (e.g. t2.micro)"
+  type        = string
+}
+
+variable "aws_bastion_inbound_rule" {
+  description = "Bastion indbound for bastion machine"
+  type        = string
+}
+
+variable "aws_bastion_key_pair_name" {
+  description = "Bastion key pair name for bastion machine"
+  type        = string
+}
+
 variable "tfstate_global_bucket" {
     type = string
 }

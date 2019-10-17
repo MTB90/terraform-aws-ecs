@@ -19,8 +19,12 @@ variable "user_data" {
   description = "User data for launch configration"
 }
 
-variable "sq_inbound_rule" {
-  description = "Source security group inbound rule"
+variable "alb_sg_id" {
+  description = "ALB security group id"
+}
+
+variable "bastion_sg_id" {
+  description = "Bastion security group id"
 }
 
 variable "file_storage" {

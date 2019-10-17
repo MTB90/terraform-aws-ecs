@@ -9,6 +9,12 @@ include {
 inputs = {
   aws_region = "eu-west-1"
 
+  aws_bastion_ami           =  "ami-0ce71448843cb18a1"
+  aws_bastion_instance_type = "t2.micro"
+
+  aws_bastion_inbound_rule  = "0.0.0.0/0"
+  aws_bastion_key_pair_name = "bastion"
+
   aws_nat_ami                   = "ami-0236d0cbbbe64730c"
   aws_nat_instance_type         = "t2.micro"
 
