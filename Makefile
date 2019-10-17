@@ -24,7 +24,7 @@ aws-push-image: app-docker-build _app-docker-tag _aws-login
 
 aws-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
-	aws ecs update-service --cluster $(AWS_ECS_CLUSTER) --service $(AWS_ECS_SERVICE) --force-new-deployment
+	aws ecs update-service --region $(AWS_REGION) --cluster $(AWS_ECS_CLUSTER) --service $(AWS_ECS_SERVICE) --force-new-deployment
 
 _aws-login:
 	@echo "$(GREEN)Login to AWS ECR$(NC)"
