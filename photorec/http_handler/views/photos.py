@@ -22,11 +22,11 @@ class PhotoForm(FlaskForm):
 
 
 @blueprint.route("/", methods=('GET', 'POST'))
-@flask_login.login_required
+#@flask_login.login_required
 def myphotos():
     """Add/list photo route"""
     form = PhotoForm()
-    user_nickname = flask_login.current_user.nickname
+    user_nickname = 'mati'
 
     if form.validate_on_submit():
         upload_command = cq_factory.get(UploadPhotoCommand)
@@ -38,12 +38,12 @@ def myphotos():
     return render_template("myphotos.html", form=form, photos=photos)
 
 
-@blueprint.route("/delete/<path:uuid>")
-@flask_login.login_required
-def myphotos_delete(uuid):
+@blueprint.route("/delete/<path:photo>")
+#@flask_login.login_required
+def myphotos_delete(photo):
     """Delete photo route"""
-    user_nickname = flask_login.current_user.nickname
+    user_nickname = 'mati'
     photos_delete = cq_factory.get(DeletePhotoCommand)
-    photos_delete.execute(nickname=user_nickname, uuid=uuid)
+    photos_delete.execute(nickname=user_nickname, photo=photo)
 
     return redirect(url_for("myphotos.myphotos"))

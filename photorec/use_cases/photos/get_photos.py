@@ -11,6 +11,6 @@ class GetPhotosQuery(BaseCQ):
         photos = self._photo_repo.list(query=query, filters=filters)
 
         for photo in photos:
-            photo['thumb_signed_url'] = self._storage_service.get_signed_url(photo['thumb'])
+            photo['thumbnail_signed_url'] = self._storage_service.get_signed_url(photo['thumbnail'])
             photo['photo_signed_url'] = self._storage_service.get_signed_url(photo['photo'])
         return photos

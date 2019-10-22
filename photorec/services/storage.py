@@ -1,4 +1,5 @@
 import boto3
+from botocore.errorfactory import ClientError
 
 
 class ServiceStorageS3:
@@ -35,8 +36,11 @@ class ServiceStorageS3:
         return f"{uuid4}.jpeg"
 
     def get_signed_url(self, key: str):
-        url = self._s3_client.generate_presigned_url(
-            'get_object',
-            Params={'Bucket': self._config.STORAGE, 'Key': key})
-
-        return url
+        try:
+            self._s3_client.head_object(Bucket=self._config.STORAGE, Key=key)
+            return self._s3_client.generate_presigned_url(
+                'get_object',
+                Params={'Bucket': self._config.STORAGE, 'Key': key}
+            )
+        except ClientError:
+            return None

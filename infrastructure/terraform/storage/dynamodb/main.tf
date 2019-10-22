@@ -5,14 +5,14 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
   billing_mode = "PAY_PER_REQUEST"
 
   hash_key  = "nickname"
-  range_key = "uuid"
+  range_key = "photo"
 
   attribute {
     name = "nickname"
     type = "S"
   }
   attribute {
-    name = "uuid"
+    name = "photo"
     type = "S"
   }
   attribute {
@@ -66,7 +66,7 @@ resource "aws_dynamodb_table" "dynamodb_table_likes" {
 
   billing_mode = "PAY_PER_REQUEST"
 
-  hash_key  = "thumb"
+  hash_key  = "thumbnail"
   range_key = "submitter"
 
   attribute {
@@ -74,7 +74,7 @@ resource "aws_dynamodb_table" "dynamodb_table_likes" {
     type = "S"
   }
   attribute {
-    name = "thumb"
+    name = "thumbnail"
     type = "S"
   }
 }
