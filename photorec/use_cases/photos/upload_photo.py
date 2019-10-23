@@ -11,12 +11,15 @@ class UploadPhotoCommand(BaseCQ):
     def execute(self, nickname: str, data):
         photo = self._image_service.load(data)
         self._photo_validator.validate_uploaded_photo_data(photo=photo)
-        photo_key = self._storage_service.generate_key()
+        key = self._storage_service.generate_key()
+
+        photo_key = f"photo/{key}"
+        thumbnail_key = f"thumbnail/{key}"
 
         item = {
             'nickname': nickname,
             'photo': photo_key,
-            'thumbnail': f'thumbnail/{photo_key}',
+            'thumbnail': thumbnail_key,
         }
 
         self._photo_repo.add(item=item)

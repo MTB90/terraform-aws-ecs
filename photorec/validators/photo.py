@@ -19,7 +19,6 @@ class PhotoNotFoundError(BadRequestError):
 class ValidatorPhoto:
     KB = 1024
     MB = 1024 * KB
-
     MAX_SIZE = 5 * MB
 
     @staticmethod

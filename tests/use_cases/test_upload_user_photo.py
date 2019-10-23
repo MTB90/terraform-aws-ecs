@@ -45,10 +45,10 @@ def test_given_nickname_photo_when_upload_new_then_update_db_and_store_photo_thu
 
     repo_photo.add.assert_called_once_with(item={
         'nickname': 'nickname',
-        'photo': photo_name,
+        'photo': f'photo/{photo_name}',
         'thumbnail': f'thumbnail/{photo_name}'
     })
 
     service_storage.put.assert_has_calls([
-        call(key=photo_name, data=photo.bytes())
+        call(key=f'photo/{photo_name}', data=photo.bytes())
     ])
