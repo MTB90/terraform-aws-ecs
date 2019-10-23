@@ -103,3 +103,23 @@ localstack-env:
 code-style:
 	@echo "$(GREEN)Running FLAKE8$(NC)"
 	flake8 || exit 1
+
+_copy-source-package:
+	mkdir -p photorec-serverless/source-code
+	@cd photorec; \
+		find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete; \
+		cp -r common ../photorec-serverless/source-code; \
+		cp -r database ../photorec-serverless/source-code; \
+		cp -r repository ../photorec-serverless/source-code; \
+		cp -r services ../photorec-serverless/source-code; \
+		cp -r use_cases ../photorec-serverless/source-code; \
+		cp -r validators ../photorec-serverless/source-code; \
+		cp -r config.py ../photorec-serverless/source-code
+
+
+create-lambda: _copy-source-package
+	unzip photorec-serverless/pillow.zip -d photorec-serverless/source-code/
+	cp photorec-serverless/lambda_handler/$(NAME).py photorec-serverless/source-code/
+	cd photorec-serverless/source-code;\
+		zip -r ../../photorec-serverless/$(NAME).zip .
+	rm -r photorec-serverless/source-code

@@ -10,4 +10,12 @@ terraform {
   required_version = ">= 0.12.0"
 }
 
+data "terraform_remote_state" "storage" {
+  backend = "s3"
+  config = {
+    region = var.tfstate_global_bucket_region
+    bucket = var.tfstate_global_bucket
+    key = format("%s/%s/storage/terraform.tfstate", var.aws_region, var.aws_environment_type)
+  }
+}
 
