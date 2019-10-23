@@ -21,6 +21,14 @@ class ServiceStorageS3:
 
         return response['ResponseMetadata']['HTTPStatusCode']
 
+    def get(self, key):
+        response = self._s3_client.get_object(
+            Bucket=self._config.STORAGE,
+            Key=key,
+        )
+
+        return response['Body']
+
     def put(self, key: str, data):
         response = self._s3_client.put_object(
             Bucket=self._config.STORAGE,

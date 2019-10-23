@@ -10,5 +10,6 @@ module "lambda_thumbnail" {
 
   lambda_handler = "thumbnail.handler"
   lambda_source  = "${path.root}/../../../../../../../../photorec-serverless/thumbnail.zip"
-  file_storage   = data.terraform_remote_state.storage.outputs.file_storage
+
+  file_storage     = data.terraform_remote_state.storage.outputs.file_storage
 }

@@ -2,7 +2,7 @@ from ..base import BaseCQ
 
 
 class UploadPhotoCommand(BaseCQ):
-    def __init__(self, repo__photo, validator__photo, service__storage, service__image,):
+    def __init__(self, repo__photo, validator__photo, service__storage, service__image):
         self._photo_repo = repo__photo
         self._photo_validator = validator__photo
         self._storage_service = service__storage

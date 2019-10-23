@@ -44,7 +44,7 @@ class ServiceImage:
         return DataImageJpeg(data=data)
 
     @staticmethod
-    def resize(data_image: DataImageJpeg, width: int = 150, height: int = 150) -> DataImageJpeg:
+    def resize(data_image: DataImageJpeg, width: int = 200, height: int = 200) -> DataImageJpeg:
         image = data_image.image
         try:
             exif = dict(image._getexif().items())
