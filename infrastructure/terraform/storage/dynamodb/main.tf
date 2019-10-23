@@ -8,13 +8,14 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
   range_key = "photo"
 
   attribute {
-    name = "nickname"
-    type = "S"
-  }
-  attribute {
     name = "photo"
     type = "S"
   }
+  attribute {
+    name = "nickname"
+    type = "S"
+  }
+
   attribute {
     name = "tag"
     type = "S"
@@ -22,6 +23,12 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
   attribute {
     name = "likes"
     type = "N"
+  }
+
+  global_secondary_index {
+    name            = "photo-index"
+    hash_key        = "photo"
+    projection_type = "ALL"
   }
 
   global_secondary_index {

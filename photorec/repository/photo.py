@@ -7,7 +7,10 @@ class RepoPhoto(RepoBase):
     Repository for photos that encapsulate access to resources.
     """
     def __init__(self, db, config):
-        secondary_index = {"tag": 'photo-tags', "tag__eq": 'photo-tags'}
+        secondary_index = {
+            "tag": 'photo-tags', "tag__eq": 'photo-tags',
+            'photo': 'photo-index', 'photo__eq': 'photo-index'
+        }
         super().__init__(db=db, config=config, secondary_index=secondary_index)
 
     @property
