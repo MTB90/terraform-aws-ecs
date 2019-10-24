@@ -8,13 +8,13 @@ class DeletePhotoCommand(BaseCQ):
         self._photo_validator = validator__photo
         self._storage_service = service__storage
 
-    def execute(self, nickname: str, uuid: str):
+    def execute(self, nickname: str, photo: str):
         self._nickname_validator.validate(nickname=nickname)
-        key = {'nickname': nickname, 'uuid': uuid}
+        key = {'nickname': nickname, 'photo': photo}
 
         photo = self._photo_repo.get(key=key)
         self._photo_validator.validate_removed_photo(removed_photo=photo)
 
         self._photo_repo.delete(key=key)
-        self._storage_service.delete(key=photo['thumb'])
+        self._storage_service.delete(key=photo['thumbnail'])
         self._storage_service.delete(key=photo['photo'])

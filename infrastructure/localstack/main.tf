@@ -10,8 +10,8 @@ provider "aws" {
   secret_key = "secret_key"
 
   endpoints {
-    s3       = "http://127.0.0.1:4572"
-    dynamodb = "http://127.0.0.1:4569"
+    s3         = "http://127.0.0.1:4572"
+    dynamodb   = "http://127.0.0.1:4569"
   }
 }
 

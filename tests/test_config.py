@@ -1,10 +1,10 @@
 import os
-from photorec.config import get_config, ProdConfig, LocalConfig, DevConfig
+from photorec.config import get_config, DefaultConfig, LocalConfig
 
 
-def test_get_config_when_no_env_set_then_return_prod_config():
+def test_get_config_when_no_env_set_then_return_default_config():
     config = get_config()
-    assert config == ProdConfig
+    assert config == DefaultConfig
 
 
 def test_get_config_when_local_env_set_then_return_local_config():
@@ -17,5 +17,5 @@ def test_get_config_when_local_env_set_then_return_local_config():
 def test_get_config_when_debug_set_then_return_dev_config():
     os.environ["DEBUG"] = "True"
     config = get_config()
-    assert config == DevConfig
+    assert config.DEBUG
     os.environ.pop("DEBUG")

@@ -22,7 +22,11 @@
           {% for photo in photos %}
             <div class="col-md-4">
               <div class="card mb-4 shadow-sm">
-                <img class="card-img-top" src="{{ photo.thumb_signed_url }}">
+                {% if photo.thumbnail_signed_url != None %}
+                    <img class="card-img-top" src="{{ photo.thumbnail_signed_url }}">
+                {% else %}
+                    <img class="card-img-top" src="/static/no-thumb.png">
+                {% endif %}
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
@@ -31,7 +35,7 @@
                       </button>
 
                       <button type="button" class="btn btn-sm btn-outline-secondary">
-                        <a href="{{ url_for('myphotos.myphotos_delete', uuid=photo.uuid) }}"
+                        <a href="{{ url_for('myphotos.myphotos_delete', photo=photo.photo) }}"
                            style="text-decoration:none;">Remove</a>
                       </button>
                     </div>
