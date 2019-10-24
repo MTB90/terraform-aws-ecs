@@ -5,16 +5,17 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
   billing_mode = "PAY_PER_REQUEST"
 
   hash_key  = "nickname"
-  range_key = "uuid"
+  range_key = "photo"
 
+  attribute {
+    name = "photo"
+    type = "S"
+  }
   attribute {
     name = "nickname"
     type = "S"
   }
-  attribute {
-    name = "uuid"
-    type = "S"
-  }
+
   attribute {
     name = "tag"
     type = "S"
@@ -22,6 +23,12 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
   attribute {
     name = "likes"
     type = "N"
+  }
+
+  global_secondary_index {
+    name            = "photo-index"
+    hash_key        = "photo"
+    projection_type = "ALL"
   }
 
   global_secondary_index {
@@ -66,7 +73,7 @@ resource "aws_dynamodb_table" "dynamodb_table_likes" {
 
   billing_mode = "PAY_PER_REQUEST"
 
-  hash_key  = "thumb"
+  hash_key  = "thumbnail"
   range_key = "submitter"
 
   attribute {
@@ -74,7 +81,7 @@ resource "aws_dynamodb_table" "dynamodb_table_likes" {
     type = "S"
   }
   attribute {
-    name = "thumb"
+    name = "thumbnail"
     type = "S"
   }
 }

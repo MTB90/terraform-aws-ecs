@@ -20,7 +20,6 @@ def service_storage():
 
 def test_given_no_nickname_when_delete_photo_then_error_nickname_not_defined(
         repo_photo, service_storage):
-
     validator = create_autospec(ValidatorNickname)
     validator.validate.side_effect = NicknameError()
 
@@ -31,14 +30,14 @@ def test_given_no_nickname_when_delete_photo_then_error_nickname_not_defined(
         validator__photo=Mock()
     )
     with pytest.raises(NicknameError):
-        command.execute(nickname=Mock(), uuid=Mock())
+        command.execute(nickname=Mock(), photo=Mock())
 
 
 def test_given_nickname_uuid_when_delete_not_existing_photo_then_raise_and_no_changes(
         repo_photo, service_storage):
     repo_photo.get.return_value = None
 
-    uuid = 'd48f920c-3994-4ac7-9400-17055854f645'
+    photo = 'd48f920c-3994-4ac7-9400-17055854f645.jpeg'
     nickname = 'nickname'
 
     command = DeletePhotoCommand(
@@ -49,27 +48,26 @@ def test_given_nickname_uuid_when_delete_not_existing_photo_then_raise_and_no_ch
     )
 
     with pytest.raises(PhotoNotFoundError):
-        command.execute(nickname=nickname, uuid=uuid)
+        command.execute(nickname=nickname, photo=photo)
 
     repo_photo.get.assert_called_once()
     repo_photo.delete.assert_not_called()
     service_storage.delete.assert_not_called()
 
 
-def test_given_nickname_uuid_when_delete_existing_photo_then_delete(
-        repo_photo, service_storage):
-    photo = {
-        'uuid': 'd48f920c-3994-4ac7-9400-17055854f645',
-        'nickname': 'nickname',
-        'thumb': 'thumb/photo.png',
-        'photo': 'photo/photo.png',
+def test_given_nickname_uuid_when_delete_existing_photo_then_delete(repo_photo, service_storage):
+    thumbnail = 'thumbnail/d48f920c-3994-4ac7-9400-17055854f645.jpeg'
+    photo = 'd48f920c-3994-4ac7-9400-17055854f645.jpeg'
+    nickname = 'nickname'
+
+    record = {
+        'nickname': nickname,
+        'photo': photo,
+        'thumbnail': thumbnail,
         'tag': 'tag',
         'likes': 10
     }
-    repo_photo.get.return_value = photo
-
-    uuid = 'd48f920c-3994-4ac7-9400-17055854f645'
-    nickname = 'nickname'
+    repo_photo.get.return_value = record
 
     command = DeletePhotoCommand(
         repo__photo=repo_photo,
@@ -77,12 +75,12 @@ def test_given_nickname_uuid_when_delete_existing_photo_then_delete(
         validator__nickname=Mock(),
         validator__photo=Mock()
     )
-    command.execute(nickname=nickname, uuid=uuid)
+    command.execute(nickname=nickname, photo=photo)
 
-    request = {'uuid': uuid, 'nickname': nickname}
+    request = {'photo': photo, 'nickname': nickname}
     repo_photo.get.assert_called_once()
     repo_photo.delete.assert_called_once_with(key=request)
     service_storage.delete.assert_has_calls([
-        call(key=photo['thumb']),
-        call(key=photo['photo'])
+        call(key=thumbnail),
+        call(key=photo)
     ])

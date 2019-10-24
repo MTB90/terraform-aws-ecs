@@ -38,12 +38,12 @@ def myphotos():
     return render_template("myphotos.html", form=form, photos=photos)
 
 
-@blueprint.route("/delete/<path:uuid>")
+@blueprint.route("/delete/<path:photo>")
 @flask_login.login_required
-def myphotos_delete(uuid):
+def myphotos_delete(photo):
     """Delete photo route"""
     user_nickname = flask_login.current_user.nickname
     photos_delete = cq_factory.get(DeletePhotoCommand)
-    photos_delete.execute(nickname=user_nickname, uuid=uuid)
+    photos_delete.execute(nickname=user_nickname, photo=photo)
 
     return redirect(url_for("myphotos.myphotos"))

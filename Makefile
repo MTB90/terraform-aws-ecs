@@ -26,6 +26,10 @@ aws-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
 	aws ecs update-service --region $(AWS_REGION) --cluster $(AWS_ECS_CLUSTER) --service $(AWS_ECS_SERVICE) --force-new-deployment
 
+_app-docker-tag:
+	@echo "$(GREEN)TAG docker image$(NC)"
+	docker tag photorec:latest $(AWS_ECR):latest
+
 _aws-login:
 	@echo "$(GREEN)Login to AWS ECR$(NC)"
 	$(eval AWS_LOGIN_COMMAND=$(shell aws ecr get-login --region $(AWS_REGION) --no-include-email))
@@ -39,10 +43,16 @@ app-docker-build:
 	cd docker; \
 		docker-compose -f docker-compose.yml build --no-cache
 
-_app-docker-tag:
-	@echo "$(GREEN)TAG docker image$(NC)"
-	docker tag photorec:latest $(AWS_ECR):latest
+aws-update-lambda: create-lambda
+	@cd inrastructure/production/eu-west-1/prod/serverless; \
+		terragrunt apply -auto-approve
 
+create-lambda: _copy-source-package
+	unzip photorec-serverless/pillow.zip -d photorec-serverless/source-code/
+	cp photorec-serverless/lambda_handler/$(NAME).py photorec-serverless/source-code/
+	cd photorec-serverless/source-code;\
+		zip -r ../../photorec-serverless/$(NAME).zip .
+	rm -r photorec-serverless/source-code
 
 ######################## PIPENV ENVIRONMENT ########################
 pipenv-install:
@@ -103,3 +113,15 @@ localstack-env:
 code-style:
 	@echo "$(GREEN)Running FLAKE8$(NC)"
 	flake8 || exit 1
+
+_copy-source-package:
+	mkdir -p photorec-serverless/source-code
+	@cd photorec; \
+		find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete; \
+		cp -r common ../photorec-serverless/source-code; \
+		cp -r database ../photorec-serverless/source-code; \
+		cp -r repository ../photorec-serverless/source-code; \
+		cp -r services ../photorec-serverless/source-code; \
+		cp -r use_cases ../photorec-serverless/source-code; \
+		cp -r validators ../photorec-serverless/source-code; \
+		cp -r config.py ../photorec-serverless/source-code

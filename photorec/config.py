@@ -34,14 +34,14 @@ class Config(metaclass=ConfigLoad):
     AWS_ENDPOINTS = {}
 
 
-class ProdConfig(Config):
-    """Production configuration."""
+class DefaultConfig(Config):
+    """Default configuration."""
     ENV = 'prod'
     DEBUG = False
 
 
 class LocalConfig(Config):
-    """Test configuration."""
+    """Local configuration."""
     DEFAULT_ENV = 'photorec-local'
     AWS_ENDPOINTS = {
         's3': "http://127.0.0.1:4572",
@@ -49,17 +49,11 @@ class LocalConfig(Config):
     }
 
 
-class DevConfig(LocalConfig):
-    """Dev configuration."""
-    DEFAULT_ENV = 'photorec-local'
-    DEBUG = True
-
-
 def get_config():
+    config = DefaultConfig
+
     if os.getenv("LOCAL", False):
-        return LocalConfig
+        config = LocalConfig
 
-    if os.getenv('DEBUG', False):
-        return DevConfig
-
-    return ProdConfig
+    config.DEBUG = bool(os.getenv('DEBUG', False))
+    return config
