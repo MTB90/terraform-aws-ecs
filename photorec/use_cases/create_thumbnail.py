@@ -2,7 +2,7 @@ from .base import BaseCQ
 
 
 class CreateThumbnail(BaseCQ):
-    def __init__(self,  service__storage, service__image):
+    def __init__(self, service__storage, service__image):
         self._storage_service = service__storage
         self._image_service = service__image
 

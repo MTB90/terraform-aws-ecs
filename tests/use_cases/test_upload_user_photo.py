@@ -4,7 +4,6 @@ import pytest
 
 from photorec.repository.photo import RepoPhoto
 from photorec.services.image import ServiceImage, DataImageJpeg
-from photorec.services.random import ServiceRandom
 from photorec.services.storage import ServiceStorageS3
 from photorec.use_cases.photos.upload_photo import UploadPhotoCommand
 
