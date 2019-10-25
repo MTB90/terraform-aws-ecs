@@ -3,9 +3,7 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
   tags = var.tags
 
   billing_mode = "PAY_PER_REQUEST"
-
-  hash_key  = "nickname"
-  range_key = "photo"
+  hash_key     = "photo"
 
   attribute {
     name = "photo"
@@ -27,8 +25,9 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
   }
 
   global_secondary_index {
-    name            = "photo-index"
-    hash_key        = "photo"
+    name            = "photo-nickname"
+    hash_key        = "nickname"
+    range_key       = "likes"
     projection_type = "ALL"
   }
 

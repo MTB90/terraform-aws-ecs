@@ -11,7 +11,6 @@ module "sns_s3_notification" {
   file_storage  = data.terraform_remote_state.storage.outputs.file_storage
 }
 
-
 data "template_file" "lambda_thumbnail_role" {
   template = file("${path.module}/lambda-thumbnail-role.json.tpl")
 
@@ -29,6 +28,30 @@ module "lambda_thumbnail" {
   lambda_policy    = data.template_file.lambda_thumbnail_role.rendered
   lambda_variables = {
     STORAGE = data.terraform_remote_state.storage.outputs.file_storage
+  }
+
+  sns_arn          = module.sns_s3_notification.arn
+}
+
+data "template_file" "lambda_rekognition_role" {
+  template = file("${path.module}/lambda-rekognition-role.json.tpl")
+
+  vars = {
+    storage = data.terraform_remote_state.storage.outputs.file_storage
+  }
+}
+
+module "lambda_rekognition" {
+  source = "./lambda-sns"
+  tags   = merge(local.tags, map("Name", format("%s-lambda-rekognition", local.name)))
+
+  lambda_handler   = "rekognition.handler"
+  lambda_source    = "${path.root}/../../../../../../../../photorec-serverless/rekognition.zip"
+  lambda_policy    = data.template_file.lambda_rekognition_role.rendered
+  lambda_variables = {
+    DATABASE = data.terraform_remote_state.storage.outputs.database
+    STORAGE  = data.terraform_remote_state.storage.outputs.file_storage
+    REGION   = var.aws_region
   }
 
   sns_arn          = module.sns_s3_notification.arn
