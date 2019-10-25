@@ -10,9 +10,7 @@ resource "aws_lambda_function" "thumbnail_lambda" {
   runtime          = "python3.7"
 
   environment {
-    variables = {
-      STORAGE = var.file_storage
-    }
+    variables = var.lambda_variables
   }
 }
 
@@ -31,36 +29,19 @@ resource "aws_iam_policy" "lambda_policy" {
   name        = format("%s-iam-policy", var.tags["Name"])
   path        = "/"
   description = "Policy for the Lambda Role."
-
-  policy = data.template_file.template_instance_role.rendered
+  policy = var.lambda_policy
 }
 
-data "template_file" "template_instance_role" {
-  template = file("${path.module}/lambda-role.json.tpl")
-
-  vars = {
-    storage = var.file_storage
-  }
-}
-
-data "aws_s3_bucket" "bucket" {
-  bucket = var.file_storage
-}
-
-resource "aws_lambda_permission" "allow_bucket" {
-  statement_id  = "AllowExecutionFromS3Bucket"
+resource "aws_lambda_permission" "lambda_allow_sns" {
+  statement_id  = "AllowExecutionFromSNS"
   action        = "lambda:InvokeFunction"
-  function_name =  aws_lambda_function.thumbnail_lambda.arn
-  principal     = "s3.amazonaws.com"
-  source_arn    = data.aws_s3_bucket.bucket.arn
+  function_name = aws_lambda_function.thumbnail_lambda.arn
+  principal     = "sns.amazonaws.com"
+  source_arn    = var.sns_arn
 }
 
-resource "aws_s3_bucket_notification" "bucket_notification" {
-  bucket = data.aws_s3_bucket.bucket.id
-
-  lambda_function {
-    lambda_function_arn = aws_lambda_function.thumbnail_lambda.arn
-    events              = ["s3:ObjectCreated:*"]
-    filter_prefix       = "photo/"
-  }
+resource "aws_sns_topic_subscription" "lambda_sns_topic_subscriptio" {
+  topic_arn = var.sns_arn
+  protocol  = "lambda"
+  endpoint  = aws_lambda_function.thumbnail_lambda.arn
 }

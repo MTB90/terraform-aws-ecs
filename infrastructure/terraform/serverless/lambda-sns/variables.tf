@@ -13,6 +13,14 @@ variable "lambda_source" {
   type        = string
 }
 
-variable "file_storage" {
-  description = "File storage access"
+variable "lambda_policy" {
+  description = "Lambda policy"
+}
+
+variable "lambda_variables" {
+  description = "Lambda variables"
+}
+
+variable "sns_arn" {
+  description = "The SNS ARN for lambda"
 }

@@ -8,17 +8,8 @@ from use_cases.create_thumbnail import CreateThumbnail
 
 
 def handler(event, context):
-    records = [x for x in event.get('Records', []) if x.get('eventName') == 'ObjectCreated:Put']
-    sorted_events = sorted(records, key=lambda e: e.get('eventTime'))
-
-    if not sorted_events:
-        return {
-            'statusCode': 400,
-            'body': json.dumps(f'Event not supported {event}')
-        }
-
-    info_s3_event = sorted_events[-1].get('s3', {})
-    photo_key = info_s3_event.get('object', {}).get('key')
+    message = json.loads(event['Records'][0]['Sns']['Message'])
+    photo_key = message['Records'][0]['s3']['object']['key']
 
     if not photo_key:
         return {
