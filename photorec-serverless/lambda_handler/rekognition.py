@@ -28,7 +28,7 @@ def handler(event, context):
         repo__tag=RepoTag(db, config),
         service__rekognition=ServiceRekognition(config)
     )
-    photo_tag = use_case.execute(photo_key=photo_key)
+    photo_tag = use_case.execute(photo_key)
 
     return {
         'statusCode': 200,

@@ -21,8 +21,11 @@ class RepoPhoto(RepoBase):
         item['likes'] = 0
         return super().add(item=item)
 
-    def update_tag(self, item):
+    def update_tag(self, item: Dict):
         self.table.update_item(
             Key={'photo': item['photo']},
-            AttributeUpdates={'tag': item['tag']}
+            UpdateExpression='SET tag = :value',
+            ExpressionAttributeValues={
+                ':value': item['tag']
+            }
         )

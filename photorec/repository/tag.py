@@ -15,12 +15,10 @@ class RepoTag(RepoBase):
         return self._db.Table(f"{self._config.DATABASE}-tags")
 
     def add(self, item: Dict):
-        item['type'] = 'tag'
-
         response = self.table.update_item(
             Key={'name': item['name']},
-            UpdateExpression='ADD score :inc',
-            ExpressionAttributeValues={':inc': 1},
+            UpdateExpression='ADD score :inc, SET type = :value',
+            ExpressionAttributeValues={':inc': 1, ':value': 'tag'},
             ReturnValues="UPDATED_NEW"
         )
         return response['ResponseMetadata']['HTTPStatusCode']
