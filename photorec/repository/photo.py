@@ -20,3 +20,9 @@ class RepoPhoto(RepoBase):
     def add(self, item: Dict):
         item['likes'] = 0
         return super().add(item=item)
+
+    def update_tag(self, item):
+        self.table.update_item(
+            Key={'photo': item['photo']},
+            AttributeUpdates={'tag': item['tag']}
+        )

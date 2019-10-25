@@ -20,6 +20,7 @@ resource "aws_dynamodb_table" "dynamodb_table_photos" {
     name = "tag"
     type = "S"
   }
+
   attribute {
     name = "likes"
     type = "N"

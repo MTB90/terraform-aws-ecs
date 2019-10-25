@@ -55,6 +55,24 @@ create-thumbnail-lambda: _copy-source-package
 		zip -r ../../photorec-serverless/thumbnail.zip .
 	rm -r photorec-serverless/source-code
 
+create-rekognition-lambda: _copy-source-package
+	cp photorec-serverless/lambda_handler/rekognition.py photorec-serverless/source-code/
+	cd photorec-serverless/source-code;\
+		zip -r ../../photorec-serverless/rekognition.zip .
+	rm -r photorec-serverless/source-code
+
+_copy-source-package:
+	mkdir -p photorec-serverless/source-code
+	@cd photorec; \
+		find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete; \
+		cp -r common ../photorec-serverless/source-code; \
+		cp -r database ../photorec-serverless/source-code; \
+		cp -r repository ../photorec-serverless/source-code; \
+		cp -r services ../photorec-serverless/source-code; \
+		cp -r use_cases ../photorec-serverless/source-code; \
+		cp -r validators ../photorec-serverless/source-code; \
+		cp -r config.py ../photorec-serverless/source-code
+
 ######################## PIPENV ENVIRONMENT ########################
 pipenv-install:
 	@echo "$(GREEN)Create virutalenv and install packages$(NC)"
@@ -114,15 +132,3 @@ localstack-env:
 code-style:
 	@echo "$(GREEN)Running FLAKE8$(NC)"
 	flake8 || exit 1
-
-_copy-source-package:
-	mkdir -p photorec-serverless/source-code
-	@cd photorec; \
-		find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete; \
-		cp -r common ../photorec-serverless/source-code; \
-		cp -r database ../photorec-serverless/source-code; \
-		cp -r repository ../photorec-serverless/source-code; \
-		cp -r services ../photorec-serverless/source-code; \
-		cp -r use_cases ../photorec-serverless/source-code; \
-		cp -r validators ../photorec-serverless/source-code; \
-		cp -r config.py ../photorec-serverless/source-code
