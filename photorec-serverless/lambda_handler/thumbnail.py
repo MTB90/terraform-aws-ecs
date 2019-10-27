@@ -8,27 +8,18 @@ from use_cases.create_thumbnail import CreateThumbnail
 
 
 def handler(event, context):
-    records = [x for x in event.get('Records', []) if x.get('eventName') == 'ObjectCreated:Put']
-    sorted_events = sorted(records, key=lambda e: e.get('eventTime'))
-
-    if not sorted_events:
+    try:
+        message = json.loads(event['Records'][0]['Sns']['Message'])
+        photo_key = message['Records'][0]['s3']['object']['key']
+    except KeyError:
         return {
             'statusCode': 400,
-            'body': json.dumps(f'Event not supported {event}')
-        }
-
-    info_s3_event = sorted_events[-1].get('s3', {})
-    photo_key = info_s3_event.get('object', {}).get('key')
-
-    if not photo_key:
-        return {
-            'statusCode': 400,
-            'body': json.dumps(f'Object key : {photo_key}')
+            'body': json.dumps(f"Can't parse event message: {event}")
         }
 
     config = get_config()
-
     print(f"Start create thumbnail: {photo_key} with config: {config}")
+
     use_case = CreateThumbnail(
         service__image=ServiceImage(),
         service__storage=ServiceStorageS3(

@@ -6,5 +6,5 @@ class GetAllTagsQuery(BaseCQ):
         self._tag_repo = repo__tag
 
     def execute(self):
-        tags = self._tag_repo.all()
-        return tags
+        items = self._tag_repo.all()
+        return [item['tag'] for item in items]
