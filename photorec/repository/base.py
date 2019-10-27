@@ -31,12 +31,13 @@ class RepoBase(ABC):
         response = self.table.put_item(Item=item)
         return response['ResponseMetadata']['HTTPStatusCode']
 
-    def get(self, key: Dict) -> Dict:
+    def get(self, key: Dict, consistent_read=True) -> Dict:
         """Get item from repository
 
+        :param consistent_read: ConsistentRead for get item in dynamodb
         :param key: Primary key for item
         """
-        response = self.table.get_item(Key=key)
+        response = self.table.get_item(Key=key, ConsistentRead=consistent_read)
         if 'Item' in response:
             return response['Item']
         return None

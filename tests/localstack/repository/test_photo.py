@@ -28,7 +28,7 @@ def repo_photo_fill(repo_photo):
     for id_item in range(user2):
         item = {
             'nickname': 'user-2',
-            'photo': f'uuid{id_item}',
+            'photo': f'uuid{id_item + user1}',
             'thumbnail': f'thumbnail/uuid{id_item}'
         }
         repo_photo.add(item=item)
@@ -45,7 +45,7 @@ def test_when_add_new_photo_then_photo_is_store(repo_photo):
 
     response = repo_photo.add(item=item)
     assert response == 200
-    result = repo_photo.get(key={'nickname': 'nickname', 'photo': 'photo_key'})
+    result = repo_photo.get(key={'photo': 'photo_key'})
     item['likes'] = 0
     assert result == item
 
@@ -58,11 +58,11 @@ def test_when_add_photo_and_delete_then_no_item(repo_photo):
     }
 
     repo_photo.add(item=item)
-    item = repo_photo.get(key={'nickname': 'delete', 'photo': 'delete'})
+    item = repo_photo.get(key={'photo': 'delete'})
     assert item is not None
 
-    repo_photo.delete(key={'nickname': 'delete', 'photo': 'delete'})
-    item = repo_photo.get(key={'nickname': 'delete', 'photo': 'delete'})
+    repo_photo.delete(key={'photo': 'delete'})
+    item = repo_photo.get(key={'photo': 'delete'})
     assert item is None
 
 

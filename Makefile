@@ -17,7 +17,7 @@ usage:
 	@echo "make pipenv-install-test (Create test python venv)"
 	@echo "make docker-build (Build docker image)"
 
-########################### AWS DEPLOYMENT ##########################
+########################### AWS DEPLOYMENT ECS ##########################
 aws-push-image: app-docker-build _app-docker-tag _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
 	docker push $(AWS_ECR):latest
@@ -43,16 +43,35 @@ app-docker-build:
 	cd docker; \
 		docker-compose -f docker-compose.yml build --no-cache
 
-aws-update-lambda: create-lambda
+########################### AWS DEPLOYMENT Lambda ##########################
+aws-update-lambda: create-thumbnail-lambda
 	@cd inrastructure/production/eu-west-1/prod/serverless; \
 		terragrunt apply -auto-approve
 
-create-lambda: _copy-source-package
+create-thumbnail-lambda: _copy-source-package
 	unzip photorec-serverless/pillow.zip -d photorec-serverless/source-code/
-	cp photorec-serverless/lambda_handler/$(NAME).py photorec-serverless/source-code/
+	cp photorec-serverless/lambda_handler/thumbnail.py photorec-serverless/source-code/
 	cd photorec-serverless/source-code;\
-		zip -r ../../photorec-serverless/$(NAME).zip .
+		zip -r ../../photorec-serverless/thumbnail.zip .
 	rm -r photorec-serverless/source-code
+
+create-rekognition-lambda: _copy-source-package
+	cp photorec-serverless/lambda_handler/rekognition.py photorec-serverless/source-code/
+	cd photorec-serverless/source-code;\
+		zip -r ../../photorec-serverless/rekognition.zip .
+	rm -r photorec-serverless/source-code
+
+_copy-source-package:
+	mkdir -p photorec-serverless/source-code
+	@cd photorec; \
+		find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete; \
+		cp -r common ../photorec-serverless/source-code; \
+		cp -r database ../photorec-serverless/source-code; \
+		cp -r repository ../photorec-serverless/source-code; \
+		cp -r services ../photorec-serverless/source-code; \
+		cp -r use_cases ../photorec-serverless/source-code; \
+		cp -r validators ../photorec-serverless/source-code; \
+		cp -r config.py ../photorec-serverless/source-code
 
 ######################## PIPENV ENVIRONMENT ########################
 pipenv-install:
@@ -90,7 +109,7 @@ test: localstack-env
 	@echo "$(GREEN)Running unittests$(NC)"
 
 	@cd photorec; \
-		pytest ../tests --cov=./ --cov-report=xml || exit 1
+		pytest ../tests --cov=./ --cov-report=xml -v || exit 1
 
 localstack-env:
 	@echo "$(GREEN)Up localstack docker image$(NC)"
@@ -113,15 +132,3 @@ localstack-env:
 code-style:
 	@echo "$(GREEN)Running FLAKE8$(NC)"
 	flake8 || exit 1
-
-_copy-source-package:
-	mkdir -p photorec-serverless/source-code
-	@cd photorec; \
-		find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete; \
-		cp -r common ../photorec-serverless/source-code; \
-		cp -r database ../photorec-serverless/source-code; \
-		cp -r repository ../photorec-serverless/source-code; \
-		cp -r services ../photorec-serverless/source-code; \
-		cp -r use_cases ../photorec-serverless/source-code; \
-		cp -r validators ../photorec-serverless/source-code; \
-		cp -r config.py ../photorec-serverless/source-code

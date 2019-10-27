@@ -10,7 +10,7 @@ class DeletePhotoCommand(BaseCQ):
 
     def execute(self, nickname: str, photo: str):
         self._nickname_validator.validate(nickname=nickname)
-        key = {'nickname': nickname, 'photo': photo}
+        key = {'photo': photo}
 
         photo = self._photo_repo.get(key=key)
         self._photo_validator.validate_removed_photo(removed_photo=photo)

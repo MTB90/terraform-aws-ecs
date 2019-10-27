@@ -9,7 +9,7 @@ class RepoPhoto(RepoBase):
     def __init__(self, db, config):
         secondary_index = {
             "tag": 'photo-tags', "tag__eq": 'photo-tags',
-            'photo': 'photo-index', 'photo__eq': 'photo-index'
+            'nickname': 'photo-nickname', 'photo__eq': 'photo-nickname'
         }
         super().__init__(db=db, config=config, secondary_index=secondary_index)
 
@@ -20,3 +20,12 @@ class RepoPhoto(RepoBase):
     def add(self, item: Dict):
         item['likes'] = 0
         return super().add(item=item)
+
+    def update_tag(self, item: Dict):
+        self.table.update_item(
+            Key={'photo': item['photo']},
+            UpdateExpression='SET tag = :value',
+            ExpressionAttributeValues={
+                ':value': item['tag']
+            }
+        )

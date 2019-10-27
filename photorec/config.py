@@ -4,7 +4,7 @@ import os
 class ConfigLoad(type):
     """Meta class configuration."""
     ENV_ATTRS = [
-        'AWS_REGION',
+        'REGION',
         'AWS_COGNITO_POOL_ID',
         'AWS_COGNITO_CLIENT_ID',
         'AWS_COGNITO_CLIENT_SECRET',

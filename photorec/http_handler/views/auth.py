@@ -126,7 +126,7 @@ def well_known_jwks():
     https://docs.aws.amazon.com/cognito/latest/developerguide/
     amazon-cognito-user-pools-using-tokens-with-identity-providers.html
     """
-    url = f"https://cognito-idp.{blueprint.config['AWS_REGION']}.amazonaws.com/" \
+    url = f"https://cognito-idp.{blueprint.config['REGION']}.amazonaws.com/" \
           f"{blueprint.config['AWS_COGNITO_POOL_ID']}/.well-known/jwks.json"
 
     return requests.get(url).json()["keys"]

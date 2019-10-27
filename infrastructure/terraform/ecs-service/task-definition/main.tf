@@ -25,7 +25,7 @@ resource "aws_ecs_task_definition" "task_definition" {
     ],
     "environment": [
       {
-        "name": "AWS_REGION",
+        "name": "REGION",
         "value": "${var.region}"
       },
       {
