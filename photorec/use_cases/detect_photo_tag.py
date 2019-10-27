@@ -10,6 +10,6 @@ class DetectPhotoTag(BaseCQ):
     def execute(self, photo_key):
         tag = self._rekognition_service.detect_tag(photo_key)
 
-        self._tag_repo.add({'name': tag})
+        self._tag_repo.add({'tag': tag})
         self._photo_repo.update_tag(item={'photo': photo_key, 'tag': tag})
         return tag

@@ -109,7 +109,7 @@ test: localstack-env
 	@echo "$(GREEN)Running unittests$(NC)"
 
 	@cd photorec; \
-		pytest ../tests --cov=./ --cov-report=xml || exit 1
+		pytest ../tests --cov=./ --cov-report=xml -v || exit 1
 
 localstack-env:
 	@echo "$(GREEN)Up localstack docker image$(NC)"

@@ -7,7 +7,7 @@ class RepoTag(RepoBase):
     Repository for tags that encapsulate access to resources.
     """
     def __init__(self, db, config):
-        secondary_index = {"type": 'tags-score', "type__eq": 'tags-score'}
+        secondary_index = {"tags": 'tags-score', "tags__eq": 'tags-score'}
         super().__init__(db=db, config=config, secondary_index=secondary_index)
 
     @property
@@ -16,12 +16,12 @@ class RepoTag(RepoBase):
 
     def add(self, item: Dict):
         response = self.table.update_item(
-            Key={'name': item['name']},
-            UpdateExpression='ADD score :inc, SET type = :value',
-            ExpressionAttributeValues={':inc': 1, ':value': 'tag'},
+            Key={'tag': item['tag']},
+            UpdateExpression='SET score = if_not_exists(score, :start) + :inc, tags = :val',
+            ExpressionAttributeValues={':inc': 1, ':start': 0, ':val': 'tag'},
             ReturnValues="UPDATED_NEW"
         )
         return response['ResponseMetadata']['HTTPStatusCode']
 
     def all(self):
-        return self.list(query={'type': 'tag'})
+        return self.list(query={'tags': 'tag'})

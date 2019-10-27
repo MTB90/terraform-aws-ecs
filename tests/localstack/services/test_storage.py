@@ -36,3 +36,13 @@ def test_when_add_new_photo_then_return_200(service_storage):
         image_key = service_storage.generate_key()
         response = service_storage.put(key=image_key, data=image.bytes())
         assert response == 200
+
+        response = service_storage.get(key=image_key)
+        assert response is not None
+
+
+def test_no_photo_then_get_signed_url_return_none(service_storage):
+    photo = f"{service_storage.generate_key()}.jpg"
+
+    response = service_storage.get_signed_url(photo)
+    assert response is None
