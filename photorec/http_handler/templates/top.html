@@ -7,7 +7,7 @@
     </a>
 
     {% for tag in tags %}
-      <a href="/top" style="text-decoration:none;">
+      <a href="/top?tag={{tag}}" style="text-decoration:none;">
         <span class="badge badge-info">{{tag}}</span>
       </a>
     {% endfor %}

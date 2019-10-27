@@ -55,7 +55,7 @@ def test_given_nickname_uuid_when_delete_not_existing_photo_then_raise_and_no_ch
     service_storage.delete.assert_not_called()
 
 
-def test_given_nickname_uuid_when_delete_existing_photo_then_delete(repo_photo, service_storage):
+def test_given_photo_when_delete_existing_photo_then_delete(repo_photo, service_storage):
     thumbnail = 'thumbnail/d48f920c-3994-4ac7-9400-17055854f645.jpeg'
     photo = 'd48f920c-3994-4ac7-9400-17055854f645.jpeg'
     nickname = 'nickname'
@@ -77,7 +77,7 @@ def test_given_nickname_uuid_when_delete_existing_photo_then_delete(repo_photo, 
     )
     command.execute(nickname=nickname, photo=photo)
 
-    request = {'photo': photo, 'nickname': nickname}
+    request = {'photo': photo}
     repo_photo.get.assert_called_once()
     repo_photo.delete.assert_called_once_with(key=request)
     service_storage.delete.assert_has_calls([
