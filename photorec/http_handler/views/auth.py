@@ -52,8 +52,8 @@ def login():
     """ Login route """
     # http://docs.aws.amazon.com/cognito/latest/developerguide/login-endpoint.html
     session['csrf_state'] = os.urandom(8).hex()
-    url = f"https://{blueprint.config['AWS_COGNITO_DOMAIN']}/login?response_type=code&" \
-          f"client_id={blueprint.config['AWS_COGNITO_CLIENT_ID']}&" \
+    url = f"{blueprint.config['AUTH_URL']}/login?response_type=code&" \
+          f"client_id={blueprint.config['AUTH_CLIENT_ID']}&" \
           f"state={session['csrf_state']}&" \
           f"redirect_uri={blueprint.config['BASE_URL']}/callback"
     return redirect(url)
@@ -64,8 +64,8 @@ def logout():
     """ Logout route """
     # http://docs.aws.amazon.com/cognito/latest/developerguide/logout-endpoint.html
     flask_login.logout_user()
-    url = f"https://{blueprint.config['AWS_COGNITO_DOMAIN']}/logout?response_type=code&" \
-          f"client_id={blueprint.config['AWS_COGNITO_CLIENT_ID']}&" \
+    url = f"{blueprint.config['AUTH_URL']}/logout?response_type=code&" \
+          f"client_id={blueprint.config['AUTH_CLIENT_ID']}&" \
           f"logout_uri={blueprint.config['BASE_URL']}/"
 
     return redirect(url)
@@ -77,16 +77,16 @@ def callback():
     # http://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html
     csrf_state = request.args.get('state')
 
-    url = f"https://{blueprint.config['AWS_COGNITO_DOMAIN']}/oauth2/token"
+    url = f"{blueprint.config['AUTH_URL']}/oauth2/token"
     data = {
         'grant_type': 'authorization_code', 'code': request.args.get('code'),
-        'client_id': blueprint.config['AWS_COGNITO_CLIENT_ID'],
+        'client_id': blueprint.config['AUTH_CLIENT_ID'],
         "redirect_uri": f"{blueprint.config['BASE_URL']}/callback"
     }
 
     auth = HTTPBasicAuth(
-        blueprint.config['AWS_COGNITO_CLIENT_ID'],
-        blueprint.config['AWS_COGNITO_CLIENT_SECRET']
+        blueprint.config['AUTH_CLIENT_ID'],
+        blueprint.config['AUTH_CLIENT_SECRET']
     )
 
     response = requests.post(url=url, data=data, auth=auth)
@@ -126,10 +126,7 @@ def well_known_jwks():
     https://docs.aws.amazon.com/cognito/latest/developerguide/
     amazon-cognito-user-pools-using-tokens-with-identity-providers.html
     """
-    url = f"https://cognito-idp.{blueprint.config['REGION']}.amazonaws.com/" \
-          f"{blueprint.config['AWS_COGNITO_POOL_ID']}/.well-known/jwks.json"
-
-    return requests.get(url).json()["keys"]
+    return requests.get(blueprint.config['AUTH_JWKS_URL']).json()["keys"]
 
 
 def verify(token, access_token=None):
@@ -141,6 +138,6 @@ def verify(token, access_token=None):
     header = jwt.get_unverified_header(token)
     key = [k for k in jwks if k["kid"] == header['kid']][0]
     id_token = jwt.decode(token, key,
-                          audience=blueprint.config['AWS_COGNITO_CLIENT_ID'],
+                          audience=blueprint.config['AUTH_CLIENT_ID'],
                           access_token=access_token)
     return id_token

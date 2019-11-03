@@ -23,20 +23,20 @@ variable "workdir" {
   description = "Working directory for container"
 }
 
-variable "cognito_pool_id" {
-  description = "Cognito pool id"
+variable "auth_url" {
+  description = "Auth base URL"
 }
 
-variable "cognito_client_id" {
-  description = "Cognito client id"
+variable "auth_jwks_url" {
+  description = "JWKS URL for well knows keys"
 }
 
-variable "cognito_client_secret" {
-  description = "Cognito client secret"
+variable "auth_client_id" {
+  description = "Auth client id"
 }
 
-variable "cognito_domain" {
-  description = "Cognito domain name"
+variable "auth_client_secret" {
+  description = "Auth client secret"
 }
 
 variable "url" {

@@ -22,10 +22,10 @@ module "ecs_ec2_task_definition" {
   file_storage          = data.terraform_remote_state.storage.outputs.file_storage
   database              = data.terraform_remote_state.storage.outputs.database
 
-  cognito_domain        = data.terraform_remote_state.cognito.outputs.domain
-  cognito_pool_id       = data.terraform_remote_state.cognito.outputs.pool_id
-  cognito_client_id     = data.terraform_remote_state.cognito.outputs.client_id
-  cognito_client_secret = data.terraform_remote_state.cognito.outputs.client_secret
+  auth_url           = data.terraform_remote_state.cognito.outputs.auth_url
+  auth_jwks_url      = data.terraform_remote_state.cognito.outputs.auth_jwks_url
+  auth_client_id     = data.terraform_remote_state.cognito.outputs.auth_client_id
+  auth_client_secret = data.terraform_remote_state.cognito.outputs.auth_client_secret
 }
 
 module "ecs_ec2_service" {
