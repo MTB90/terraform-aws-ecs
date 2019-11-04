@@ -37,7 +37,7 @@ resource "aws_ecs_task_definition" "task_definition" {
         "value": "${var.auth_jwks_url}"
       },
       {
-        "name": "AWS_COGNITO_CLIENT_ID",
+        "name": "AUTH_CLIENT_ID",
         "value": "${var.auth_client_id}"
       },
       {

@@ -3,7 +3,8 @@ FROM python:3.7.4-alpine
 RUN mkdir -p /app
 
 WORKDIR /app
-COPY . /app
+COPY ["photorec-web", "photorec", "/app/"]
+
 
 RUN export PIP_NO_CACHE_DIR=false \
     && apk add --no-cache jpeg-dev zlib-dev \

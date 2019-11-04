@@ -6,8 +6,8 @@ services:
     image: photorec:latest
     restart: always
     build:
-      context: ../photorec
-      dockerfile: ../docker/photorec/dockerfile
+      context: ..
+      dockerfile: ./docker/dockerfiles/web-dockerfile
     ports:
       - "5000:8080"
     command: python run.py
