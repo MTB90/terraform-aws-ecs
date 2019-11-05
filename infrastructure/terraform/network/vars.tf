@@ -24,9 +24,9 @@ variable "aws_network_address_space" {
 }
 
 variable "tfstate_global_bucket" {
-    type = string
+  type = string
 }
 
 variable "tfstate_global_bucket_region" {
-    type = string
+  type = string
 }

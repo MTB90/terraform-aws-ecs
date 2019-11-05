@@ -31,7 +31,7 @@ variable "aws_ecs_container_desired" {
 }
 
 variable "aws_ecs_container_memory" {
-    description = "Memory for ecs container"
+  description = "Memory for ecs container"
 }
 
 variable "aws_ecs_container_cpu_unit" {
@@ -39,9 +39,9 @@ variable "aws_ecs_container_cpu_unit" {
 }
 
 variable "tfstate_global_bucket" {
-    type = string
+  type = string
 }
 
 variable "tfstate_global_bucket_region" {
-    type = string
+  type = string
 }
