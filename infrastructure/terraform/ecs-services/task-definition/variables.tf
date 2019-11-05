@@ -23,32 +23,13 @@ variable "workdir" {
   description = "Working directory for container"
 }
 
-variable "auth_url" {
-  description = "Auth base URL"
+variable "environments" {
+  description = "Environments variable for task definition"
+  default     = {}
 }
 
-variable "auth_jwks_url" {
-  description = "JWKS URL for well knows keys"
-}
-
-variable "auth_client_id" {
-  description = "Auth client id"
-}
-
-variable "auth_client_secret" {
-  description = "Auth client secret"
-}
-
-variable "url" {
-  description = "URL for web"
-}
-
-variable "database" {
-  description = "Database name"
-}
-
-variable "file_storage" {
-  description = "File storage access"
+variable "container_definition_file" {
+  description = "Container definition file"
 }
 
 variable "timeout" {
@@ -70,3 +51,4 @@ variable "retries" {
   description = "The number of times to retry a failed health check"
   default     = 3
 }
+

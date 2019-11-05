@@ -37,11 +37,3 @@ variable "aws_ecs_container_memory" {
 variable "aws_ecs_container_cpu_unit" {
   description = "CPU unit for ecs container"
 }
-
-variable "tfstate_global_bucket" {
-  type = string
-}
-
-variable "tfstate_global_bucket_region" {
-  type = string
-}
