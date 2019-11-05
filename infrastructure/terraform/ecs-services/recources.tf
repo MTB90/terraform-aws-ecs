@@ -16,7 +16,7 @@ module "ecs_ec2_task_definition" {
   cpu_unit         = var.aws_ecs_container_cpu_unit
   memory           = var.aws_ecs_container_memory
   workdir          = "/app"
-  docker_image_uri = format("%s:latest", data.terraform_remote_state.base.outputs.aws_ecr_arn)
+  docker_image_uri = format("%s:latest", data.terraform_remote_state.base.outputs.aws_web_ecr_arn)
 
   url                   = format("https://%s", var.domian_name)
   file_storage          = data.terraform_remote_state.storage.outputs.file_storage
@@ -30,7 +30,7 @@ module "ecs_ec2_task_definition" {
 
 module "ecs_ec2_service" {
   source = "./service"
-  tags   = merge(local.tags, map("Name", format("%s-ecs-service", local.name)))
+  tags   = merge(local.tags, map("Name", format("%s-web-ecs-service", local.name)))
 
   alb_arn             = data.terraform_remote_state.network.outputs.alb_arn
   tg_arn              = data.terraform_remote_state.network.outputs.alb_tg_arn
