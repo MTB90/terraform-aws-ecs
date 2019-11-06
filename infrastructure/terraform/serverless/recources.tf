@@ -1,28 +1,3 @@
-locals {
-  prefix = format("%s-%s", var.aws_project_name, var.aws_environment_type)
-  tags   = merge(map("Project", var.aws_project_name, "Environment", var.aws_environment_type))
-}
-
-data "aws_s3_bucket" "file_storage" {
-  bucket = format("%s-%s-s3", var.aws_project_name, var.aws_environment_type)
-}
-
-module "sns_s3_notification" {
-  source = "./sns-s3-event"
-  tags   = merge(local.tags, map("Name", format("%s-sns-s3-event", local.prefix)))
-
-  aws_region   = var.aws_region
-  file_storage = data.aws_s3_bucket.file_storage.bucket
-}
-
-data "template_file" "lambda_thumbnail_role" {
-  template = file("${path.module}/lambda-thumbnail-role.json.tpl")
-
-  vars = {
-    storage = data.aws_s3_bucket.file_storage.bucket
-  }
-}
-
 module "lambda_thumbnail" {
   source = "./lambda-sns"
   tags   = merge(local.tags, map("Name", format("%s-lambda-thumbnail", local.prefix)))

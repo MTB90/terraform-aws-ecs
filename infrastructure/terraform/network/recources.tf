@@ -1,28 +1,3 @@
-locals {
-  subnets = length(data.aws_availability_zones.available.names)
-  prefix  = format("%s-%s", var.aws_project_name, var.aws_environment_type)
-  tags    = merge(map("Project", var.aws_project_name, "Environment", var.aws_environment_type))
-}
-
-# Data resources
-data "aws_availability_zones" "available" {}
-
-data "aws_acm_certificate" "acm_cert" {
-  domain = var.domian_name
-}
-
-data "aws_ssm_parameter" "cert_record_type" {
-  name = format("%s-cert-record-type", local.prefix)
-}
-
-data "aws_ssm_parameter" "cert_record_name" {
-  name = format("%s-cert-record-name", local.prefix)
-}
-
-data "aws_ssm_parameter" "cert_record_value" {
-  name = format("%s-cert-record-value", local.prefix)
-}
-
 # VPC
 resource "aws_vpc" "vpc" {
   tags                 = merge(local.tags, map("Name", format("%s-vpc", local.prefix)))
