@@ -1,7 +1,9 @@
 import logging
+
 from flask import Flask
 
-from http_handler.views import auth, main, photos
+from .views import auth, main, photos
+
 log = logging.getLogger(__name__)
 
 

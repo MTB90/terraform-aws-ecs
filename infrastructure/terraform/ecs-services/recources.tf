@@ -11,7 +11,7 @@ module "ecs_web_task_definition" {
   cpu_unit         = var.aws_ecs_container_cpu_unit
   memory           = var.aws_ecs_container_memory
   workdir          = "/app"
-  docker_image_uri = format("%s:latest", data.aws_ecr_repository.web_ecr.arn)
+  docker_image_uri = format("%s:latest", data.aws_ecr_repository.web_ecr.repository_url)
 
   container_definition_file = "${path.root}/task-container/web.tpl"
 

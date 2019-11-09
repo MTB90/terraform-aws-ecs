@@ -26,6 +26,10 @@ $ make test
 * Update file envfile with your variables
 * Push image:
 ```bash
-$ make aws-docker-image
+# Update ECS Service
 $ make aws-push-image
+$ make aws-udpate-service
+
+# Update AWS lambda
+$ make aws-update-lambda
 ``` 

@@ -3,7 +3,7 @@ version: '3'
 services:
   localstack:
     image: localstack/localstack
-    container_name: aws_localstack
+    container_name: localstack
     ports:
       - "4567-4584:4567-4584"
       - "9080:8080"

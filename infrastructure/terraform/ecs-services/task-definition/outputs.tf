@@ -3,5 +3,5 @@ output "arn" {
 }
 
 output "container_name" {
-  value = local.name
+  value = var.tags["Name"]
 }

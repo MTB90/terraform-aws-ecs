@@ -12,6 +12,7 @@ python-jose = "*"
 boto3 = "*"
 pyioc = "*"
 pillow = "*"
+gunicorn = "*"
 
 [dev-packages]
 flask-debugtoolbar = "*"

@@ -1,10 +1,10 @@
 import json
 
-from config import get_config
-from services.image import ServiceImage
-from services.random import ServiceRandom
-from services.storage import ServiceStorageS3
-from use_cases.create_thumbnail import CreateThumbnail
+from photorec.config import get_config
+from photorec.services.image import ServiceImage
+from photorec.services.random import ServiceRandom
+from photorec.services.storage import ServiceStorageS3
+from photorec.use_cases.create_thumbnail import CreateThumbnail
 
 
 def handler(event, context):

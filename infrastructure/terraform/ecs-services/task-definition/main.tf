@@ -1,10 +1,9 @@
 # Local variables
 locals {
-  name      = var.tags["Name"]
-  log_group = format("%s/%s/%s/tasks", var.tags["Name"], var.tags["Environment"], var.tags["Project"])
+  log_group = format("%s-log", var.tags["Name"])
 
   paramaters = map(
-    "name", local.name,
+    "name", var.tags["Name"],
     "region", var.region,
     "cpu_unit", var.cpu_unit,
     "memory", var.memory,
@@ -13,13 +12,14 @@ locals {
     "timeout", var.timeout,
     "interval", var.interval,
     "start_period", var.start_period,
-    "retries", var.retries
+    "retries", var.retries,
+    "log_group", local.log_group
   )
 }
 
 # Resources
 resource "aws_ecs_task_definition" "task_definition" {
-  family       = local.name
+  family       = var.tags["Name"]
   tags         = var.tags
 
   network_mode          = "bridge"
@@ -28,5 +28,5 @@ resource "aws_ecs_task_definition" "task_definition" {
 
 resource "aws_cloudwatch_log_group" "container_log_group" {
   name = local.log_group
-  tags = merge(var.tags, map("Name", format("%s-cloudwatch-log-group", var.tags["Name"])))
+  tags = merge(var.tags, map("Name", local.log_group))
 }

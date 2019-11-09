@@ -37,7 +37,6 @@ class Config(metaclass=ConfigLoad):
 class DefaultConfig(Config):
     """Default configuration."""
     ENV = 'prod'
-    DEBUG = False
 
 
 class LocalConfig(Config):

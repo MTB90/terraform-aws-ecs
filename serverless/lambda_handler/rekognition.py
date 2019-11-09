@@ -1,11 +1,11 @@
 import json
 
-from config import get_config
-from database import create_db
-from repository.photo import RepoPhoto
-from repository.tag import RepoTag
-from services.recognition import ServiceRekognition
-from use_cases.detect_photo_tag import DetectPhotoTag
+from photorec.config import get_config
+from photorec.database import create_db
+from photorec.repository.photo import RepoPhoto
+from photorec.repository.tag import RepoTag
+from photorec.services.recognition import ServiceRekognition
+from photorec.use_cases.detect_photo_tag import DetectPhotoTag
 
 
 def handler(event, context):

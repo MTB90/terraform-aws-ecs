@@ -1,18 +1,14 @@
 from pyioc.containers import NamespacedContainer
 
-from repository.like import RepoLike
-from repository.photo import RepoPhoto
-from repository.tag import RepoTag
-
-from services.image import ServiceImage
-from services.random import ServiceRandom
-from services.storage import ServiceStorageS3
-
-from validators.nickname import ValidatorNickname
-from validators.photo import ValidatorPhoto
-
-from database import create_db
-
+from photorec.database import create_db
+from photorec.repository.like import RepoLike
+from photorec.repository.photo import RepoPhoto
+from photorec.repository.tag import RepoTag
+from photorec.services.image import ServiceImage
+from photorec.services.random import ServiceRandom
+from photorec.services.storage import ServiceStorageS3
+from photorec.validators.nickname import ValidatorNickname
+from photorec.validators.photo import ValidatorPhoto
 
 repo = NamespacedContainer('repo')
 repo.register_callable_with_deps('like', RepoLike)

@@ -7,7 +7,7 @@ services:
     restart: always
     build:
       context: ..
-      dockerfile: ./docker/dockerfiles/web-dockerfile
+      dockerfile: devops/dockerfiles/prod-web
     ports:
       - "5000:8080"
     command: python run.py

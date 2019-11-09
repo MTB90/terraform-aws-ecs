@@ -1,13 +1,14 @@
 import logging
+
 import flask_login
+from flask import Blueprint, render_template, redirect, url_for
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
-from flask import Blueprint, render_template, redirect, url_for
 
-from use_cases.factories import cq_factory
-from use_cases.photos.get_photos import GetPhotosQuery
-from use_cases.photos.upload_photo import UploadPhotoCommand
-from use_cases.photos.delete_photo import DeletePhotoCommand
+from factories import cq_factory
+from photorec.use_cases.photos.delete_photo import DeletePhotoCommand
+from photorec.use_cases.photos.get_photos import GetPhotosQuery
+from photorec.use_cases.photos.upload_photo import UploadPhotoCommand
 
 blueprint = Blueprint('myphotos', __name__)
 log = logging.getLogger(__name__)

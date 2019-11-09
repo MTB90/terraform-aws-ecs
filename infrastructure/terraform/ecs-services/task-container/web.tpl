@@ -65,14 +65,14 @@
     },
     "workingDirectory": "${workdir}",
     "healthCheck": {
-      "retries": ${var.retries},
+      "retries": ${retries},
       "command": [
         "CMD-SHELL",
         "curl -f http://localhost:8080/health || exit 1"
       ],
-      "timeout": ${var.timeout},
-      "interval": ${var.interval},
-      "startPeriod": ${var.start_period}
+      "timeout": ${timeout},
+      "interval": ${interval},
+      "startPeriod": ${start_period}
     }
   }
 ]

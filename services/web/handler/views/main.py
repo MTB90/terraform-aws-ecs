@@ -1,11 +1,11 @@
-import socket
 import logging
+import socket
 
 from flask import Blueprint, render_template, jsonify, request
-from use_cases.factories import cq_factory
-from use_cases.photos.get_photos import GetPhotosQuery
-from use_cases.tag.get_all_tags import GetAllTagsQuery
 
+from factories import cq_factory
+from photorec.use_cases.photos.get_photos import GetPhotosQuery
+from photorec.use_cases.tag.get_all_tags import GetAllTagsQuery
 
 blueprint = Blueprint('main', __name__)
 log = logging.getLogger(__name__)
