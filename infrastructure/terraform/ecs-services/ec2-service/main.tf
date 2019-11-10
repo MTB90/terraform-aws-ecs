@@ -14,9 +14,18 @@ resource "aws_ecs_service" "ecs_service" {
     field = "instanceId"
   }
 
-  load_balancer {
-    target_group_arn = var.tg_arn
-    container_name   = var.container_name
-    container_port   = 8080
+  dynamic "load_balancer" {
+    for_each = var.tg_arn == null ? [] : list(var.tg_arn)
+    content {
+      target_group_arn = var.tg_arn
+      container_name   = var.container_name
+      container_port   = 8080
+    }
+  }
+
+  service_registries {
+    registry_arn   = var.service_discovery_arn
+    container_name = var.container_name
+    container_port = 8080
   }
 }

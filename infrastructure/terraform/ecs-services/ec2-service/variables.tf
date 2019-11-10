@@ -15,12 +15,13 @@ variable "container_name" {
   description = "Container name from container definition"
 }
 
-variable "alb_arn" {
-  description = "Arn for application load balancer"
+variable "service_discovery_arn" {
+  description = "Arn service discovery"
 }
 
 variable "tg_arn" {
   description = "ARN for target group assigned to ecs service"
+  default     = null
 }
 
 variable "capacity_limits" {

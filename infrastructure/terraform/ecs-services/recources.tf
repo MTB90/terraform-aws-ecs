@@ -3,6 +3,13 @@ resource "random_string" "web_secret_key" {
   special = true
 }
 
+module "ecs_web_service_discovery" {
+  source = "./service-discovery"
+  tags   = merge(local.tags, map("Name", "web"))
+
+  vpc_id = data.aws_vpc.vpc.id
+}
+
 module "ecs_web_task_definition" {
   source = "./task-definition"
   tags   = merge(local.tags, map("Name", format("%s-web-ecs-task-def", local.prefix)))
@@ -31,12 +38,12 @@ module "ecs_web_service" {
   source = "./ec2-service"
   tags   = merge(local.tags, map("Name", format("%s-web-ecs-service", local.prefix)))
 
-  alb_arn             = data.aws_alb.app_alb.arn
-  tg_arn              = data.aws_alb_target_group.app_alb_tg.arn
-  cluster_id          = data.aws_ecs_cluster.ecs_cluster.arn
-  capacity_limits     = local.aws_ecs_container_limits
-  task_definition_arn = module.ecs_web_task_definition.arn
-  container_name      = module.ecs_web_task_definition.container_name
+  tg_arn                = data.aws_alb_target_group.app_alb_tg.arn
+  cluster_id            = data.aws_ecs_cluster.ecs_cluster.arn
+  capacity_limits       = local.aws_ecs_container_limits
+  task_definition_arn   = module.ecs_web_task_definition.arn
+  service_discovery_arn = module.ecs_service_discovery.arn
+  container_name        = module.ecs_web_task_definition.container_name
 }
 
 module "ecs_web_app_autoscaling" {
