@@ -8,19 +8,11 @@ NC=\033[0m
 
 export PYTHONPATH=${CURDIR}:${CURDIR}/photorec/
 
-usage:
-	@echo "$(GREEN)Usage (commands list):$(NC)"
-	@echo "make aws-push-image (Push image to AWS ECR)"
-	@echo "make aws-update-service (Update service on AWS)"
-	@echo "make test (Run tests)"
-	@echo "make pipenv-install (Create production python venv)"
-	@echo "make pipenv-install-test (Create test python venv)"
-	@echo "make docker-build (Build docker image)"
 
 ########################### AWS DEPLOYMENT ECS ##########################
 aws-push-image: app-docker-build _app-docker-tag _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
-	docker push $(AWS_ECR):latest
+	docker push $(AWS_ECR_WEB):latest
 
 aws-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
@@ -28,7 +20,7 @@ aws-update-service:
 
 _app-docker-tag:
 	@echo "$(GREEN)TAG docker image$(NC)"
-	docker tag photorec:latest $(AWS_ECR):latest
+	docker tag photorec:latest $(AWS_ECR_WEB):latest
 
 _aws-login:
 	@echo "$(GREEN)Login to AWS ECR$(NC)"
@@ -40,49 +32,44 @@ app-docker-build:
 	$(eval IMAGES=$(shell docker images -a | grep -e photorec.*latest | awk '{print $$3}'))
 	@if [ -z "$(IMAGES)" ]; then echo "No image to delete"; else docker rmi $(IMAGES) --force; fi
 
-	cd docker; \
+	cd devops; \
 		docker-compose -f docker-compose.yml build --no-cache
 
 ########################### AWS DEPLOYMENT Lambda ##########################
-aws-update-lambda: create-thumbnail-lambda
+aws-update-lambda: thumbnail-lambda rekognition-lambda
 	@cd inrastructure/production/eu-west-1/prod/serverless; \
 		terragrunt apply -auto-approve
 
-create-thumbnail-lambda: _copy-source-package
-	unzip photorec-serverless/pillow.zip -d photorec-serverless/source-code/
-	cp photorec-serverless/lambda_handler/thumbnail.py photorec-serverless/source-code/
-	cd photorec-serverless/source-code;\
-		zip -r ../../photorec-serverless/thumbnail.zip .
-	rm -r photorec-serverless/source-code
+thumbnail-lambda: _copy-source-package
+	unzip serverless/pillow.zip -d serverless/src/
+	cp serverless/lambda_handler/thumbnail.py serverless/src/
+	cd serverless/src;\
+		zip -r ../../serverless/thumbnail.zip .
+	rm -r serverless/src
 
-create-rekognition-lambda: _copy-source-package
-	cp photorec-serverless/lambda_handler/rekognition.py photorec-serverless/source-code/
-	cd photorec-serverless/source-code;\
-		zip -r ../../photorec-serverless/rekognition.zip .
-	rm -r photorec-serverless/source-code
+rekognition-lambda: _copy-source-package
+	cp serverless/lambda_handler/rekognition.py serverless/src/
+	cd serverless/src;\
+		zip -r ../../serverless/rekognition.zip .
+	rm -r serverless/src
 
 _copy-source-package:
-	mkdir -p photorec-serverless/source-code
+	mkdir -p serverless/src
 	@cd photorec; \
-		find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete; \
-		cp -r common ../photorec-serverless/source-code; \
-		cp -r database ../photorec-serverless/source-code; \
-		cp -r repository ../photorec-serverless/source-code; \
-		cp -r services ../photorec-serverless/source-code; \
-		cp -r use_cases ../photorec-serverless/source-code; \
-		cp -r validators ../photorec-serverless/source-code; \
-		cp -r config.py ../photorec-serverless/source-code
+		find . -type f -name '*.py[co]' -delete -o -type d -name __pycache__ -delete
+	cp -r photorec serverless/src
+
 
 ######################## PIPENV ENVIRONMENT ########################
 pipenv-install:
 	@echo "$(GREEN)Create virutalenv and install packages$(NC)"
-	@cd photorec; \
+	@cd services; \
 		pipenv --rm;\
 		pipenv install
 
 pipenv-install-test:
 	@echo "$(GREEN)Create dev virutalenv and install packages$(NC)"
-	@cd photorec; \
+	@cd services; \
 		pipenv --rm;\
 		pipenv install --dev\
 
@@ -92,7 +79,7 @@ travis-env:
 	@echo "$(GREEN)Setup travis env$(NC)"
 	pip install codecov
 	pip install pipenv
-	@cd photorec; \
+	@cd services; \
 		pipenv install --dev --system
 
 travis-aws:
@@ -117,7 +104,7 @@ localstack-env:
 	$(eval CONTAINER=$(shell docker ps -a -q --filter="name=localstack"))
 	@if [ -z "$(CONTAINER)" ]; then echo "No container to stop"; else docker stop $(CONTAINER); fi
 
-	cd docker; \
+	cd devops; \
 		docker-compose -f docker-compose-local.yml up -d
 
 	sleep 5

@@ -5,10 +5,10 @@ class ConfigLoad(type):
     """Meta class configuration."""
     ENV_ATTRS = [
         'REGION',
-        'AWS_COGNITO_POOL_ID',
-        'AWS_COGNITO_CLIENT_ID',
-        'AWS_COGNITO_CLIENT_SECRET',
-        'AWS_COGNITO_DOMAIN',
+        'AUTH_URL',
+        'AUTH_JWKS_URL',
+        'AUTH_CLIENT_ID',
+        'AUTH_CLIENT_SECRET',
         'BASE_URL',
         'SECRET_KEY',
         'DATABASE',
@@ -37,7 +37,6 @@ class Config(metaclass=ConfigLoad):
 class DefaultConfig(Config):
     """Default configuration."""
     ENV = 'prod'
-    DEBUG = False
 
 
 class LocalConfig(Config):

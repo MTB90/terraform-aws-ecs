@@ -1,4 +1,4 @@
-from common.errors import BadRequestError
+from ..common.errors import BadRequestError
 
 
 class UploadPhotoNoDataError(BadRequestError):
