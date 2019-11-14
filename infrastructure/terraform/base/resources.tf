@@ -32,6 +32,7 @@ resource "aws_ssm_parameter" "cert_record_type" {
   value = aws_acm_certificate.aws_cert.domain_validation_options[0].resource_record_type
 }
 
+# SSM Parameters
 resource "aws_ssm_parameter" "cert_record_name" {
   name = format("%s-cert-record-name", local.prefix)
   tags = merge(local.tags, map("Name", format("%s-cert-record-name", local.prefix)))
@@ -46,4 +47,25 @@ resource "aws_ssm_parameter" "cert_record_value" {
 
   type  = "SecureString"
   value = aws_acm_certificate.aws_cert.domain_validation_options[0].resource_record_value
+}
+
+resource "random_string" "random_web_secret_key" {
+  length = 16
+  special = true
+}
+
+resource "aws_ssm_parameter" "web_secret_key" {
+  name = format("%s-web-secret-key", local.prefix)
+  tags = merge(local.tags, map("Name", format("%s-web-secret-key", local.prefix)))
+
+  type  = "SecureString"
+  value = random_string.random_web_secret_key.result
+}
+
+resource "aws_ssm_parameter" "domain_name" {
+  name = format("%s-domain-name", local.prefix)
+  tags = merge(local.tags, map("Name", format("%s-domain-name", local.prefix)))
+
+  type  = "String"
+  value = var.domian_name
 }

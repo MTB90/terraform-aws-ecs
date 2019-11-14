@@ -15,7 +15,7 @@ resource "aws_ecs_service" "ecs_service" {
   }
 
   dynamic "load_balancer" {
-    for_each = var.tg_arn == null ? [] : list(var.tg_arn)
+    for_each = var.tg_arn != null ? [{}] : []
     content {
       target_group_arn = var.tg_arn
       container_name   = var.container_name
@@ -23,9 +23,12 @@ resource "aws_ecs_service" "ecs_service" {
     }
   }
 
-  service_registries {
-    registry_arn   = var.service_discovery_arn
-    container_name = var.container_name
-    container_port = 8080
+  dynamic "service_registries" {
+    for_each = var.service_discovery_arn != null ? [{}] : []
+    content {
+      registry_arn = var.service_discovery_arn
+      container_name = var.container_name
+      container_port = 8080
+    }
   }
 }

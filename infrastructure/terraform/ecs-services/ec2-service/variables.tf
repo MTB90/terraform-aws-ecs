@@ -17,6 +17,7 @@ variable "container_name" {
 
 variable "service_discovery_arn" {
   description = "Arn service discovery"
+  default     = null
 }
 
 variable "tg_arn" {
