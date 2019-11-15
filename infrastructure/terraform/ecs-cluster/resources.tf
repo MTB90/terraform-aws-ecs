@@ -21,6 +21,7 @@ module "bastion_instance" {
 module "launch_configuration" {
   source = "./launch-configuration"
   tags   = merge(local.tags, map("Name", format("%s-ec2-launch-conf", local.perfix)))
+  region = var.aws_region
 
   vpc_id        = data.aws_vpc.vpc.id
   alb_sg_id     = data.aws_security_group.alb_security_group.id

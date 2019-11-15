@@ -1,7 +1,7 @@
 data "aws_availability_zones" "available" {}
 
 data "aws_acm_certificate" "acm_cert" {
-  domain = var.domian_name
+  domain = var.domain_name
 }
 
 data "aws_ssm_parameter" "cert_record_type" {

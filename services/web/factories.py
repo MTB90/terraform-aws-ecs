@@ -1,4 +1,4 @@
-from infrastructure import cq
+from infra import cq
 
 
 class CQFactory:

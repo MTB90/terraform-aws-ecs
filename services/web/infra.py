@@ -46,26 +46,24 @@ def initialization():
 
     return config
 
+
 def _create_config():
-    -    config = DefaultConfig
-    -q
-    -
-    if os.getenv("LOCAL", False):
-        -        config = LocalConfig
-    -
-    -    config.DEBUG = bool(os.getenv('DEBUG', False))
-    -
-    return config
+    config = LocalConfig if os.getenv("LOCAL", False) else DefaultConfig
+    config.DEBUG = bool(os.getenv('DEBUG', False))
 
     service_ssm = ServiceSSM(config)
     prefix = f"{config.PROJECT}-{config.ENVIRONMENT}"
 
+    config.AUTH_URL = service_ssm.get_parameter(name=f"{prefix}-auth-url")
+    config.AUTH_JWKS_URL = service_ssm.get_parameter(name=f"{prefix}-auth-jwks-url")
 
+    config.URL = service_ssm.get_parameter(name=f"{prefix}-web-url")
+    config.SECRET_KEY = service_ssm.get_parameter(name=f"{prefix}-web-secret-key", with_decryption=True)
+
+    config.AUTH_CLIENT_ID = service_ssm.get_parameter(name=f"{prefix}-auth-client-id", with_decryption=True)
+    config.AUTH_CLIENT_SECRET = service_ssm.get_parameter(name=f"{prefix}-auth-client-secret", with_decryption=True)
+
+    config.FILE_STORAGE = service_ssm.get_parameter(name=f"{prefix}-file-storage")
     config.DATABASE = service_ssm.get_parameter(name=f"{prefix}-database-name")
-    config.DATABASE = service_ssm.get_parameter(name=f"{prefix}-database-name")
-    config.DATABASE = service_ssm.get_parameter(name=f"{prefix}-database-name")
-    config.DATABASE = service_ssm.get_parameter(name=f"{prefix}-database-name")
-    config.DATABASE = service_ssm.get_parameter(name=f"{prefix}-database-name")
-    config.DATABASE = service_ssm.get_parameter(name=f"{prefix}-database-name")
-    config.DATABASE = service_ssm.get_parameter(name=f"{prefix}-database-name")
-    config.DATABASE = service_ssm.get_parameter(name=f"{prefix}-database-name")
+
+    return config

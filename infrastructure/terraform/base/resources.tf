@@ -4,7 +4,7 @@ locals {
 }
 
 resource "aws_acm_certificate" "aws_cert" {
-  domain_name       = var.domian_name
+  domain_name       = var.domain_name
   validation_method = "DNS"
 
   tags = merge(local.tags, map("Name", format("%s-aws-cert", local.prefix)))
@@ -62,10 +62,10 @@ resource "aws_ssm_parameter" "web_secret_key" {
   value = random_string.random_web_secret_key.result
 }
 
-resource "aws_ssm_parameter" "domain_name" {
-  name = format("%s-domain-name", local.prefix)
-  tags = merge(local.tags, map("Name", format("%s-domain-name", local.prefix)))
+resource "aws_ssm_parameter" "web_url" {
+  name = format("%s-web-url", local.prefix)
+  tags = merge(local.tags, map("Name", format("%s-web-url", local.prefix)))
 
   type  = "String"
-  value = var.domian_name
+  value = "https://${var.domain_name}"
 }

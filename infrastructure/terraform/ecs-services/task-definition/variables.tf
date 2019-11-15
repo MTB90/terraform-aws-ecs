@@ -3,9 +3,6 @@ variable "tags" {
   default     = {}
 }
 
-variable "region" {
-  description = "A region to send container log data"
-}
 
 variable "cpu_unit" {
   description = "The number of cpu units to reserve for the container"

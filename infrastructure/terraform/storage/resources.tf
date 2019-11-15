@@ -4,12 +4,12 @@ module "dynamodb" {
   tags   = merge(local.tags, map("Name", format("%s-dynamodb", local.prefix)))
 }
 
-resource "aws_ssm_parameter" "dynamodb" {
+resource "aws_ssm_parameter" "database_name_parameter" {
   name = format("%s-database-name", local.prefix)
   tags = merge(local.tags, map("Name", format("%s-database-name", local.prefix)))
 
   type  = "String"
-  value = format("%s-db", local.prefix)
+  value = format("%s-dynamodb", local.prefix)
 }
 
 # S3
@@ -18,7 +18,7 @@ module "storage" {
   tags   = merge(local.tags, map("Name", format("%s-s3", local.prefix)))
 }
 
-resource "aws_ssm_parameter" "s3" {
+resource "aws_ssm_parameter" "file_strorage_parameter" {
   name = format("%s-file-storage", local.prefix)
   tags = merge(local.tags, map("Name", format("%s-file-storage", local.prefix)))
 

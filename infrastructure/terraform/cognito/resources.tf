@@ -39,8 +39,8 @@ resource "aws_cognito_user_pool_client" "user_pool_client" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_flows_user_pool_client = true
 
-  callback_urls = [format("https://%s/callback", var.domian_name)]
-  logout_urls   = [format("https://%s/", var.domian_name)]
+  callback_urls = [format("https://%s/callback", var.domain_name)]
+  logout_urls   = [format("https://%s/", var.domain_name)]
 }
 
 resource "aws_cognito_user_pool_domain" "user_pool_domian" {

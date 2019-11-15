@@ -10,7 +10,7 @@ remote_state {
 }
 
 inputs = {
-  domian_name               = "photorec.ml"
+  domain_name               = "photorec.ml"
 
   aws_project_name          = "photorec"
   aws_environment_type      = "prod"

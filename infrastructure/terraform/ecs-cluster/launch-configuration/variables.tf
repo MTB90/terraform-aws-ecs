@@ -3,6 +3,10 @@ variable "tags" {
   default     = {}
 }
 
+variable "region" {
+  description = "A region to send log data"
+}
+
 variable "vpc_id" {
   description = "VPC id where launch configuration will be deployed"
 }

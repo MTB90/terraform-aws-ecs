@@ -4,7 +4,6 @@ locals {
 
   paramaters = map(
     "name", var.tags["Name"],
-    "region", var.region,
     "cpu_unit", var.cpu_unit,
     "memory", var.memory,
     "docker_image_uri", var.docker_image_uri,

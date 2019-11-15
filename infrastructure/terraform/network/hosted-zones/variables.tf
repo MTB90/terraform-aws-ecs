@@ -3,8 +3,8 @@ variable "tags" {
   default     = {}
 }
 
-variable "domian_name" {
-  description = "Domian name"
+variable "domain_name" {
+  description = "Domain name"
 }
 
 variable "alb_zone_id" {
