@@ -55,7 +55,7 @@ def login():
     url = f"{blueprint.config['AUTH_URL']}/login?response_type=code&" \
           f"client_id={blueprint.config['AUTH_CLIENT_ID']}&" \
           f"state={session['csrf_state']}&" \
-          f"redirect_uri={blueprint.config['BASE_URL']}/callback"
+          f"redirect_uri={blueprint.config['URL']}/callback"
     return redirect(url)
 
 
@@ -66,7 +66,7 @@ def logout():
     flask_login.logout_user()
     url = f"{blueprint.config['AUTH_URL']}/logout?response_type=code&" \
           f"client_id={blueprint.config['AUTH_CLIENT_ID']}&" \
-          f"logout_uri={blueprint.config['BASE_URL']}/"
+          f"logout_uri={blueprint.config['URL']}/"
 
     return redirect(url)
 
@@ -81,7 +81,7 @@ def callback():
     data = {
         'grant_type': 'authorization_code', 'code': request.args.get('code'),
         'client_id': blueprint.config['AUTH_CLIENT_ID'],
-        "redirect_uri": f"{blueprint.config['BASE_URL']}/callback"
+        "redirect_uri": f"{blueprint.config['URL']}/callback"
     }
 
     auth = HTTPBasicAuth(

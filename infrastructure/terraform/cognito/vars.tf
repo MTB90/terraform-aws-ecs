@@ -1,5 +1,5 @@
-variable "domian_name" {
-  description = "The domian name for app"
+variable "domain_name" {
+  description = "The domain name for app"
   type        = string
 }
 

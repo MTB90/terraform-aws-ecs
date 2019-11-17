@@ -51,7 +51,7 @@ module "hosted_zones" {
   source = "./hosted-zones"
   tags   = merge(local.tags, map("Name", format("%s-hosted-zones", local.prefix)))
 
-  domian_name  = var.domian_name
+  domian_name  = var.domain_name
   alb_zone_id  = module.alb.zone_id
   alb_dns_name = module.alb.dns_name
 

@@ -17,36 +17,16 @@
         "value": "${region}"
       },
       {
-        "name": "AUTH_URL",
-        "value": "${auth_url}"
+        "name": "PROJECT",
+        "value": "${project}"
       },
       {
-        "name": "AUTH_JWKS_URL",
-        "value": "${auth_jwks_url}"
+        "name": "SERVICE",
+        "value": "${service}"
       },
       {
-        "name": "AUTH_CLIENT_ID",
-        "value": "${auth_client_id}"
-      },
-      {
-        "name": "AUTH_CLIENT_SECRET",
-        "value": "${auth_client_secret}"
-      },
-      {
-        "name": "BASE_URL",
-        "value": "${url}"
-      },
-      {
-        "name": "SECRET_KEY",
-        "value": "${secret_key}"
-      },
-      {
-        "name": "DATABASE",
-        "value": "${database}"
-      },
-      {
-        "name": "STORAGE",
-        "value": "${file_storage}"
+        "name": "ENVIRONMENT",
+        "value": "${environment}"
       }
     ],
     "portMappings": [

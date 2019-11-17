@@ -70,6 +70,9 @@ data "template_file" "template_instance_role" {
   template = file("${path.module}/policies/container-instance-role.json.tpl")
 
   vars = {
-    storage = var.file_storage
+    project     = var.tags["Project"]
+    environment = var.tags["Environment"]
+    storage     = var.file_storage
+    region      = var.region
   }
 }
