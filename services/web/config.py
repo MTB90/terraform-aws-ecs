@@ -32,3 +32,6 @@ class LocalConfig(metaclass=ConfigLoad):
         'ssm': "http://127.0.0.1:4583",
         'dynamodb': "http://127.0.0.1:4569"
     }
+
+    DATABASE = "photorec-local"
+    FILE_STORAGE = "photorec-local"

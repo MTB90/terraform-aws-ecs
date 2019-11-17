@@ -12,9 +12,9 @@ class ServiceSSM:
             endpoint_url=config.AWS_ENDPOINTS.get(self._service_name)
         )
 
-    def get_parameter(self, name: str, with_decryption: bool = False) -> str:
+    def get_parameter(self, name: str, decryption: bool = False) -> str:
         result = self._ssm_client.get_parameter(
             Name=name,
-            WithDecryption=with_decryption
+            WithDecryption=decryption
         )
         return result["Parameter"]["Value"]
