@@ -1,0 +1,16 @@
+FROM python:3.7.4-alpine
+
+RUN mkdir -p /app
+WORKDIR /app
+
+COPY services/Pipfile* /app/
+COPY services/web /app/
+COPY photorec /app/photorec/
+
+RUN export PIP_NO_CACHE_DIR=false \
+    && apk add --no-cache jpeg-dev zlib-dev \
+    && apk add --no-cache --virtual .build-deps build-base linux-headers \
+    && apk --no-cache add curl \
+    && pip install pipenv \
+    && pipenv install --system --deploy \
+    && apk del .build-deps

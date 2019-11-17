@@ -1,6 +1,8 @@
-from PIL import Image
 from io import BytesIO
-from common.errors import BaseError
+
+from PIL import Image
+
+from ..common.errors import BaseError
 
 
 class UnableToOpenImageError(BaseError):

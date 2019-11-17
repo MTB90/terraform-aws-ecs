@@ -31,7 +31,7 @@ jobs:
       services:
         - docker
       script:
-        - make test
+        - make tests
         - make code-style
       after_success:
         - codecov

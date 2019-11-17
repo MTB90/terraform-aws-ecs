@@ -13,7 +13,7 @@ class ServiceRekognition:
 
     def detect_tag(self, photo_key):
         response = self._rekognition_client.detect_labels(
-            Image={'S3Object': {'Bucket': self._config.STORAGE, 'Name': photo_key}},
+            Image={'S3Object': {'Bucket': self._config.FILE_STORAGE, 'Name': photo_key}},
             MaxLabels=1
         )
 

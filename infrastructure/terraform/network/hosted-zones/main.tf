@@ -1,12 +1,12 @@
 # Resources
 resource "aws_route53_zone" "route_53_zone" {
-  name = var.domian_name
+  name = var.domain_name
   tags = var.tags
 }
 
 resource "aws_route53_record" "alias_alb" {
   zone_id = aws_route53_zone.route_53_zone.zone_id
-  name    = var.domian_name
+  name    = var.domain_name
   type    = "A"
 
   alias {

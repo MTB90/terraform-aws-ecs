@@ -15,7 +15,7 @@ class ServiceStorageS3:
 
     def delete(self, key: str):
         response = self._s3_client.delete_object(
-            Bucket=self._config.STORAGE,
+            Bucket=self._config.FILE_STORAGE,
             Key=key,
         )
 
@@ -23,7 +23,7 @@ class ServiceStorageS3:
 
     def get(self, key):
         response = self._s3_client.get_object(
-            Bucket=self._config.STORAGE,
+            Bucket=self._config.FILE_STORAGE,
             Key=key,
         )
 
@@ -31,7 +31,7 @@ class ServiceStorageS3:
 
     def put(self, key: str, data):
         response = self._s3_client.put_object(
-            Bucket=self._config.STORAGE,
+            Bucket=self._config.FILE_STORAGE,
             Key=key,
             Body=data,
             ContentType='image/jpeg'
@@ -45,10 +45,10 @@ class ServiceStorageS3:
 
     def get_signed_url(self, key: str):
         try:
-            self._s3_client.head_object(Bucket=self._config.STORAGE, Key=key)
+            self._s3_client.head_object(Bucket=self._config.FILE_STORAGE, Key=key)
             return self._s3_client.generate_presigned_url(
                 'get_object',
-                Params={'Bucket': self._config.STORAGE, 'Key': key}
+                Params={'Bucket': self._config.FILE_STORAGE, 'Key': key}
             )
         except ClientError:
             return None

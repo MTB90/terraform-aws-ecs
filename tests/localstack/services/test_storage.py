@@ -1,10 +1,11 @@
-import pytest
 from uuid import UUID
 
-from photorec.config import LocalConfig
-from photorec.services.storage import ServiceStorageS3
-from photorec.services.random import ServiceRandom
+import pytest
+
 from photorec.services.image import ServiceImage
+from photorec.services.random import ServiceRandom
+from photorec.services.storage import ServiceStorageS3
+from services.web.config import LocalConfig
 
 
 @pytest.fixture()

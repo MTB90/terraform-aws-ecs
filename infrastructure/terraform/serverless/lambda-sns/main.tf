@@ -40,7 +40,7 @@ resource "aws_lambda_permission" "lambda_allow_sns" {
   source_arn    = var.sns_arn
 }
 
-resource "aws_sns_topic_subscription" "lambda_sns_topic_subscriptio" {
+resource "aws_sns_topic_subscription" "lambda_sns_topic_subscription" {
   topic_arn = var.sns_arn
   protocol  = "lambda"
   endpoint  = aws_lambda_function.thumbnail_lambda.arn
