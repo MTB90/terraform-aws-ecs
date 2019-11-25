@@ -3,7 +3,7 @@ version: '3'
 services:
   web:
     container_name: web
-    image: photorec:latest
+    image: photorec_web:latest
     restart: always
     build:
       context: ..

@@ -20,7 +20,7 @@ aws-update-service:
 
 _app-docker-tag:
 	@echo "$(GREEN)TAG docker image$(NC)"
-	docker tag photorec:latest $(AWS_ECR_WEB):latest
+	docker tag photorec_web:latest $(AWS_ECR_WEB):latest
 
 _aws-login:
 	@echo "$(GREEN)Login to AWS ECR$(NC)"
