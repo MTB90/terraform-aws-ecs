@@ -10,4 +10,15 @@ services:
       dockerfile: devops/dockerfiles/prod-web
     ports:
       - "5000:8080"
-    command: python run.py
+    command: python app.py
+
+  api:
+    container_name: api
+    image: photorec_api:latest
+    restart: always
+    build:
+      context: ..
+      dockerfile: devops/dockerfiles/prod-api
+    ports:
+      - "9000:8080"
+    command: python app.py
