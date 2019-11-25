@@ -36,35 +36,10 @@ cq.add_sub_container(service)
 cq.add_sub_container(validator)
 
 
-def initialization():
-    config = _create_config()
-
+def initialization(config):
     db = create_db(config)
     repo.register_object('db', db)
     repo.register_object('config', config)
     service.register_object('config', config)
 
-    return config
-
-
-def _create_config():
-    if os.getenv("LOCAL", False):
-        config = LocalConfig
-    else:
-        config = DefaultConfig
-        ssm = ServiceSSM(config)
-        prefix = f"{config.PROJECT}-{config.ENVIRONMENT}"
-
-        config.AUTH_URL = ssm.get_parameter(f"{prefix}-auth-url")
-        config.AUTH_JWKS_URL = ssm.get_parameter(f"{prefix}-auth-jwks-url")
-        config.URL = ssm.get_parameter(f"{prefix}-web-url")
-
-        config.SECRET_KEY = ssm.get_parameter(f"{prefix}-web-secret-key", True)
-        config.AUTH_CLIENT_ID = ssm.get_parameter(f"{prefix}-auth-client-id", True)
-        config.AUTH_CLIENT_SECRET = ssm.get_parameter(f"{prefix}-auth-client-secret", True)
-
-        config.DATABASE = ssm.get_parameter(f"{prefix}-database-name")
-        config.FILE_STORAGE = ssm.get_parameter(f"{prefix}-file-storage")
-
-    config.DEBUG = bool(os.getenv('DEBUG', False))
     return config
