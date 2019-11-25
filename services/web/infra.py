@@ -1,15 +1,11 @@
-import os
-
 from pyioc.containers import NamespacedContainer
 
-from config import DefaultConfig, LocalConfig
 from photorec.database import create_db
 from photorec.repository.like import RepoLike
 from photorec.repository.photo import RepoPhoto
 from photorec.repository.tag import RepoTag
 from photorec.services.image import ServiceImage
 from photorec.services.random import ServiceRandom
-from photorec.services.ssm import ServiceSSM
 from photorec.services.storage import ServiceStorageS3
 from photorec.validators.nickname import ValidatorNickname
 from photorec.validators.photo import ValidatorPhoto
