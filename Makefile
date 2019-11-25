@@ -13,6 +13,7 @@ export PYTHONPATH=${CURDIR}:${CURDIR}/photorec/
 aws-push-image: app-docker-build _app-docker-tag _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
 	docker push $(AWS_ECR_WEB):latest
+	docker push $(AWS_ECR_API):latest
 
 aws-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
@@ -21,6 +22,7 @@ aws-update-service:
 _app-docker-tag:
 	@echo "$(GREEN)TAG docker image$(NC)"
 	docker tag photorec_web:latest $(AWS_ECR_WEB):latest
+	docker tag photorec_api:latest $(AWS_ECR_API):latest
 
 _aws-login:
 	@echo "$(GREEN)Login to AWS ECR$(NC)"

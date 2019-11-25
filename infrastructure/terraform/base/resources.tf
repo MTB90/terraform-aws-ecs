@@ -20,8 +20,8 @@ resource "aws_ecr_repository" "aws_ecr_web_repo" {
 }
 
 resource "aws_ecr_repository" "aws_ecr_rest_repo" {
-  name = format("%s-rest-ecr", local.prefix)
-  tags = merge(local.tags, map("Name", format("%s-rest-ecr", local.prefix)))
+  name = format("%s-api-ecr", local.prefix)
+  tags = merge(local.tags, map("Name", format("%s-api-ecr", local.prefix)))
 }
 
 resource "aws_ssm_parameter" "cert_record_type" {
