@@ -1,10 +1,24 @@
 import json
+import os
+from typing import NamedTuple
 
-from photorec.config import get_config
 from photorec.services.image import ServiceImage
 from photorec.services.random import ServiceRandom
 from photorec.services.storage import ServiceStorageS3
 from photorec.use_cases.create_thumbnail import CreateThumbnail
+
+
+class ConfigEnvironment(NamedTuple):
+    FILE_STORAGE: str
+
+
+def get_config_env(config_class):
+    config_class.AWS_ENDPOINTS = {}
+    config = {}
+    for key in config_class._fields:
+        item = os.environ[key]
+        config[key] = item
+    return config_class(**config)
 
 
 def handler(event, context):
@@ -17,7 +31,7 @@ def handler(event, context):
             'body': json.dumps(f"Can't parse event message: {event}")
         }
 
-    config = get_config()
+    config = get_config_env(ConfigEnvironment)
     print(f"Start create thumbnail: {photo_key} with config: {config}")
 
     use_case = CreateThumbnail(

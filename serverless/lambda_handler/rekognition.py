@@ -1,11 +1,27 @@
 import json
+import os
+from typing import NamedTuple
 
-from photorec.config import get_config
 from photorec.database import create_db
 from photorec.repository.photo import RepoPhoto
 from photorec.repository.tag import RepoTag
 from photorec.services.recognition import ServiceRekognition
 from photorec.use_cases.detect_photo_tag import DetectPhotoTag
+
+
+class ConfigEnvironment(NamedTuple):
+    REGION: str
+    DATABASE: str
+    FILE_STORAGE: str
+
+
+def get_config_env(config_class):
+    config_class.AWS_ENDPOINTS = {}
+    config = {}
+    for key in config_class._fields:
+        item = os.environ[key]
+        config[key] = item
+    return config_class(**config)
 
 
 def handler(event, context):
@@ -18,7 +34,7 @@ def handler(event, context):
             'body': json.dumps(f"Can't parse event message: {event}")
         }
 
-    config = get_config()
+    config = get_config_env(ConfigEnvironment)
     db = create_db(config)
 
     print(f"Get tag for photo: {photo_key} with config: {config}")

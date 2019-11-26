@@ -13,18 +13,20 @@ export PYTHONPATH=${CURDIR}:${CURDIR}/photorec/
 aws-push-image: app-docker-build _app-docker-tag _aws-login
 	@echo "$(GREEN)Push image to AWS ECR$(NC)"
 	docker push $(AWS_ECR_WEB):latest
+	docker push $(AWS_ECR_API):latest
 
 aws-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
-	aws ecs update-service --region $(AWS_REGION) --cluster $(AWS_ECS_CLUSTER) --service $(AWS_ECS_SERVICE) --force-new-deployment
+	aws ecs update-service --region $(REGION) --cluster $(AWS_ECS_CLUSTER) --service $(AWS_ECS_SERVICE_WEB) --force-new-deployment
 
 _app-docker-tag:
 	@echo "$(GREEN)TAG docker image$(NC)"
-	docker tag photorec:latest $(AWS_ECR_WEB):latest
+	docker tag photorec_web:latest $(AWS_ECR_WEB):latest
+	docker tag photorec_api:latest $(AWS_ECR_API):latest
 
 _aws-login:
 	@echo "$(GREEN)Login to AWS ECR$(NC)"
-	$(eval AWS_LOGIN_COMMAND=$(shell aws ecr get-login --region $(AWS_REGION) --no-include-email))
+	$(eval AWS_LOGIN_COMMAND=$(shell aws ecr get-login --region $(REGION) --no-include-email))
 	$(AWS_LOGIN_COMMAND)
 
 app-docker-build:
@@ -96,7 +98,7 @@ test: localstack-env
 	@echo "$(GREEN)Running unittests$(NC)"
 
 	@cd photorec; \
-		pytest ../tests --cov=./ --cov-report=xml -v || exit 1
+		pytest ../tests --cov=./ --cov-report=xml || exit 1
 
 localstack-env:
 	@echo "$(GREEN)Up localstack docker image$(NC)"
