@@ -17,7 +17,6 @@ module "ecs_web_task_definition" {
   )
 }
 
-
 module "ecs_web_service" {
   source = "./ec2-service"
   tags   = merge(local.tags, map("Name", format("%s-web-ecs-service", local.prefix)))
@@ -27,7 +26,6 @@ module "ecs_web_service" {
   capacity_limits       = local.aws_ecs_container_limits
   task_definition_arn   = module.ecs_web_task_definition.arn
   container_name        = module.ecs_web_task_definition.container_name
-  service_discovery_arn = module.ecs_web_service_discovery.arn
 }
 
 module "ecs_web_app_autoscaling" {
@@ -39,9 +37,3 @@ module "ecs_web_app_autoscaling" {
   capacity_limits = local.aws_ecs_container_limits
 }
 
-module "ecs_web_service_discovery" {
-  source = "./service-discovery"
-  tags   = merge(local.tags, map("Name", "web"))
-
-  vpc_id = data.aws_vpc.vpc.id
-}

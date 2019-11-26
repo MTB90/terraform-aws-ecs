@@ -1,6 +1,6 @@
 from handler import create_http_app
 from infra import initialization
-from photorec.config import get_config
+from config import get_config
 
 if __name__ == '__main__':
     config = get_config()

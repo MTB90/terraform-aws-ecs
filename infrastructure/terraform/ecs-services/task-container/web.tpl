@@ -9,7 +9,7 @@
       "python"
     ],
     "command": [
-      "run.py"
+      "app.py"
     ],
     "environment": [
       {
