@@ -2,7 +2,7 @@ import pytest
 
 from photorec.database import create_db
 from photorec.repository.tag import RepoTag
-from photorec.config import LocalConfig
+from services.web.config import LocalConfig
 
 
 @pytest.fixture()
