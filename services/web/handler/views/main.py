@@ -37,5 +37,5 @@ def top():
 def health():
     return jsonify({
         'status': 'running',
-        'host': socket.gethostname()
+        'container': socket.gethostname()
     })
