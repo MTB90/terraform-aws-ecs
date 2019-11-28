@@ -6,6 +6,7 @@ from photorec.repository.photo import RepoPhoto
 from photorec.repository.tag import RepoTag
 from photorec.services.image import ServiceImage
 from photorec.services.random import ServiceRandom
+from photorec.services.srvrequests import ServiceSrvRequests
 from photorec.services.storage import ServiceStorageS3
 from photorec.validators.nickname import ValidatorNickname
 from photorec.validators.photo import ValidatorPhoto
@@ -19,6 +20,7 @@ service = NamespacedContainer('service')
 service.register_callable_with_deps('image', ServiceImage)
 service.register_callable_with_deps('random', ServiceRandom)
 service.register_callable_with_deps('storage', ServiceStorageS3)
+service.register_callable_with_deps('srvrequests', ServiceSrvRequests)
 service.add_sub_container(repo)
 
 validator = NamespacedContainer('validator')

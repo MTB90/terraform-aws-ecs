@@ -18,6 +18,7 @@ aws-push-image: app-docker-build _app-docker-tag _aws-login
 aws-update-service:
 	@echo "$(GREEN)Update ECS Service on AWS$(NC)"
 	aws ecs update-service --region $(REGION) --cluster $(AWS_ECS_CLUSTER) --service $(AWS_ECS_SERVICE_WEB) --force-new-deployment
+	aws ecs update-service --region $(REGION) --cluster $(AWS_ECS_CLUSTER) --service $(AWS_ECS_SERVICE_API) --force-new-deployment
 
 _app-docker-tag:
 	@echo "$(GREEN)TAG docker image$(NC)"

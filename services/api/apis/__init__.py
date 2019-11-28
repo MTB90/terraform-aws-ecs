@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 def health():
     return jsonify({
         'status': 'running',
-        'host': socket.gethostname()
+        'container': socket.gethostname()
     })
 
 
