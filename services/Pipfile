@@ -13,6 +13,7 @@ boto3 = "*"
 pyioc = "*"
 pillow = "*"
 gunicorn = "*"
+dnspython = "*"
 
 [dev-packages]
 flask-debugtoolbar = "*"
