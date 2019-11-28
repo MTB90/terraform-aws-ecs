@@ -1,7 +1,8 @@
 from random import randint
-from typing import List
-import requests
+from typing import List, Dict
+
 import dns.resolver
+import requests
 
 from ..common.errors import BaseError
 
@@ -11,16 +12,12 @@ class NoSrvRecordsError(BaseError):
         super().__init__(code=code, message=message)
 
 
-class SrvResponse:
-    url: str
-    response: str
+class ServiceSrvRequests:
+    def __init__(self, config):
+        self._config = config
 
-
-class SrvRequest:
-    def __init__(self):
-        pass
-
-    def get(self, qname, path, params=None, broadcast=False, random=True) -> List:
+    def get(self, service, path, params=None, broadcast=False, random=True) -> List[Dict]:
+        qname = f"{service}.{self._config.PROJECT}.{self._config.ENVIRONMENT}.local"
         responses = []
         srv_records = self._resolver(qname)
 
@@ -55,7 +52,7 @@ class SrvRequest:
         return srv_records
 
     @staticmethod
-    def _http_request(host, path, port, params):
+    def _http_request(host, path, port, params) -> Dict:
         url = f"http://{host}:{port}/{path}"
         response = requests.get(url, params)
-        return SrvResponse(url, response)
+        return {"url": url, "response": response}

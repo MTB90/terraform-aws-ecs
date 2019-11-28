@@ -4,6 +4,7 @@ import socket
 from flask import Blueprint, render_template, jsonify, request
 
 from factories import cq_factory
+from photorec.use_cases.get_health_service import GetHealthService
 from photorec.use_cases.photos.get_photos import GetPhotosQuery
 from photorec.use_cases.tag.get_all_tags import GetAllTagsQuery
 
@@ -14,8 +15,13 @@ log = logging.getLogger(__name__)
 @blueprint.route('/')
 def index():
     """Homepage route"""
-    host = socket.gethostname()
-    return render_template("index.html", host=host)
+    container = socket.gethostname()
+
+    service = "api"
+    use_case = cq_factory.get(GetHealthService)
+    health = use_case.execute(service)
+
+    return render_template("index.html", container=container, service=service, health=health)
 
 
 @blueprint.route('/top')
