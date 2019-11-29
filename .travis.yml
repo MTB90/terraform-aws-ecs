@@ -11,21 +11,20 @@ env:
     - PIPENV_VENV_IN_PROJECT=1
     - PIPENV_IGNORE_VIRTUALENVS=1
 
+
 stages:
   - name: test
     if: type = push
-  - name: develop
+  - name: build
     if: branch = develop AND type = push
-  - name: production
+  - name: deploy
     if: branch = master AND type = push
 
 jobs:
   include:
     - stage: test
       before_install:
-        - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.16/terraform_0.12.16_linux_amd64.zip
-        - unzip /tmp/terraform.zip -d /tmp
-        - mv /tmp/terraform ~/bin
+        - make travis-infra
         - export PATH="~/bin:$PATH"
       install: make travis-env
       services:
@@ -36,29 +35,28 @@ jobs:
       after_success:
         - codecov
 
-    - stage: develop
-      install: make travis-aws
+    - stage: build
+      before_install:
+        - make travis-infra
+        - export PATH="~/bin:$PATH"
+      install: make travis-env
+      services:
+        - docker
+      script:
+        - make app-docker-build
+        - make thumbnail-lambda
+        - make rekognition-lambda
+
+    - stage: deploy
+      before_install:
+        - make travis-infra
+        - export PATH="~/bin:$PATH"
+      install: make travis-env
       services:
         - docker
       script:
         - make aws-push-image
         - make thumbnail-lambda
         - make rekognition-lambda
-
-    - stage: production
-      before_install:
-        - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.16/terraform_0.12.16_linux_amd64.zip
-        - unzip /tmp/terraform.zip -d /tmp
-        - mv /tmp/terraform ~/bin
-        - curl https://github.com/gruntwork-io/terragrunt/releases/download/v0.20.4/terragrunt_linux_amd64 -o terragrunt
-        - chmod 755 teragrunt
-        - mv terragrunt ~/bin
-        - export PATH="~/bin:$PATH"
-      install: make travis-env
-      services:
-        - docker
-      script:
         - make aws-update-service
-        - make thumbnail-lambda
-        - make rekognition-lambda
         - make aws-update-lambda
