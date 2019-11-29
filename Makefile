@@ -39,8 +39,9 @@ app-docker-build:
 		docker-compose -f docker-compose.yml build --no-cache
 
 ########################### AWS DEPLOYMENT Lambda ##########################
-aws-update-lambda: thumbnail-lambda rekognition-lambda
-	@cd inrastructure/production/eu-west-1/prod/serverless; \
+aws-update-lambda:
+	@cd infrastructure/production/eu-west-1/prod/serverless; \
+		terragrunt get; \
 		terragrunt apply -auto-approve
 
 thumbnail-lambda: _copy-source-package
@@ -96,12 +97,12 @@ travis-aws:
 travis-infra:
 	curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.16/terraform_0.12.16_linux_amd64.zip
 	unzip /tmp/terraform.zip -d .
-	chmod 755 terraform
 	mv terraform ~/bin
+	chmod +x ~/bin/terraform
 
-	curl https://github.com/gruntwork-io/terragrunt/releases/download/v0.20.4/terragrunt_linux_amd64 -o terragrunt
-	chmod 755 terragrunt
+	wget https://github.com/gruntwork-io/terragrunt/releases/download/v0.21.6/terragrunt_linux_amd64 -O terragrunt
 	mv terragrunt ~/bin
+	chmod +x ~/bin/terragrunt
 
 ############################## TESTING #############################
 test: localstack-env
