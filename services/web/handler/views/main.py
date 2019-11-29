@@ -19,9 +19,9 @@ def index():
 
     service = "api"
     use_case = cq_factory.get(GetHealthService)
-    health = use_case.execute(service)
+    health_api = use_case.execute(service)
 
-    return render_template("index.html", container=container, service=service, health=health)
+    return render_template("index.html", container=container, service=service, health=health_api)
 
 
 @blueprint.route('/top')

@@ -23,7 +23,7 @@ jobs:
   include:
     - stage: test
       before_install:
-        - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.9/terraform_0.12.9_linux_amd64.zip
+        - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.16/terraform_0.12.16_linux_amd64.zip
         - unzip /tmp/terraform.zip -d /tmp
         - mv /tmp/terraform ~/bin
         - export PATH="~/bin:$PATH"
@@ -42,10 +42,23 @@ jobs:
         - docker
       script:
         - make aws-push-image
+        - make thumbnail-lambda
+        - make rekognition-lambda
 
     - stage: production
-      install: make travis-aws
+      before_install:
+        - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.16/terraform_0.12.16_linux_amd64.zip
+        - unzip /tmp/terraform.zip -d /tmp
+        - mv /tmp/terraform ~/bin
+        - curl https://github.com/gruntwork-io/terragrunt/releases/download/v0.20.4/terragrunt_linux_amd64 -o terragrunt
+        - chmod 755 teragrunt
+        - mv terragrunt ~/bin
+        - export PATH="~/bin:$PATH"
+      install: make travis-env
       services:
         - docker
       script:
         - make aws-update-service
+        - make thumbnail-lambda
+        - make rekognition-lambda
+        - make aws-update-lambda

@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
     {% if current_user.is_authenticated %}
-        You are authenticated. Host: {{ container }}
+        You are authenticated. Container: {{ container }}
     {% else %}
-        Click <em>login in / sign up</em> to access this site. Host: {{ container }}
+        Click <em>login in / sign up</em> to access this site. Container: {{ container }}
     {% endif %}
     <hr/>
     Service status: {{ service }}

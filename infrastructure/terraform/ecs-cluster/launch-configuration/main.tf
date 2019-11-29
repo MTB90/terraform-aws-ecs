@@ -42,6 +42,17 @@ resource "aws_security_group" "config_sg" {
   vpc_id = var.vpc_id
 }
 
+resource "aws_security_group_rule" "config_rule" {
+  type            = "ingress"
+  from_port       = 0
+  to_port         = 0
+  protocol        = "-1"
+
+  source_security_group_id = aws_security_group.config_sg.id
+  security_group_id        = aws_security_group.config_sg.id
+}
+
+
 resource "aws_iam_instance_profile" "instance_profile" {
   name = format("%s-iam-instance-profile", var.tags["Name"])
   role = aws_iam_role.role.name
