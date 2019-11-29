@@ -93,6 +93,15 @@ travis-aws:
 	echo aws_access_key_id = ${AWS_ACCESS_KEY_ID} >> ~/.aws/credentials
 	echo aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY} >> ~/.aws/credentials
 
+travis-infra:
+	curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.16/terraform_0.12.16_linux_amd64.zip
+	unzip /tmp/terraform.zip -d .
+	chmod 755 terraform
+	mv terraform ~/bin
+
+	curl https://github.com/gruntwork-io/terragrunt/releases/download/v0.20.4/terragrunt_linux_amd64 -o terragrunt
+	chmod 755 terragrunt
+	mv terragrunt ~/bin
 
 ############################## TESTING #############################
 test: localstack-env
