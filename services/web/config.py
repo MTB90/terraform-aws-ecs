@@ -47,6 +47,7 @@ def get_config():
         ssm = ServiceSSM(config)
         prefix = f"{config.PROJECT}-{config.ENVIRONMENT}"
 
+        config.URL = ssm.get_parameter(f"{prefix}-web-url")
         config.AUTH_URL = ssm.get_parameter(f"{prefix}-auth-url")
         config.AUTH_JWKS_URL = ssm.get_parameter(f"{prefix}-auth-jwks-url")
 
