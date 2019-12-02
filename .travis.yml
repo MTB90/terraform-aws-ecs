@@ -18,7 +18,7 @@ stages:
   - name: build
     if: branch = develop AND type = push
   - name: deploy
-    if: branch = develop AND type = push
+    if: branch = master AND type = push
 
 jobs:
   include:
@@ -55,6 +55,7 @@ jobs:
       services:
         - docker
       script:
+        - make aws-update-service
         - make thumbnail-lambda
         - make rekognition-lambda
         - make aws-update-lambda
