@@ -1,6 +1,6 @@
 sudo: required
 
-dist: xenial
+dist: bionic
 
 language: python
 python:
@@ -23,10 +23,10 @@ stages:
 jobs:
   include:
     - stage: test
-      before_install:
+      install:
+        - make travis-env
         - make travis-infra
         - export PATH="~/bin:$PATH"
-      install: make travis-env
       services:
         - docker
       script:
@@ -36,10 +36,9 @@ jobs:
         - codecov
 
     - stage: build
-      before_install:
+      install:
         - make travis-infra
         - export PATH="~/bin:$PATH"
-      install: make travis-env
       services:
         - docker
       script:
@@ -51,12 +50,12 @@ jobs:
       before_install:
         - make travis-infra
         - export PATH="~/bin:$PATH"
-      install: make travis-env
+      install:
+        - make travis-aws
       services:
         - docker
       script:
-        - make aws-push-image
+        - make aws-update-service
         - make thumbnail-lambda
         - make rekognition-lambda
-        - make aws-update-service
         - make aws-update-lambda
